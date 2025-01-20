@@ -1,0 +1,70 @@
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm"
+import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
+import { BibliographyTypeEntity } from "./bibliography-type.entity"
+import { LanguageEntity } from "./language.entity"
+import { PublisherEntity } from "./publisher.entity"
+import { AuthorEntity } from "./author.entity"
+import { RequestEntity } from "./request.entity"
+import { LoanManagementEntity } from "./loan-management.entity"
+
+@Entity({ name: 'books' })
+export class BookEntity extends BaseEntity {
+    @Column({ length: 250 })
+    description: string
+
+    @Column()
+    topographical_signature: string
+
+    @Column()
+    isbn: string
+
+    @Column()
+    bibliography_type_id: number
+
+    @Column()
+    publisher_id: number
+
+    @Column()
+    publication_year: number
+
+    @Column()
+    science: string
+
+    @Column()
+    language_id: number
+    
+    @Column({ type: 'enum', enum: StatusEnum })
+    state: StatusType
+
+    @ManyToMany(() => AuthorEntity, (author) => author.books)
+    @JoinTable({
+      name: 'book-authors',
+      joinColumn: {
+        name: 'bookId',
+        referencedColumnName: 'id'
+      },
+      inverseJoinColumn: {
+        name: 'authorId',
+        referencedColumnName: 'id'
+      }
+    })
+    authors: AuthorEntity[]
+
+    @ManyToOne(() => BibliographyTypeEntity, (bibliographyType) => bibliographyType.books)
+    @JoinColumn({ name: 'bibliography_type_id', referencedColumnName: 'id' })
+    bibliographyType: BibliographyTypeEntity
+
+    @ManyToOne(() => PublisherEntity, (publisher) => publisher.books)
+    @JoinColumn({ name: 'publisher_id', referencedColumnName: 'id' })
+    publisher: PublisherEntity
+
+    @ManyToOne(() => LanguageEntity, (language) => language.books)
+    @JoinColumn({ name: 'language_id', referencedColumnName: 'id' })
+    language: LanguageEntity
+
+    @OneToMany(() => RequestEntity, (request) => request.book)
+    requests: RequestEntity[]
+    
+    @OneToMany(() => LoanManagementEntity, (loan) => loan.book)
+    loansManagement: LoanManagementEntity[]
+}
