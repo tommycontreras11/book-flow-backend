@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { Request, Response } from "express";
 import { getOneEmployeeService } from "../../services/employee/getOne.service";
+import { statusCode } from "../../utils/statusCode";
 
-export const getOneEmployeeController = async (req: Request, res: Response, _next: NextFunction) => {
+export const getOneEmployeeController = async (req: Request, res: Response) => {
   const { uuid } = req.params;
 
   getOneEmployeeService({ where: { uuid } })

@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import { statusCode } from "../../utils/statusCode";
 import { getOneUserService } from "./../../services/user/getOne.service";
 
-export const getOneUserController = async (req: Request, res: Response, _next: NextFunction) => {
+export const getOneUserController = async (req: Request, res: Response) => {
   const { uuid } = req.params;
 
   getOneUserService({ where: { uuid } })
