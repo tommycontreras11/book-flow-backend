@@ -6,6 +6,7 @@ import { PublisherEntity } from "./publisher.entity"
 import { AuthorEntity } from "./author.entity"
 import { RequestEntity } from "./request.entity"
 import { LoanManagementEntity } from "./loan-management.entity"
+import { ScienceEntity } from "./science.entity"
 
 @Entity({ name: 'books' })
 export class BookEntity extends BaseEntity {
@@ -28,10 +29,10 @@ export class BookEntity extends BaseEntity {
     publication_year: number
 
     @Column()
-    science: string
+    language_id: number
 
     @Column()
-    language_id: number
+    science_id: number
     
     @Column({ type: 'enum', enum: StatusEnum })
     state: StatusType
@@ -61,6 +62,10 @@ export class BookEntity extends BaseEntity {
     @ManyToOne(() => LanguageEntity, (language) => language.books)
     @JoinColumn({ name: 'language_id', referencedColumnName: 'id' })
     language: LanguageEntity
+
+    @ManyToOne(() => ScienceEntity, (science) => science.books)
+    @JoinColumn({ name: 'science_id', referencedColumnName: 'id' })
+    science: ScienceEntity
 
     @OneToMany(() => RequestEntity, (request) => request.book)
     requests: RequestEntity[]
