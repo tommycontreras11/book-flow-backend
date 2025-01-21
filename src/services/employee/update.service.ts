@@ -1,30 +1,30 @@
 import bcrypt from "bcrypt";
-import { UpdateEmployeeDTO } from "./../../dto/employee.dto";
-import { UserEntity } from "../../database/entities/entity/user.entity";
 import { statusCode } from "../../utils/statusCode";
 import { retrieveIfUserExists } from "../../utils/userUtil";
+import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
+import { UpdateEmployeeDTO } from "./../../dto/employee.dto";
 
 export async function updateEmployeeService(
   uuid: string,
   { username, password, identification, ...payload }: UpdateEmployeeDTO
 ) {
-  const user = await UserEntity.findOne({
+  const employee = await EmployeeEntity.findOne({
     where: { uuid },
   }).catch((e) => {
-    console.error("UserEntity.findOne: ", e);
+    console.error("EmployeeEntity.findOne: ", e);
     return null;
   });
 
-  if (!user)
+  if (!employee)
     return Promise.reject({
-      message: "User not found",
+      message: "EmployeeEntity not found",
       status: statusCode.NOT_FOUND,
     });
 
   const validateUserByUsername = await retrieveIfUserExists(
     username,
     null,
-    user.uuid
+    employee.uuid
   );
 
   if (validateUserByUsername.user && !validateUserByUsername.sameUser)
@@ -36,7 +36,7 @@ export async function updateEmployeeService(
   const validateUserByIdentification = await retrieveIfUserExists(
     null,
     identification,
-    user.uuid
+    employee.uuid
   );
 
   if (
@@ -50,13 +50,13 @@ export async function updateEmployeeService(
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  await UserEntity.update(
+  await EmployeeEntity.update(
     { uuid },
     { ...payload, username, password: hashedPassword, identification }
   ).catch((e) => {
-    console.error("UserEntity.update: ", e);
+    console.error("EmployeeEntity.update: ", e);
     return null;
   });
 
-  return "User updated successfully";
+  return "Employee updated successfully";
 }

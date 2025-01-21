@@ -10,18 +10,18 @@ export async function createEmployeeService({
   password,
   ...payload
 }: CreateEmployeeDTO) {
-  const foundUserByUsername = (await retrieveIfUserExists(username)).user;
+  const foundEmployeeByUsername = (await retrieveIfUserExists(username)).user;
 
-  if (foundUserByUsername)
+  if (foundEmployeeByUsername)
     return Promise.reject({
       message: "Employee with this username already exists",
       status: statusCode.BAD_REQUEST,
     });
 
-  const foundUserByIdentification = (await retrieveIfUserExists("", identification))
+  const foundEmployeeByIdentification = (await retrieveIfUserExists("", identification))
     .user;
 
-  if (foundUserByIdentification)
+  if (foundEmployeeByIdentification)
     return Promise.reject({
       message: "Employee with this identification already exists",
       status: statusCode.BAD_REQUEST,
