@@ -2,7 +2,7 @@ import { BookEntity } from "../../entities/entity/book.entity";
 import { DataSource } from "typeorm";
 import { Factory, Seeder } from "typeorm-seeding";
 import { BookData } from "../data/book.data";
-import { AuthorEntity } from "./../../../database/entities/entity/author.entity";
+import { AuthorEntity } from "../../entities/entity/author.entity";
 
 export class BookSeeder implements Seeder {
     async run(_factory: Factory, dataSource: DataSource): Promise<void> {
