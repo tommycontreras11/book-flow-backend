@@ -10,10 +10,10 @@ export async function createScienceService({
     return null;
   });
 
-  if (!science)
+  if (science)
     return Promise.reject({
-      message: "Science not found",
-      status: statusCode.NOT_FOUND,
+      message: "Science already exists",
+      status: statusCode.BAD_REQUEST,
     });
 
   await ScienceEntity.create({
