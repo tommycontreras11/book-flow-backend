@@ -1,0 +1,34 @@
+import { UpdatePublisherDTO } from "./../../dto/publisher.dto";
+import { statusCode } from "../../utils/statusCode";
+import { PublisherEntity } from "./../../database/entities/entity/publisher.entity";
+
+export async function updatePublisherService(
+  uuid: string,
+  { description }: UpdatePublisherDTO
+) {
+  const publisher = await PublisherEntity.findOne({
+    where: { uuid },
+  }).catch((e) => {
+    console.error("PublisherEntity.findOne: ", e);
+    return null;
+  });
+
+  if (!publisher)
+    return Promise.reject({
+      message: "Publisher not found",
+      status: statusCode.NOT_FOUND,
+    });
+
+  await PublisherEntity.update(
+    { uuid },
+    {
+      description,
+      state: "ACTIVE",
+    }
+  ).catch((e) => {
+    console.error("PublisherEntity.create: ", e);
+    return null;
+  });
+
+  return "Publisher updated successfully";
+}
