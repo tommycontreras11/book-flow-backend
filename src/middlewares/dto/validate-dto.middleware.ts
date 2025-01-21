@@ -1,116 +1,56 @@
-import { convertObjectValues } from './../../utils/object.util'
-import { ClassConstructor, plainToInstance } from 'class-transformer'
-import { validate } from 'class-validator'
-import { NextFunction, Request, Response } from 'express'
-import { ValidationDTOEnum, ValidationDTOType } from './validate-dto.interface'
+import { ClassConstructor, plainToInstance } from "class-transformer";
+import { convertObjectValues } from "./../../utils/object.util";
+import { ValidationDTOEnum, ValidationDTOType } from "./validate-dto.interface";
+import { RequestHandler } from "express";
+import { validate } from "class-validator";
 
 export const validateDTO = (
 	dtoClass: ClassConstructor<ObjectI>,
 	type: ValidationDTOType = 'body',
 	clearEmptyString = true,
 	convertObjectValue = false
-) => {
-	return function (req: Request, res: Response, next: NextFunction) {
-		const types: string[] = Object.values(ValidationDTOEnum)
-		if (!types.includes(type))
-			return res.status(500).json({
-				error: { message: 'Invalid type into validation DTO' }
-			})
-
-		if (convertObjectValue) {
-			req[type] = convertObjectValues(req[type])
+  ): RequestHandler => {
+	return async (req, res, next) => {
+	  const types: string[] = Object.values(ValidationDTOEnum);
+	  if (!types.includes(type)) {
+		res.status(500).json({
+		  error: { message: 'Invalid type into validation DTO' },
+		});
+		return; // Ensure we exit early
+	  }
+  
+	  if (convertObjectValue) {
+		req[type] = convertObjectValues(req[type]);
+	  }
+  
+	  const data: ObjectI = plainToInstance(dtoClass, req[type], {
+		strategy: 'exposeAll',
+	  });
+  
+	  try {
+		const errors = await validate(data, { whitelist: true });
+		if (errors.length > 0) {
+		  const error = errors[0];
+		  const errorMessage = Object.values(error.constraints || {})[0];
+		  res.status(400).json({ error: { message: errorMessage } });
+		  return; // Ensure we exit early
 		}
-
-		const data: ObjectI = plainToInstance(dtoClass, req[type], {
-			strategy: "exposeAll"
-		})
-
-		validate(data, { whitelist: true })
-			.then((errors) => {
-				const error = (errors || []).pop()
-				const errorMessage = Object.values(error?.constraints || {})[0]
-				if (errorMessage)
-					return res
-						.status(400)
-						.json({ error: { message: errorMessage } })
-
-				for (const key in data) {
-					if (
-						(clearEmptyString && data[key] === '') ||
-						data[key] === null ||
-						data[key] === undefined
-					)
-						delete data[key]
-				}
-
-				req[type] = data
-
-				return next()
-			})
-			.catch((error) => {
-				return res
-					.status(500)
-					.json({ error: { message: error.message } })
-			})
-	}
-}
-
-export const validateInternalDTO = async (
-	dtoClass: ClassConstructor<ObjectI>,
-	object: ObjectI,
-): Promise<{ isValidDTO: boolean; message?: string }> => {
-
-	const data: ObjectI = plainToInstance(dtoClass, object, {
-		strategy: "exposeAll"
-	})
-
-	if (Array.isArray(data)) {
-
-		const validationResult = [];
-
+  
 		for (const key in data) {
-			validationResult.push(await validate(data[key], { whitelist: true })
-				.then((errors) => {
-					const error = (errors || []).pop()
-					const errorMessage = Object.values(error?.constraints || {})[0]
-
-					if (errorMessage) {
-						return Promise.reject({status: 400, message: errorMessage })
-					}
-
-					return {
-						isValidDTO: true,
-						message: ""
-					}
-				})
-				.catch((error) => {
-					return Promise.reject(error)
-				})
-			)
+		  if (
+			(clearEmptyString && data[key] === '') ||
+			data[key] === null ||
+			data[key] === undefined
+		  ) {
+			delete data[key];
+		  }
 		}
-
-		return validationResult.find(x => x.isValidDTO === false) ?? { isValidDTO: true, message: "" };
-	}
-
-
-	const validation = await validate(data, { whitelist: true })
-		.then((errors) => {
-			const error = (errors || []).pop()
-			const errorMessage = Object.values(error?.constraints || {})[0]
-
-			if (errorMessage) {
-				return Promise.reject({status: 400, message: errorMessage })
-			}
-
-			return {
-				isValidDTO: true,
-				message: "OK"
-			}
-		})
-		.catch((error) => {
-			return Promise.reject(error)
-		})
-
-
-	return validation;
-}
+  
+		req[type] = data;
+		next(); // Pass control to the next middleware
+	  } catch (error) {
+		res.status(500).json({ error: { message: error } });
+	  }
+	};
+  };
+  
