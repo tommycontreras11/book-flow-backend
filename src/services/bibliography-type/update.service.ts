@@ -4,7 +4,7 @@ import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliog
 
 export async function updateBibliographyTypeService(
   uuid: string,
-  { description }: UpdateBibliographyTypeDTO
+  { description, ...payload }: UpdateBibliographyTypeDTO
 ) {
   const bibliographyType = await BibliographyTypeEntity.findOne({
     where: { uuid },
@@ -23,7 +23,7 @@ export async function updateBibliographyTypeService(
     { uuid },
     {
       description,
-      state: "ACTIVE",
+      ...payload
     }
   ).catch((e) => {
     console.error("BibliographyTypeEntity.create: ", e);

@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { StatusEnum } from './../database/entities/base/base.entity';
 
 export class CreatePublisherDTO {
     @IsNotEmpty()
@@ -12,4 +13,8 @@ export class UpdatePublisherDTO {
     @IsString()
     @MaxLength(100)
     description: string;
+
+    @IsOptional()
+    @IsEnum(StatusEnum)
+    state: keyof typeof StatusEnum;
 }

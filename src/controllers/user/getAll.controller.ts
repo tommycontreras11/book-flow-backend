@@ -6,6 +6,7 @@ export const getAllUserController = async (_req: Request, res: Response) => {
   getAllUserService({})
     .then((data) => {
       const users = data.map((user) => ({
+        uuid: user.uuid,
         name: user.name,
         username: user.username,
         identification: user.identification,
