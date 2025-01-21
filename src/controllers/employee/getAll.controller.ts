@@ -6,6 +6,7 @@ export const getAllEmployeeController = async (_req: Request, res: Response) => 
   getAllEmployeeService({})
     .then((data) => {
       const users = data.map((employee) => ({
+        uuid: employee.uuid,
         name: employee.name,
         username: employee.username,
         identification: employee.identification,

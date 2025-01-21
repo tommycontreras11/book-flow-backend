@@ -6,6 +6,7 @@ export const getAllCountryController = async (_req: Request, res: Response) => {
   getAllCountryService({})
     .then((data) => {
       const users = data.map((country) => ({
+        uuid: country.uuid,
         name: country.name
       }));
 

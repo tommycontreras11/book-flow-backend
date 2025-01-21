@@ -6,6 +6,7 @@ export const getAllLanguageController = async (_req: Request, res: Response) => 
   getAllLanguageService({})
     .then((data) => {
       const users = data.map((language) => ({
+        uuid: language.uuid,
         description: language.description
       }));
 
