@@ -3,7 +3,7 @@ import {
 	IQueryPagination
 } from '@interfaces/common/express.interface'
 import { FindOptionsWhere } from 'typeorm'
-import { UserEntity } from '@database/entities/entity/user.entity'
+import { UserEntity } from './../database/entities/entity/user.entity'
 
 declare global {
 	namespace Express {

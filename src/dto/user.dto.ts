@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsEnum, Length, IsOptional } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
 import { StatusEnum } from './../database/entities/base/base.entity';
 import { PersonTypeEnum } from './../database/entities/entity/user.entity';
 
@@ -9,7 +9,7 @@ export class CreateUserDTO {
 
     @IsNotEmpty()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     username: string;
 
     @IsNotEmpty()
@@ -18,12 +18,12 @@ export class CreateUserDTO {
 
     @IsNotEmpty()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     identification: string;
 
     @IsNotEmpty()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     carnet_number: string;
 
     @IsNotEmpty()
@@ -38,7 +38,7 @@ export class UpdateUserDTO {
 
     @IsOptional()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     username: string;
 
     @IsOptional()
@@ -47,12 +47,12 @@ export class UpdateUserDTO {
 
     @IsOptional()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     identification: string;
 
     @IsOptional()
     @IsString()
-    @Length(100)
+    @MaxLength(100)
     carnet_number: string;
 
     @IsOptional()

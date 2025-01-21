@@ -1,10 +1,21 @@
 import { Request, Response } from "express";
-import { getAllUserService } from "services/user/getAll.service";
+import { getAllUserService } from "./../../services/user/getAll.service";
 import { statusCode } from "../../utils/statusCode";
 
 export const getAllUserController = async (_req: Request, res: Response) => {
   getAllUserService({})
-    .then((data) => res.status(statusCode.OK).json({ data }))
+    .then((data) => {
+      const users = data.map((user) => ({
+        name: user.name,
+        username: user.username,
+        identification: user.identification,
+        carnet_number: user.carnet_number,
+        person_type: user.person_type,
+        state: user.state
+      }));
+
+      return res.status(statusCode.OK).json({ data: users })
+    })
     .catch((e) =>
       res
         .status(e.status ?? statusCode.INTERNAL_SERVER_ERROR)

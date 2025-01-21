@@ -6,14 +6,24 @@ import bcrypt from "bcrypt";
 
 export async function createUserService({
   username,
+  identification,
   password,
   ...payload
 }: CreateUserDTO) {
-  const foundUser = (await retrieveIfUserExists(username)).user;
+  const foundUserByUsername = (await retrieveIfUserExists(username)).user;
 
-  if (foundUser)
+  if (foundUserByUsername)
     return Promise.reject({
       message: "User with this username already exists",
+      status: statusCode.BAD_REQUEST,
+    });
+
+  const foundUserByIdentification = (await retrieveIfUserExists("", identification))
+    .user;
+
+  if (foundUserByIdentification)
+    return Promise.reject({
+      message: "User with this identification already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -21,6 +31,7 @@ export async function createUserService({
 
   await UserEntity.create({
     username,
+    identification,
     state: "ACTIVE",
     password: hashedPassword,
     ...payload,

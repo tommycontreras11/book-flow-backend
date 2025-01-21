@@ -2,10 +2,14 @@ import { UserEntity } from "../../database/entities/entity/user.entity";
 import { UpdateUserDTO } from "../../dto/user.dto";
 import { statusCode } from "../../utils/statusCode";
 import { retrieveIfUserExists } from "../../utils/userUtil";
+import bcrypt from "bcrypt";
 
-export async function updateUserService(uuid: string, { username, ...payload }: UpdateUserDTO) {
+export async function updateUserService(
+  uuid: string,
+  { username, password, identification, ...payload }: UpdateUserDTO
+) {
   const user = await UserEntity.findOne({
-    where: { uuid }
+    where: { uuid },
   }).catch((e) => {
     console.error("UserEntity.findOne: ", e);
     return null;
@@ -17,16 +21,39 @@ export async function updateUserService(uuid: string, { username, ...payload }: 
       status: statusCode.NOT_FOUND,
     });
 
-  const validateUser = await retrieveIfUserExists(username);
+  const validateUserByUsername = await retrieveIfUserExists(
+    username,
+    null,
+    user.uuid
+  );
 
-  if (validateUser.user && !validateUser.sameUser)
+  if (validateUserByUsername.user && !validateUserByUsername.sameUser)
     return Promise.reject({
       message: "User with this username already exists",
       status: statusCode.BAD_REQUEST,
     });
 
+  const validateUserByIdentification = await retrieveIfUserExists(
+    null,
+    identification,
+    user.uuid
+  );
 
-  await UserEntity.update({ uuid }, { ...payload, username }).catch((e) => {
+  if (
+    validateUserByIdentification.user &&
+    !validateUserByIdentification.sameUser
+  )
+    return Promise.reject({
+      message: "User with this identification already exists",
+      status: statusCode.BAD_REQUEST,
+    });
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  await UserEntity.update(
+    { uuid },
+    { ...payload, username, password: hashedPassword, identification }
+  ).catch((e) => {
     console.error("UserEntity.update: ", e);
     return null;
   });

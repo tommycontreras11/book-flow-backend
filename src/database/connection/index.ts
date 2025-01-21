@@ -1,3 +1,5 @@
+import 'reflect-metadata'
+
 import { DataSource } from 'typeorm'
 import ormConfig from '../../config/ormconfig'
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions'
