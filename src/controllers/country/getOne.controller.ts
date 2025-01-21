@@ -1,0 +1,21 @@
+import { Request, Response } from "express";
+import { getOneCountryService } from "../../services/country/getOne.service";
+import { statusCode } from "../../utils/statusCode";
+
+export const getOneCountryController = async (req: Request, res: Response) => {
+  const { uuid } = req.params;
+
+  getOneCountryService({ where: { uuid } })
+    .then((data) => {
+      const country = {
+        name: data.name
+      };
+
+      return res.status(statusCode.OK).json({ data: country });
+    })
+    .catch((e) =>
+      res
+        .status(e.status ?? statusCode.INTERNAL_SERVER_ERROR)
+        .json({ error: { message: e.message } })
+    );
+};
