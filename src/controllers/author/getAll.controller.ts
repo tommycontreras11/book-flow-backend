@@ -1,0 +1,25 @@
+import { Request, Response } from "express";
+import { getAllAuthorService } from "../../services/author/getAll.service";
+import { statusCode } from "../../utils/statusCode";
+
+export const getAllAuthorController = async (_req: Request, res: Response) => {
+  getAllAuthorService({
+    relations: { birthCountry: true, nativeLanguage: true },
+  })
+    .then((data) => {
+      const authors = data.map((author) => ({
+        uuid: author.uuid,
+        name: author.name,
+        birthCountry: author.birthCountry.name,
+        nativeLanguage: author.nativeLanguage.description,
+        state: author.state,
+      }));
+
+      return res.status(statusCode.OK).json({ data: authors });
+    })
+    .catch((e) =>
+      res
+        .status(e.status ?? statusCode.INTERNAL_SERVER_ERROR)
+        .json({ error: { message: e.message } })
+    );
+};
