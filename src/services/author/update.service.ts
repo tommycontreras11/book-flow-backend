@@ -20,39 +20,45 @@ export async function updateAuthorService(
       message: "Author not found",
       status: statusCode.NOT_FOUND,
     });
+    let country: CountryEntity | null = null;
+    let language: LanguageEntity | null = null;
 
-    const country = await CountryEntity.findOne({
-      where: { uuid: birthCountryUUID },
-    }).catch((e) => {
-      console.error("CountryEntity.findOne: ", e);
-      return null;
-    });
-  
-    if (!country)
-      return Promise.reject({
-        message: "Country not found",
-        status: statusCode.NOT_FOUND,
+    if(birthCountryUUID) {
+      country = await CountryEntity.findOne({
+        where: { uuid: birthCountryUUID },
+      }).catch((e) => {
+        console.error("CountryEntity.findOne: ", e);
+        return null;
       });
+    
+      if (!country)
+        return Promise.reject({
+          message: "Country not found",
+          status: statusCode.NOT_FOUND,
+        });
+    }
 
-      const language = await LanguageEntity.findOne({
-      where: { uuid: nativeLanguageUUID },
-    }).catch((e) => {
-      console.error("LanguageEntity.findOne: ", e);
-      return null;
-    });
-  
-    if (!language)
-      return Promise.reject({
-        message: "Language not found",
-        status: statusCode.NOT_FOUND,
+    if(nativeLanguageUUID) {
+      language = await LanguageEntity.findOne({
+        where: { uuid: nativeLanguageUUID },
+      }).catch((e) => {
+        console.error("LanguageEntity.findOne: ", e);
+        return null;
       });
+    
+      if (!language)
+        return Promise.reject({
+          message: "Language not found",
+          status: statusCode.NOT_FOUND,
+        });
+    }
 
   await AuthorEntity.update(
     { uuid },
     {
       name,
-      birth_country_id: country.id,
-      native_language_id: language.id,
+      ...(country && { birth_country_id: country.id }),
+      ...(language && { native_language_id: language.id }),
       ...payload,
       state: "ACTIVE",
     }

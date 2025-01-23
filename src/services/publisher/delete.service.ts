@@ -9,8 +9,8 @@ export async function deletePublisherService(uuid: string) {
 
   if (!foundPublisher)
     return Promise.reject({
-      message: "Publisher already exists",
-      status: statusCode.BAD_REQUEST,
+      message: "Publisher not found",
+      status: statusCode.NOT_FOUND,
     });
 
   await foundPublisher.softRemove().catch((e) => {

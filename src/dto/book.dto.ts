@@ -1,0 +1,92 @@
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MaxLength,
+} from "class-validator";
+import { StatusEnum } from "../database/entities/base/base.entity";
+
+export class CreateBookDTO {
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(250)
+  description: string;
+
+  @IsNotEmpty()
+  @IsString()
+  topographical_signature: string;
+
+  @IsNotEmpty()
+  @IsString()
+  isbn: string;
+
+  @IsNotEmpty()
+  @IsNumber()
+  publication_year: number;
+
+  @IsUUID("4")
+  @IsString()
+  @IsNotEmpty()
+  bibliographyTypeUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsNotEmpty()
+  publisherUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsNotEmpty()
+  languageUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsNotEmpty()
+  scienceUUID: string;
+}
+
+export class UpdateBookDTO {
+  @IsOptional()
+  @IsString()
+  @MaxLength(250)
+  description: string;
+
+  @IsOptional()
+  @IsString()
+  topographical_signature: string;
+
+  @IsOptional()
+  @IsString()
+  isbn: string;
+
+  @IsOptional()
+  @IsNumber()
+  publication_year: number;
+
+  @IsUUID("4")
+  @IsString()
+  @IsOptional()
+  bibliographyTypeUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsOptional()
+  publisherUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsOptional()
+  languageUUID: string;
+
+  @IsUUID("4")
+  @IsString()
+  @IsOptional()
+  scienceUUID: string;
+
+  @IsOptional()
+  @IsEnum(StatusEnum)
+  state: keyof typeof StatusEnum;
+}

@@ -26,7 +26,7 @@ export async function updatePublisherService(
       ...payload
     }
   ).catch((e) => {
-    console.error("PublisherEntity.create: ", e);
+    console.error("PublisherEntity.update: ", e);
     return null;
   });
 
