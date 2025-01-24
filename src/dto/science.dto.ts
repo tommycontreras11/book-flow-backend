@@ -22,5 +22,5 @@ export class UpdateScienceDTO {
 
   @IsOptional()
   @IsEnum(StatusEnum)
-  state: keyof typeof StatusEnum;
+  status: keyof typeof StatusEnum;
 }

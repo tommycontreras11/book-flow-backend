@@ -130,7 +130,7 @@ export async function updateBookService(
 
   Object.assign(foundBook, payload);
 
-  foundBook.state = "ACTIVE";
+  foundBook.status = "ACTIVE";
 
   const bookUpdated = await foundBook.save().catch((e) => {
     console.error("BookEntity.updated: ", e);

@@ -32,7 +32,7 @@ export async function createUserService({
   await UserEntity.create({
     username,
     identification,
-    state: "ACTIVE",
+    status: "ACTIVE",
     password: hashedPassword,
     ...payload,
   })

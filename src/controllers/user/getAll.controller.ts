@@ -12,7 +12,7 @@ export const getAllUserController = async (_req: Request, res: Response) => {
         identification: user.identification,
         carnet_number: user.carnet_number,
         person_type: user.person_type,
-        state: user.state
+        status: user.status
       }));
 
       return res.status(statusCode.OK).json({ data: users })

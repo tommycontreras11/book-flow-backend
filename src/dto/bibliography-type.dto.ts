@@ -16,5 +16,5 @@ export class UpdateBibliographyTypeDTO {
 
     @IsOptional()
     @IsEnum(StatusEnum)
-    state: keyof typeof StatusEnum;
+    status: keyof typeof StatusEnum;
 }

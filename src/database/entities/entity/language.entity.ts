@@ -9,7 +9,7 @@ export class LanguageEntity extends BaseEntity {
     description: string
 
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
 
     @OneToMany(() => AuthorEntity, (author) => author.nativeLanguage)
     authors: AuthorEntity[]

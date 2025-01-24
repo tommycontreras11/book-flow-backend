@@ -18,7 +18,7 @@ export async function createScienceService({
 
   await ScienceEntity.create({
     description,
-    state: "ACTIVE"
+    status: "ACTIVE"
   })
     .save()
     .catch((e) => {

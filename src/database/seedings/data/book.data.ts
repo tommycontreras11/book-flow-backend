@@ -11,7 +11,7 @@ const books = [
         publication_year: 2020,
         science_id: 1,
         language_id: 1,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Introduction to Physics",
@@ -22,7 +22,7 @@ const books = [
         publication_year: 2018,
         science_id: 2,
         language_id: 2,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Modern Chemistry",
@@ -33,7 +33,7 @@ const books = [
         publication_year: 2019,
         science_id: 3,
         language_id: 3,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "World History Overview",
@@ -44,7 +44,7 @@ const books = [
         publication_year: 2021,
         science_id: 4,
         language_id: 4,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Theoretical Computer Science",
@@ -55,7 +55,7 @@ const books = [
         publication_year: 2017,
         science_id: 5,
         language_id: 5,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Basic Economics",
@@ -66,7 +66,7 @@ const books = [
         publication_year: 2022,
         science_id: 6,
         language_id: 6,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Human Anatomy",
@@ -77,7 +77,7 @@ const books = [
         publication_year: 2016,
         science_id: 7,
         language_id: 7,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Astronomy Fundamentals",
@@ -88,7 +88,7 @@ const books = [
         publication_year: 2015,
         science_id: 8,
         language_id: 8,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Introduction to Psychology",
@@ -99,7 +99,7 @@ const books = [
         publication_year: 2023,
         science_id: 9,
         language_id: 9,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     },
     {
         description: "Environmental Science Basics",
@@ -110,7 +110,7 @@ const books = [
         publication_year: 2021,
         science_id: 10,
         language_id: 10,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     }
 ];
 
@@ -123,5 +123,5 @@ export const BookData: Partial<BookEntity>[] = books.map((book) => ({
     publication_year: book.publication_year,
     science_id: book.science_id,
     language_id: book.language_id,
-    state: book.state
+    status: book.status
 }));

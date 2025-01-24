@@ -97,7 +97,7 @@ export async function createBookService({
     language_id: language.id,
     science_id: science.id,
     description,
-    state: "ACTIVE",
+    status: "ACTIVE",
   })
     .save()
     .catch((e) => {

@@ -13,7 +13,7 @@ export const getAllEmployeeController = async (_req: Request, res: Response) => 
         work_shift: employee.work_shift,
         commission_percentage: employee.commission_percentage,
         entry_date: employee.entry_date,
-        state: employee.state
+        status: employee.status
       }));
 
       return res.status(statusCode.OK).json({ data: users })

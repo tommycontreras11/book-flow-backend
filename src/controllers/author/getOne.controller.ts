@@ -15,7 +15,7 @@ export const getOneAuthorController = async (req: Request, res: Response) => {
         name: data.name,
         birthCountry: data.birthCountry.name,
         nativeLanguage: data.nativeLanguage.description,
-        state: data.state,
+        status: data.status,
       };
 
       return res.status(statusCode.OK).json({ data: author });

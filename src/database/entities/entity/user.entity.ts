@@ -31,7 +31,7 @@ export class UserEntity extends BaseEntity {
     person_type: PersonType
  
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
     
     @OneToMany(() => RequestEntity, (request) => request.user)
     requests: RequestEntity[]

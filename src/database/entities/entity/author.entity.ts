@@ -16,7 +16,7 @@ export class AuthorEntity extends BaseEntity {
     native_language_id: number
     
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
 
     @ManyToOne(() => CountryEntity, (country) => country.authors)
     @JoinColumn({ name: 'birth_country_id', referencedColumnName: 'id' })

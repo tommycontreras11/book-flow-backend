@@ -8,7 +8,7 @@ export class PublisherEntity extends BaseEntity {
     description: string
 
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
 
     @OneToMany(() => BookEntity, (book) => book.publisher)
     books: BookEntity[]

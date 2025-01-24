@@ -13,7 +13,7 @@ export const getOneUserController = async (req: Request, res: Response) => {
         identification: data.identification,
         carnet_number: data.carnet_number,
         person_type: data.person_type,
-        state: data.state,
+        status: data.status,
       };
 
       return res.status(statusCode.OK).json({ data: user });

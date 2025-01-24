@@ -20,7 +20,7 @@ export async function createBibliographyTypeService({
 
   await BibliographyTypeEntity.create({
     description,
-    state: "ACTIVE",
+    status: "ACTIVE",
   })
     .save()
     .catch((e) => {

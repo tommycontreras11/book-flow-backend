@@ -1,13 +1,14 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm"
-import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
+import { BaseEntity } from "../base/base.entity"
 import { BookEntity } from "./book.entity"
-import { UserEntity } from "./user.entity"
 import { EmployeeEntity } from "./employee.entity"
 import { LoanManagementEntity } from "./loan-management.entity"
+import { UserEntity } from "./user.entity"
 
 export enum StatusRequestEnum {
     APPROVAL = 'APPROVAL',
-    DENIED = 'DENIED'
+    DENIED = 'DENIED',
+    PENDING = 'PENDING'
   }
   
 export type StatusRequestType = keyof typeof StatusRequestEnum
@@ -17,8 +18,8 @@ export class RequestEntity extends BaseEntity {
     @Column({ length: 100 })
     description: string
 
-    @Column({ type: 'enum', enum: StatusRequestEnum, nullable: true })
-    state: StatusRequestType
+    @Column({ type: 'enum', enum: StatusRequestEnum })
+    status: StatusRequestType
 
     @Column()
     user_id: number

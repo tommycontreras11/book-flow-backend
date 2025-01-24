@@ -35,7 +35,7 @@ export class BookEntity extends BaseEntity {
     science_id: number
     
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
 
     @ManyToMany(() => AuthorEntity, (author) => author.books)
     @JoinTable({

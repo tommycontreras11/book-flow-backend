@@ -20,7 +20,7 @@ export async function createPublisherService({
 
   await PublisherEntity.create({
     description,
-    state: "ACTIVE",
+    status: "ACTIVE",
   })
     .save()
     .catch((e) => {

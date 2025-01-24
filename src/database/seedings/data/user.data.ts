@@ -10,7 +10,7 @@ const users = [
         identification: "402-1563214-8",
         carnet_number: "CAR123456",
         person_type: PersonTypeEnum.NATURAL,
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     }
 ];
 
@@ -21,5 +21,5 @@ export const UserData: Partial<UserEntity>[] = users.map((user) => ({
     identification: user.identification,
     carnet_number: user.carnet_number,
     person_type: user.person_type,
-    state: user.state
+    status: user.status
 }));

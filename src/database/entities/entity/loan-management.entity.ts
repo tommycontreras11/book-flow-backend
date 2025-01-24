@@ -61,5 +61,5 @@ export class LoanManagementEntity extends BaseEntity {
     user: UserEntity
  
     @Column({ type: 'enum', enum: LoanManagementEnum })
-    state: LoanManagementType
+    status: LoanManagementType
 }

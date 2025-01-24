@@ -27,7 +27,7 @@ export class EmployeeEntity extends BaseEntity {
     entry_date: string
     
     @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    status: StatusType
 
     @ManyToMany(() => RequestEntity, (request) => request.employees)
     requests: RequestEntity[]

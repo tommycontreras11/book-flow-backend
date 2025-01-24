@@ -17,7 +17,7 @@ export const getAllBookController = async (_req: Request, res: Response) => {
         publication_year: book.publication_year,
         language: book.language.description,
         science: book.science.description,
-        state: book.state,
+        status: book.status,
       }));
 
       return res.status(statusCode.OK).json({ data: books });

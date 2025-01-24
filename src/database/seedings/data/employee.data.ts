@@ -11,7 +11,7 @@ const employees = [
         work_shift: "Morning",
         commission_percentage: 10.5,
         entry_date: "2023-01-15",
-        state: StatusEnum.ACTIVE
+        status: StatusEnum.ACTIVE
     }
 ];
 
@@ -23,5 +23,5 @@ export const EmployeeData: Partial<EmployeeEntity>[] = employees.map((employee) 
     work_shift: employee.work_shift,
     commission_percentage: employee.commission_percentage,
     entry_date: employee.entry_date,
-    state: employee.state
+    status: employee.status
 }));

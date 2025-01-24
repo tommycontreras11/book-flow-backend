@@ -32,7 +32,7 @@ export const getOneBookController = async (req: Request, res: Response) => {
           uuid: data.science.uuid,
           description: data.science.description,
         },
-        state: data.state,
+        status: data.status,
       };
 
       return res.status(statusCode.OK).json({ data: book });

@@ -99,5 +99,5 @@ export class UpdateBookDTO {
 
   @IsOptional()
   @IsEnum(StatusEnum)
-  state: keyof typeof StatusEnum;
+  status: keyof typeof StatusEnum;
 }

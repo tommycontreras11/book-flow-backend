@@ -58,7 +58,7 @@ export async function updateAuthorService(
       ...(country && { birth_country_id: country.id }),
       ...(language && { native_language_id: language.id }),
       ...payload,
-      state: "ACTIVE",
+      status: "ACTIVE",
     }
   ).catch((e) => {
     console.error("AuthorEntity.update: ", e);

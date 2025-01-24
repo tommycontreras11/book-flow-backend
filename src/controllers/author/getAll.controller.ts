@@ -12,7 +12,7 @@ export const getAllAuthorController = async (_req: Request, res: Response) => {
         name: author.name,
         birthCountry: author.birthCountry.name,
         nativeLanguage: author.nativeLanguage.description,
-        state: author.state,
+        status: author.status,
       }));
 
       return res.status(statusCode.OK).json({ data: authors });

@@ -32,7 +32,7 @@ export async function createEmployeeService({
   await EmployeeEntity.create({
     username,
     identification,
-    state: "ACTIVE",
+    status: "ACTIVE",
     password: hashedPassword,
     ...payload,
   })

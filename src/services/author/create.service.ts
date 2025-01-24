@@ -52,7 +52,7 @@ export async function createAuthorService({
     birth_country_id: country.id,
     native_language_id: language.id,
     ...payload,
-    state: "ACTIVE",
+    status: "ACTIVE",
   })
     .save()
     .catch((e) => {

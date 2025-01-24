@@ -61,5 +61,5 @@ export class UpdateUserDTO {
 
     @IsOptional()
     @IsEnum(StatusEnum)
-    state: keyof typeof StatusEnum;
+    status: keyof typeof StatusEnum;
 }

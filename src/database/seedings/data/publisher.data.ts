@@ -2,19 +2,19 @@ import { StatusEnum } from "./../../../database/entities/base/base.entity";
 import { PublisherEntity } from "./../../../database/entities/entity/publisher.entity";
 
 const bookPublishers = [
-    { description: "Penguin Random House", state: "ACTIVE" },
-    { description: "HarperCollins", state: "ACTIVE" },
-    { description: "Macmillan Publishers", state: "ACTIVE" },
-    { description: "Simon & Schuster", state: "ACTIVE" },
-    { description: "Hachette Livre", state: "ACTIVE" },
-    { description: "Scholastic", state: "ACTIVE" },
-    { description: "Pearson", state: "ACTIVE" },
-    { description: "Cengage Learning", state: "ACTIVE" },
-    { description: "Springer Nature", state: "ACTIVE" },
-    { description: "Oxford University Press", state: "ACTIVE" }
+    { description: "Penguin Random House", status: "ACTIVE" },
+    { description: "HarperCollins", status: "ACTIVE" },
+    { description: "Macmillan Publishers", status: "ACTIVE" },
+    { description: "Simon & Schuster", status: "ACTIVE" },
+    { description: "Hachette Livre", status: "ACTIVE" },
+    { description: "Scholastic", status: "ACTIVE" },
+    { description: "Pearson", status: "ACTIVE" },
+    { description: "Cengage Learning", status: "ACTIVE" },
+    { description: "Springer Nature", status: "ACTIVE" },
+    { description: "Oxford University Press", status: "ACTIVE" }
 ];
 
 export const PublisherData: Partial<PublisherEntity>[] = bookPublishers.map((publisher) => ({
     description: publisher.description,
-    state: publisher.state as StatusEnum
+    status: publisher.status as StatusEnum
 }));
