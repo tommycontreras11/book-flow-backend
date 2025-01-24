@@ -32,7 +32,7 @@ export async function createBookService({
     },
   });
 
-  if (!foundAuthors || foundAuthors.length == 0)
+  if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
     return Promise.reject({
       message: "Bibliography Type not found",
       status: statusCode.NOT_FOUND,

@@ -47,7 +47,7 @@ export async function updateBookService(
         },
       });
     
-      if (foundAuthors.length == 0 || !foundAuthors || foundAuthors.length != authorUUIDs.length)
+      if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
         return Promise.reject({
           message: "Bibliography Type not found",
           status: statusCode.NOT_FOUND,
