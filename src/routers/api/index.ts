@@ -7,6 +7,7 @@ import bibliographyTypeRouters from "./bibliography-type";
 import publisherRouters from "./publisher";
 import authorRouters from "./author";
 import scienceRouters from "./science";
+import bookRouters from "./book";
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use("/bibliography-types", bibliographyTypeRouters);
 router.use("/publishers", publisherRouters);
 router.use("/authors", authorRouters);
 router.use("/sciences", scienceRouters);
+router.use("/books", bookRouters);
 
 export default router
