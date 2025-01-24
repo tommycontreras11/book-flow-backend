@@ -1,18 +1,18 @@
-import { AuthorEntity } from "../../database/entities/entity/author.entity";
+import { LoanManagementEntity } from "../../database/entities/entity/loan-management.entity";
 import { FindManyOptions } from "typeorm";
 import { statusCode } from "../../utils/status.util";
 
-export async function getAllAuthorService(options: FindManyOptions<AuthorEntity>) {
-  const authors = await AuthorEntity.find(options).catch((e) => {
-    console.error("AuthorEntity.find: ", e);
+export async function getAllLoanManagementService(options: FindManyOptions<LoanManagementEntity>) {
+  const loansManagement = await LoanManagementEntity.find(options).catch((e) => {
+    console.error("LoanManagementEntity.find: ", e);
     return null;
   });
 
-  if (!authors)
+  if (!loansManagement)
     return Promise.reject({
-      message: "Authors not found",
+      message: "Loans management not found",
       status: statusCode.NOT_FOUND,
     });
 
-  return authors;
+  return loansManagement;
 }
