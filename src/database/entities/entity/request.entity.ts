@@ -47,5 +47,5 @@ export class RequestEntity extends BaseEntity {
     employees: EmployeeEntity[]
 
     @OneToMany(() => LoanManagementEntity, (loanManagement) => loanManagement.request)
-    loansManagement: LoanManagementEntity[]
+    loanManagements: LoanManagementEntity[]
 }

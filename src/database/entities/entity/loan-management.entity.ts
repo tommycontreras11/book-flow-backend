@@ -9,7 +9,7 @@ export enum LoanManagementEnum {
 
 export type LoanManagementType = keyof typeof LoanManagementEnum
 
-@Entity({ name: 'loans-management' })
+@Entity({ name: 'loan-managements' })
 export class LoanManagementEntity extends BaseEntity {
     @Column({ length: 100 })
     loan_number: string
@@ -32,7 +32,7 @@ export class LoanManagementEntity extends BaseEntity {
     @Column()
     request_id: number
 
-    @ManyToOne(() => RequestEntity, (request) => request.loansManagement)
+    @ManyToOne(() => RequestEntity, (request) => request.loanManagements)
     @JoinColumn({ name: 'request_id', referencedColumnName: 'id' })
     request: RequestEntity
  
