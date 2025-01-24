@@ -1,23 +1,24 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne } from "typeorm"
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm"
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
 import { BookEntity } from "./book.entity"
 import { UserEntity } from "./user.entity"
 import { EmployeeEntity } from "./employee.entity"
+import { LoanManagementEntity } from "./loan-management.entity"
 
 export enum StatusRequestEnum {
     APPROVAL = 'APPROVAL',
     DENIED = 'DENIED'
   }
   
-export type StatusRequestType = keyof typeof StatusEnum
+export type StatusRequestType = keyof typeof StatusRequestEnum
 
 @Entity({ name: 'requests' })
 export class RequestEntity extends BaseEntity {
     @Column({ length: 100 })
     description: string
 
-    @Column({ type: 'enum', enum: StatusEnum })
-    state: StatusType
+    @Column({ type: 'enum', enum: StatusRequestEnum, nullable: true })
+    state: StatusRequestType
 
     @Column()
     user_id: number
@@ -46,4 +47,7 @@ export class RequestEntity extends BaseEntity {
       }
     })
     employees: EmployeeEntity[]
+
+    @OneToMany(() => LoanManagementEntity, (loanManagement) => loanManagement.request)
+    loansManagement: LoanManagementEntity[]
 }
