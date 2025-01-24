@@ -5,13 +5,15 @@ import { statusCode } from "../../utils/status.util";
 import { LoanManagementEntity } from "./../../database/entities/entity/loan-management.entity";
 import { getDaysBetweenDates } from "./../../utils/date.util";
 
-export async function createLoanManagementService(requestUUID: string, {
-  date_loan,
-  date_return,
-  comment
-}: CreateLoanManagementDTO) {
-  const foundRequest = await RequestEntity.findOneBy({ uuid: requestUUID }).catch((e) => {
-    console.error("RequestEntity.findOneBy: ", e);
+export async function createLoanManagementService(
+  requestUUID: string,
+  { date_loan, date_return, comment }: CreateLoanManagementDTO
+) {
+  const foundRequest = await RequestEntity.findOne({
+    where: { uuid: requestUUID },
+    relations: { employees: true },
+  }).catch((e) => {
+    console.error("RequestEntity.findOne: ", e);
     return null;
   });
 
@@ -21,8 +23,14 @@ export async function createLoanManagementService(requestUUID: string, {
       status: statusCode.NOT_FOUND,
     });
 
+  if (foundRequest.status !== "APPROVAL" && foundRequest.employees.length === 0)
+    return Promise.reject({
+      message: "Request not approved",
+      status: statusCode.BAD_REQUEST,
+    });
+
   await LoanManagementEntity.create({
-    loan_number: await generateLoanNumber(),
+    loan_number: generateLoanNumber(),
     date_loan,
     date_return,
     comment,
@@ -37,5 +45,5 @@ export async function createLoanManagementService(requestUUID: string, {
       return null;
     });
 
-  return "Request created successfully";
+  return "Loan management created successfully";
 }

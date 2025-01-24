@@ -1,69 +1,41 @@
-import { UpdateAuthorDTO } from "../../dto/author.dto";
+import { UpdateLoanManagementDTO } from "../../dto/loan-management.dto";
 import { statusCode } from "../../utils/status.util";
-import { AuthorEntity } from "../../database/entities/entity/author.entity";
-import { CountryEntity } from "../../database/entities/entity/country.entity";
-import { LanguageEntity } from "../../database/entities/entity/language.entity";
+import { LoanManagementEntity } from "./../../database/entities/entity/loan-management.entity";
+import { getDaysBetweenDates } from "./../../utils/date.util";
 
-export async function updateAuthorService(
+export async function updateLoanManagementService(
   uuid: string,
-  { name, birthCountryUUID, nativeLanguageUUID, ...payload }: UpdateAuthorDTO
+  { date_loan, date_return, status, comment }: UpdateLoanManagementDTO
 ) {
-  const author = await AuthorEntity.findBy({ uuid }).catch((e) => {
-    console.error("AuthorEntity.findBy: ", e);
+  const foundLoanManagement = await LoanManagementEntity.findOneBy({
+    uuid,
+  }).catch((e) => {
+    console.error("LoanManagementEntity.findOneBy: ", e);
     return null;
   });
 
-  if (!author)
+  if (!foundLoanManagement)
     return Promise.reject({
-      message: "Author not found",
+      message: "LoanManagement not found",
       status: statusCode.NOT_FOUND,
     });
-  let country: CountryEntity | null = null;
-  let language: LanguageEntity | null = null;
 
-  if (birthCountryUUID) {
-    country = await CountryEntity.findOneBy({ uuid: birthCountryUUID }).catch(
-      (e) => {
-        console.error("CountryEntity.findOneBy: ", e);
-        return null;
-      }
-    );
-
-    if (!country)
-      return Promise.reject({
-        message: "Country not found",
-        status: statusCode.NOT_FOUND,
-      });
-  }
-
-  if (nativeLanguageUUID) {
-    language = await LanguageEntity.findOneBy({
-      uuid: nativeLanguageUUID,
-    }).catch((e) => {
-      console.error("LanguageEntity.findOneBy: ", e);
-      return null;
-    });
-
-    if (!language)
-      return Promise.reject({
-        message: "Language not found",
-        status: statusCode.NOT_FOUND,
-      });
-  }
-
-  await AuthorEntity.update(
-    { uuid },
+  await LoanManagementEntity.update(
+    { id: foundLoanManagement.id },
     {
-      name,
-      ...(country && { birth_country_id: country.id }),
-      ...(language && { native_language_id: language.id }),
-      ...payload,
-      status: "ACTIVE",
+      ...(date_loan && { date_loan }),
+      ...(date_return && { date_return }),
+      ...(comment && { comment }),
+      ...(status && { status }),
+      ...(date_loan &&
+        date_return && {
+          quantity_day: getDaysBetweenDates(date_loan, date_return),
+        }),
     }
   ).catch((e) => {
-    console.error("AuthorEntity.update: ", e);
+    console.error("LoanManagementEntity.update: ", e);
     return null;
   });
 
-  return "Author updated successfully";
+  return "Loan management updated successfully";
 }

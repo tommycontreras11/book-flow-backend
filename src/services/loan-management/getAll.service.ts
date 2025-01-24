@@ -3,16 +3,16 @@ import { FindManyOptions } from "typeorm";
 import { statusCode } from "../../utils/status.util";
 
 export async function getAllLoanManagementService(options: FindManyOptions<LoanManagementEntity>) {
-  const loansManagement = await LoanManagementEntity.find(options).catch((e) => {
+  const loanManagements = await LoanManagementEntity.find(options).catch((e) => {
     console.error("LoanManagementEntity.find: ", e);
     return null;
   });
 
-  if (!loansManagement)
+  if (!loanManagements)
     return Promise.reject({
       message: "Loans management not found",
       status: statusCode.NOT_FOUND,
     });
 
-  return loansManagement;
+  return loanManagements;
 }
