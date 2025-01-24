@@ -1,6 +1,6 @@
 import { CountryEntity } from "../../database/entities/entity/country.entity";
 import { FindOneOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getOneCountryService(options: FindOneOptions<CountryEntity>) {
   const country = await CountryEntity.findOne(options).catch((e) => {

@@ -1,6 +1,6 @@
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { UpdateScienceDTO } from "./../../dto/science.dto";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function updateScienceService(
   uuid: string,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getOneEmployeeService } from "../../services/employee/getOne.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getOneEmployeeController = async (req: Request, res: Response) => {
   const { uuid } = req.params;

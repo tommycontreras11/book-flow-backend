@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
-import { statusCode } from "../../utils/statusCode";
-import { retrieveIfUserExists } from "../../utils/userUtil";
+import { statusCode } from "../../utils/status.util";
+import { retrieveIfUserExists } from "../../utils/user.util";
 import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 import { CreateEmployeeDTO } from "./../../dto/employee.dto";
 

@@ -1,5 +1,5 @@
 import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { statusCode } from "./../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function deleteUserService(uuid: string) {
   const foundUser = await UserEntity.findOneBy({ uuid }).catch((e) => {

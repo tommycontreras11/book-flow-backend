@@ -1,6 +1,6 @@
 import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 import { FindOneOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getOneEmployeeService(options: FindOneOptions<EmployeeEntity>) {
   const employee = await EmployeeEntity.findOne(options).catch((e) => {

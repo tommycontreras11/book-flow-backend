@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getOnePublisherService } from "../../services/publisher/getOne.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getOnePublisherController = async (req: Request, res: Response) => {
   const { uuid } = req.params;

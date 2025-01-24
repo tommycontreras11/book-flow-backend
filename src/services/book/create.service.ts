@@ -5,9 +5,9 @@ import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { CreateBookDTO } from "../../dto/book.dto";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { In } from "typeorm";
-import { recursiveCreateBookAuthor } from "./../../utils/bookUtil";
+import { recursiveCreateBookAuthor } from "../../utils/book.util";
 
 export async function createBookService({
   bibliographyTypeUUID,

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllScienceService } from "../../services/science/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllScienceController = async (_req: Request, res: Response) => {
   getAllScienceService({})

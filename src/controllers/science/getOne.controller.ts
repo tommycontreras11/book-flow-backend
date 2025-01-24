@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { getOneScienceService } from "../../services/science/getOne.service";
 
 export const getOneScienceController = async (req: Request, res: Response) => {

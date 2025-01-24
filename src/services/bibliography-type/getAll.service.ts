@@ -1,6 +1,6 @@
 import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliography-type.entity";
 import { FindManyOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllBibliographyTypeService(options: FindManyOptions<BibliographyTypeEntity>) {
   const bibliographyType = await BibliographyTypeEntity.find(options).catch((e) => {

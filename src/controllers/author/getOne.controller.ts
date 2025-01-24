@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { getOneAuthorService } from "../../services/author/getOne.service";
 
 export const getOneAuthorController = async (req: Request, res: Response) => {

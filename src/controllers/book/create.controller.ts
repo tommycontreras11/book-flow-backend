@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createBookService } from "../../services/book/create.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const createBookController = async (req: Request, res: Response) => {
   createBookService(req.body)

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createPublisherService } from "../../services/publisher/create.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const createPublisherController = async (req: Request, res: Response) => {
   createPublisherService(req.body)

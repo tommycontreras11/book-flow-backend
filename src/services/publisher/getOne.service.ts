@@ -1,5 +1,5 @@
 import { FindOneOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 
 export async function getOnePublisherService(options: FindOneOptions<PublisherEntity>) {

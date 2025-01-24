@@ -1,6 +1,6 @@
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { CreateScienceDTO } from "./../../dto/science.dto";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function createScienceService({
   description

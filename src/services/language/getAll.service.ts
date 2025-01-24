@@ -1,6 +1,6 @@
 import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { FindManyOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllLanguageService(options: FindManyOptions<LanguageEntity>) {
   const languages = await LanguageEntity.find(options).catch((e) => {

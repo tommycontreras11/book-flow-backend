@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { deleteBookService } from "../../services/book/delete.service";
 
 export const deleteBookController = async (req: Request, res: Response) => {

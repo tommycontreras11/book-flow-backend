@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { updateBibliographyTypeService } from "../../services/bibliography-type/update.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const updateBibliographyTypeController = async (req: Request, res: Response) => {
   const { uuid } =  req.params;

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllEmployeeService } from "../../services/employee/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllEmployeeController = async (_req: Request, res: Response) => {
   getAllEmployeeService({})

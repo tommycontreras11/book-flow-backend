@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllBibliographyTypeService } from "../../services/bibliography-type/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllBibliographyTypeController = async (_req: Request, res: Response) => {
   getAllBibliographyTypeService({})

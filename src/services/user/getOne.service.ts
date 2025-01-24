@@ -1,6 +1,6 @@
 import { FindOneOptions } from "typeorm";
 import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { statusCode } from "./../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getOneUserService(options: FindOneOptions<UserEntity>) {
   const user = await UserEntity.findOne(options).catch((e) => {

@@ -1,6 +1,6 @@
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { FindManyOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllPublisherService(options: FindManyOptions<PublisherEntity>) {
   const publishers = await PublisherEntity.find(options).catch((e) => {

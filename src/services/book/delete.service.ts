@@ -1,5 +1,5 @@
 import { BookEntity } from "../../database/entities/entity/book.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function deleteBookService(uuid: string) {
   const foundBook = await BookEntity.findOneBy({ uuid }).catch((e) => {

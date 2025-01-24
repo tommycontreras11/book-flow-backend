@@ -1,5 +1,5 @@
-import { AuthorEntity } from "./../database/entities/entity/author.entity";
-import { BookEntity } from "./../database/entities/entity/book.entity";
+import { AuthorEntity } from "../database/entities/entity/author.entity";
+import { BookEntity } from "../database/entities/entity/book.entity";
 
 export const recursiveCreateBookAuthor = async (
     book: BookEntity,

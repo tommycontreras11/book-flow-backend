@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getOneLanguageService } from "../../services/language/getOne.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getOneLanguageController = async (req: Request, res: Response) => {
   const { uuid } = req.params;

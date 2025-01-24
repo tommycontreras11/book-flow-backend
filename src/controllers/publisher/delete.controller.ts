@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { deletePublisherService } from "../../services/publisher/delete.service";
 
 export const deletePublisherController = async (req: Request, res: Response) => {

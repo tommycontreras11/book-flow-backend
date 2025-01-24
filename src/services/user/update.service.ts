@@ -1,7 +1,7 @@
 import { UserEntity } from "../../database/entities/entity/user.entity";
 import { UpdateUserDTO } from "../../dto/user.dto";
-import { statusCode } from "../../utils/statusCode";
-import { retrieveIfUserExists } from "../../utils/userUtil";
+import { statusCode } from "../../utils/status.util";
+import { retrieveIfUserExists } from "../../utils/user.util";
 import bcrypt from "bcrypt";
 
 export async function updateUserService(

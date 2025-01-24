@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import { createEmployeeService } from "../../services/employee/create.service";
+import { createRequestService } from "../../services/request/create.service";
 import { statusCode } from "../../utils/status.util";
 
-export const createEmployeeController = async (req: Request, res: Response) => {
-  createEmployeeService(req.body)
+export const createRequestController = async (req: Request, res: Response) => {
+  createRequestService(req.body)
     .then((data) => res.status(statusCode.CREATED).json({ message: data }))
     .catch((e) =>
       res

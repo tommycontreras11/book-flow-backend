@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { getOneBookService } from "../../services/book/getOne.service";
 
 export const getOneBookController = async (req: Request, res: Response) => {

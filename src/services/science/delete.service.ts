@@ -1,5 +1,5 @@
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function deleteScienceService(uuid: string) {
   const foundScience = await ScienceEntity.findOneBy({ uuid }).catch((e) => {

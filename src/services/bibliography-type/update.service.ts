@@ -1,5 +1,5 @@
 import { UpdateBibliographyTypeDTO } from "./../../dto/bibliography-type.dto";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliography-type.entity";
 
 export async function updateBibliographyTypeService(

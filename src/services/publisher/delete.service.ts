@@ -1,5 +1,5 @@
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function deletePublisherService(uuid: string) {
   const foundPublisher = await PublisherEntity.findOneBy({ uuid }).catch((e) => {

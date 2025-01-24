@@ -1,5 +1,5 @@
 import { FindOneOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliography-type.entity";
 
 export async function getOneBibliographyTypeService(options: FindOneOptions<BibliographyTypeEntity>) {

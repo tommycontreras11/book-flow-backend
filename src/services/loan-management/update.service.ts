@@ -1,8 +1,8 @@
-import { UpdateAuthorDTO } from "./../../dto/author.dto";
+import { UpdateAuthorDTO } from "../../dto/author.dto";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "../../database/entities/entity/author.entity";
-import { CountryEntity } from "./../../database/entities/entity/country.entity";
-import { LanguageEntity } from "./../../database/entities/entity/language.entity";
+import { CountryEntity } from "../../database/entities/entity/country.entity";
+import { LanguageEntity } from "../../database/entities/entity/language.entity";
 
 export async function updateAuthorService(
   uuid: string,

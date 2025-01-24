@@ -1,5 +1,5 @@
 import { FindOneOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { BookEntity } from "../../database/entities/entity/book.entity";
 
 export async function getOneBookService(options: FindOneOptions<BookEntity>) {

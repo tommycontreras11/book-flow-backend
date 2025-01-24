@@ -1,6 +1,6 @@
 import { FindManyOptions } from "typeorm";
 import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { statusCode } from "./../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllUserService(options: FindManyOptions<UserEntity>) {
   const users = await UserEntity.find(options).catch((e) => {

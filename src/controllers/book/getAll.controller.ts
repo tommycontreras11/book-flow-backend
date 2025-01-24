@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllBookService } from "../../services/book/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllBookController = async (_req: Request, res: Response) => {
   getAllBookService({

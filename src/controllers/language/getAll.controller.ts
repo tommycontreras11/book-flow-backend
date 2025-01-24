@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllLanguageService } from "../../services/language/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllLanguageController = async (_req: Request, res: Response) => {
   getAllLanguageService({})

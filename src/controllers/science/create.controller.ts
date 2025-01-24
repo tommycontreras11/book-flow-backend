@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createScienceService } from "../../services/science/create.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const createScienceController = async (req: Request, res: Response) => {
   createScienceService(req.body)

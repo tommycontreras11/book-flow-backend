@@ -1,13 +1,12 @@
-import { BookEntity } from "database/entities/entity/book.entity";
-import { UserEntity } from "database/entities/entity/user.entity";
+import { BookEntity } from "./../../database/entities/entity/book.entity";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
 import { RequestEntity } from "../../database/entities/entity/request.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { UpdateRequestDTO } from "./../../dto/request.dto";
 
 export async function updateRequestService(uuid: string, {
   userUUID,
   bookUUID,
-  status,
   ...payload
 }: UpdateRequestDTO) {
   const foundRequest = await RequestEntity.findOneBy({ uuid }).catch((e) => {
@@ -54,7 +53,6 @@ export async function updateRequestService(uuid: string, {
   await RequestEntity.update({ id: foundRequest.id }, {
     ...(foundUser && { user_id: foundUser.id }),
     ...(foundBook && { book_id: foundBook.id }),
-    ...(status && { status }),
     ...payload,
   })
     .catch((e) => {

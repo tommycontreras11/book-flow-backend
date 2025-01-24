@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { createUserService } from "./../../services/user/create.service";
-import { statusCode } from "./../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const createUserController = async (req: Request, res: Response) => {
   createUserService(req.body)

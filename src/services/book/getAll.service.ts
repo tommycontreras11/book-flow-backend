@@ -1,6 +1,6 @@
 import { BookEntity } from "../../database/entities/entity/book.entity";
 import { FindManyOptions } from "typeorm";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllBookService(options: FindManyOptions<BookEntity>) {
   const books = await BookEntity.find(options).catch((e) => {

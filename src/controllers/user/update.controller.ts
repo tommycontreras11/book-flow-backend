@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { updateUserService } from "../../services/user/update.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const updateUserController = async (req: Request, res: Response) => {
   const { uuid } =  req.params;

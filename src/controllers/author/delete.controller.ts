@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { deleteAuthorService } from "../../services/author/delete.service";
 
 export const deleteAuthorController = async (req: Request, res: Response) => {

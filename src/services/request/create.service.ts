@@ -1,13 +1,12 @@
-import { BookEntity } from "database/entities/entity/book.entity";
-import { UserEntity } from "database/entities/entity/user.entity";
+import { BookEntity } from "./../../database/entities/entity/book.entity";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
 import { RequestEntity } from "../../database/entities/entity/request.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { CreateRequestDTO } from "./../../dto/request.dto";
 
 export async function createRequestService({
   userUUID,
-  bookUUID,
-  ...payload
+  bookUUID
 }: CreateRequestDTO) {
   const foundUser = await UserEntity.findOneBy({ uuid: userUUID }).catch((e) => {
     console.error("UserEntity.findOneBy: ", e);
@@ -34,8 +33,7 @@ export async function createRequestService({
   await RequestEntity.create({
     user_id: foundUser.id,
     book_id: foundBook.id,
-    status: "PENDING",
-    ...payload,
+    status: "PENDING"
   })
     .save()
     .catch((e) => {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getAllAuthorService } from "../../services/author/getAll.service";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export const getAllAuthorController = async (_req: Request, res: Response) => {
   getAllAuthorService({

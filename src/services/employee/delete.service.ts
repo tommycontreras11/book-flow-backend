@@ -1,5 +1,5 @@
 import { EmployeeEntity } from "../../database/entities/entity/employee.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function deleteEmployeeService(uuid: string) {
   const foundEmployee = await EmployeeEntity.findOneBy({ uuid }).catch((e) => {

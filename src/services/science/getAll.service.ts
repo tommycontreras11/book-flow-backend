@@ -1,6 +1,6 @@
 import { FindManyOptions } from "typeorm";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 
 export async function getAllScienceService(options: FindManyOptions<ScienceEntity>) {
   const sciences = await ScienceEntity.find(options).catch((e) => {
