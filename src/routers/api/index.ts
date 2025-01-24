@@ -9,6 +9,7 @@ import authorRouters from "./author";
 import scienceRouters from "./science";
 import bookRouters from "./book";
 import requestRouters from "./request";
+import loanManagementsRouters from "./loan-management";
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use("/authors", authorRouters);
 router.use("/sciences", scienceRouters);
 router.use("/books", bookRouters);
 router.use("/requests", requestRouters);
+router.use("/loan-managements", loanManagementsRouters);
 
 export default router
