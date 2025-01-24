@@ -4,6 +4,7 @@ import {
 } from '@interfaces/common/express.interface'
 import { FindOptionsWhere } from 'typeorm'
 import { UserEntity } from './../database/entities/entity/user.entity'
+import { EmployeeEntity } from './../database/entities/entity/employee.entity'
 
 declare global {
 	namespace Express {
@@ -13,7 +14,7 @@ declare global {
 			dates?: IQueryDates
 			order: "ASC" | "DESC"
 			filter: FindOptionsWhere | ObjectI
-			user: UserEntity
+			user: UserEntity | EmployeeEntity
 			cookies: {
 				[key: string]: string
 			}

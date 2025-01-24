@@ -22,3 +22,18 @@ export async function retrieveIfUserExists(
     sameUser: foundUser?.uuid === uuid || foundEmployee?.uuid === uuid,
   };
 }
+
+export async function retrieveUserByUsername(
+  username: string
+) {
+  const [foundUser, foundEmployee] = await Promise.all([
+    UserEntity.findOneBy({
+      ...(username && { username }),
+    }),
+    EmployeeEntity.findOneBy({
+      ...(username && { username }),
+    }),
+  ]);
+
+  return foundUser ?? foundEmployee;
+}

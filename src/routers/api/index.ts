@@ -1,4 +1,5 @@
 import { Router } from "express";
+
 import userRouters from "./user";
 import employeeRouters from "./employee";
 import countryRouters from "./country";
@@ -10,9 +11,11 @@ import scienceRouters from "./science";
 import bookRouters from "./book";
 import requestRouters from "./request";
 import loanManagementsRouters from "./loan-management";
+import authRoutes from './auth'
 
 const router = Router();
 
+router.use("/auth", authRoutes);
 router.use("/users", userRouters);
 router.use("/employees", employeeRouters);
 router.use("/countries", countryRouters);
