@@ -2,11 +2,6 @@ import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from "cla
 import { StatusRequestEnum, StatusRequestType } from "./../database/entities/entity/request.entity";
 
 export class CreateRequestDTO {
-  @IsString()
-  @MaxLength(100)
-  @IsNotEmpty()
-  description: string;
-
   @IsUUID("4")
   @IsString()
   @IsNotEmpty()
@@ -16,6 +11,12 @@ export class CreateRequestDTO {
   @IsString()
   @IsNotEmpty()
   bookUUID: string;
+}
+
+export class UpdateRequestEmployeeStatusDTO {
+  @IsEnum(StatusRequestEnum)
+  @IsNotEmpty()
+  status: StatusRequestType;
 }
 
 export class UpdateRequestDTO {
@@ -33,8 +34,4 @@ export class UpdateRequestDTO {
   @IsString()
   @IsOptional()
   bookUUID: string;
-
-  @IsEnum(StatusRequestEnum)
-  @IsOptional()
-  status: StatusRequestType;
 }

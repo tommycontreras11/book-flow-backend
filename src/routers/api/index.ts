@@ -8,6 +8,7 @@ import publisherRouters from "./publisher";
 import authorRouters from "./author";
 import scienceRouters from "./science";
 import bookRouters from "./book";
+import requestRouters from "./request";
 
 const router = Router();
 
@@ -20,5 +21,6 @@ router.use("/publishers", publisherRouters);
 router.use("/authors", authorRouters);
 router.use("/sciences", scienceRouters);
 router.use("/books", bookRouters);
+router.use("/requests", requestRouters);
 
 export default router
