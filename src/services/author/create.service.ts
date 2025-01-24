@@ -1,6 +1,6 @@
 import { AuthorEntity } from "../../database/entities/entity/author.entity";
 import { CreateAuthorDTO } from "./../../dto/author.dto";
-import { statusCode } from "../../utils/statusCode";
+import { statusCode } from "../../utils/status.util";
 import { CountryEntity } from "./../../database/entities/entity/country.entity";
 import { LanguageEntity } from "./../../database/entities/entity/language.entity";
 

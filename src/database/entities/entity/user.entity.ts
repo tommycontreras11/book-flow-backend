@@ -1,7 +1,6 @@
 import { Column, Entity, OneToMany } from "typeorm"
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
 import { RequestEntity } from "./request.entity"
-import { LoanManagementEntity } from "./loan-management.entity"
 
 export enum PersonTypeEnum {
     NATURAL = 'NATURAL',
@@ -35,7 +34,4 @@ export class UserEntity extends BaseEntity {
     
     @OneToMany(() => RequestEntity, (request) => request.user)
     requests: RequestEntity[]
-    
-    @OneToMany(() => LoanManagementEntity, (loan) => loan.user)
-    loansManagement: LoanManagementEntity[]
 }

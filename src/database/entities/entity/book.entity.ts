@@ -1,11 +1,10 @@
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm"
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
+import { AuthorEntity } from "./author.entity"
 import { BibliographyTypeEntity } from "./bibliography-type.entity"
 import { LanguageEntity } from "./language.entity"
 import { PublisherEntity } from "./publisher.entity"
-import { AuthorEntity } from "./author.entity"
 import { RequestEntity } from "./request.entity"
-import { LoanManagementEntity } from "./loan-management.entity"
 import { ScienceEntity } from "./science.entity"
 
 @Entity({ name: 'books' })
@@ -69,7 +68,4 @@ export class BookEntity extends BaseEntity {
 
     @OneToMany(() => RequestEntity, (request) => request.book)
     requests: RequestEntity[]
-    
-    @OneToMany(() => LoanManagementEntity, (loan) => loan.book)
-    loansManagement: LoanManagementEntity[]
 }

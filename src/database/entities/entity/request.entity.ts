@@ -15,9 +15,6 @@ export type StatusRequestType = keyof typeof StatusRequestEnum
 
 @Entity({ name: 'requests' })
 export class RequestEntity extends BaseEntity {
-    @Column({ length: 100 })
-    description: string
-
     @Column({ type: 'enum', enum: StatusRequestEnum })
     status: StatusRequestType
 

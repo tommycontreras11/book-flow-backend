@@ -1,7 +1,6 @@
-import { Column, Entity, ManyToMany, OneToMany } from "typeorm"
+import { Column, Entity, ManyToMany } from "typeorm"
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity"
 import { RequestEntity } from "./request.entity"
-import { LoanManagementEntity } from "./loan-management.entity"
 
 @Entity({ name: 'employees' })
 export class EmployeeEntity extends BaseEntity {
@@ -31,7 +30,4 @@ export class EmployeeEntity extends BaseEntity {
 
     @ManyToMany(() => RequestEntity, (request) => request.employees)
     requests: RequestEntity[]
-
-    @OneToMany(() => LoanManagementEntity, (loan) => loan.employee)
-    loansManagement: LoanManagementEntity[]
 }
