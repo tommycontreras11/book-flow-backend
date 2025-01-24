@@ -1,6 +1,4 @@
-import { LoanManagementEntity } from "database/entities/entity/loan-management.entity";
-
-export const generateLoanNumber = async (
+export const generateLoanNumber = (
 ) => {
   const prefix = "LN";
   const date = new Date();
@@ -12,18 +10,6 @@ export const generateLoanNumber = async (
   const formattedDate = `${year}${month}${day}`;
 
   let randomPart = String(Math.floor(10000 + Math.random() * 90000));
-  
-  let completeLoanNumber = `${prefix}-${formattedDate}-${randomPart}`;
 
-  let loanManagement = null;
-  do {
-    loanManagement = await LoanManagementEntity.findOneBy({
-      loan_number: completeLoanNumber
-    })
-    randomPart = String(Math.floor(10000 + Math.random() * 90000));
-
-    completeLoanNumber = `${prefix}-${formattedDate}-${randomPart}`;
-  } while (!loanManagement);
-
-  return completeLoanNumber;
+  return `${prefix}-${formattedDate}-${randomPart}`;
 };
