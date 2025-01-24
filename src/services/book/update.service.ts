@@ -39,28 +39,28 @@ export async function updateBookService(
       status: statusCode.BAD_REQUEST,
     });
 
-    let foundAuthors: AuthorEntity[] = [];
-    if(authorUUIDs.length > 0) {
-      foundAuthors = await AuthorEntity.find({
-        where: {
-          uuid: In(authorUUIDs),
-        },
+  let foundAuthors: AuthorEntity[] = [];
+  if (authorUUIDs.length > 0) {
+    foundAuthors = await AuthorEntity.find({
+      where: {
+        uuid: In(authorUUIDs),
+      },
+    });
+
+    if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
+      return Promise.reject({
+        message: "Bibliography Type not found",
+        status: statusCode.NOT_FOUND,
       });
-    
-      if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
-        return Promise.reject({
-          message: "Bibliography Type not found",
-          status: statusCode.NOT_FOUND,
-        });
-    }
+  }
 
   let bibliographyType: BibliographyTypeEntity | null = null;
 
   if (bibliographyTypeUUID) {
-    bibliographyType = await BibliographyTypeEntity.findOne({
-      where: { uuid: bibliographyTypeUUID },
+    bibliographyType = await BibliographyTypeEntity.findOneBy({
+      uuid: bibliographyTypeUUID,
     }).catch((e) => {
-      console.error("BibliographyTypeEntity.findOne: ", e);
+      console.error("BibliographyTypeEntity.findOneBy: ", e);
       return null;
     });
 
@@ -74,10 +74,10 @@ export async function updateBookService(
   let language: LanguageEntity | null = null;
 
   if (languageUUID) {
-    language = await LanguageEntity.findOne({
-      where: { uuid: languageUUID },
+    language = await LanguageEntity.findOneBy({
+      uuid: languageUUID,
     }).catch((e) => {
-      console.error("LanguageEntity.findOne: ", e);
+      console.error("LanguageEntity.findOneBy: ", e);
       return null;
     });
 
@@ -91,10 +91,10 @@ export async function updateBookService(
   let science: ScienceEntity | null = null;
 
   if (scienceUUID) {
-    science = await ScienceEntity.findOne({
-      where: { uuid: scienceUUID },
+    science = await ScienceEntity.findOneBy({
+      uuid: scienceUUID,
     }).catch((e) => {
-      console.error("ScienceEntity.findOne: ", e);
+      console.error("ScienceEntity.findOneBy: ", e);
       return null;
     });
 
@@ -108,10 +108,10 @@ export async function updateBookService(
   let publisher: PublisherEntity | null = null;
 
   if (publisherUUID) {
-    publisher = await PublisherEntity.findOne({
-      where: { uuid: publisherUUID },
+    publisher = await PublisherEntity.findOneBy({
+      uuid: publisherUUID,
     }).catch((e) => {
-      console.error("PublisherEntity.findOne: ", e);
+      console.error("PublisherEntity.findOneBy: ", e);
       return null;
     });
 
@@ -127,7 +127,7 @@ export async function updateBookService(
   if (bibliographyType) foundBook.bibliography_type_id = bibliographyType.id;
   if (language) foundBook.language_id = language.id;
   if (science) foundBook.science_id = science.id;
-  
+
   Object.assign(foundBook, payload);
 
   foundBook.state = "ACTIVE";
@@ -137,7 +137,8 @@ export async function updateBookService(
     return null;
   });
 
-  if (bookUpdated) await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
+  if (bookUpdated)
+    await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
 
   return "Book updated successfully";
 }

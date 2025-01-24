@@ -7,17 +7,13 @@ export async function retrieveIfUserExists(
   uuid?: string
 ) {
   const [foundUser, foundEmployee] = await Promise.all([
-    UserEntity.findOne({
-      where: {
-        ...(username && { username }),
-        ...(identification && { identification }),
-      },
+    UserEntity.findOneBy({
+      ...(username && { username }),
+      ...(identification && { identification }),
     }),
-    EmployeeEntity.findOne({
-      where: {
-        ...(username && { username }),
-        ...(identification && { identification }),
-      },
+    EmployeeEntity.findOneBy({
+      ...(username && { username }),
+      ...(identification && { identification }),
     }),
   ]);
 

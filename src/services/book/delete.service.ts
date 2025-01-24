@@ -3,7 +3,7 @@ import { statusCode } from "../../utils/statusCode";
 
 export async function deleteBookService(uuid: string) {
   const foundBook = await BookEntity.findOneBy({ uuid }).catch((e) => {
-    console.error("BookEntity.findOne: ", e);
+    console.error("BookEntity.findOneBy: ", e);
     return null;
   });
 

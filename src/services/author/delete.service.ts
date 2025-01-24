@@ -3,7 +3,7 @@ import { statusCode } from "../../utils/statusCode";
 
 export async function deleteAuthorService(uuid: string) {
   const foundAuthor = await AuthorEntity.findOneBy({ uuid }).catch((e) => {
-    console.error("AuthorEntity.findOne: ", e);
+    console.error("AuthorEntity.findOneBy: ", e);
     return null;
   });
 

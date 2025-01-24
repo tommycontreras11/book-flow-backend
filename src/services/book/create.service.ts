@@ -38,10 +38,10 @@ export async function createBookService({
       status: statusCode.NOT_FOUND,
     });
 
-  const bibliographyType = await BibliographyTypeEntity.findOne({
-    where: { uuid: bibliographyTypeUUID },
+  const bibliographyType = await BibliographyTypeEntity.findOneBy({
+    uuid: bibliographyTypeUUID,
   }).catch((e) => {
-    console.error("BibliographyTypeEntity.findOne: ", e);
+    console.error("BibliographyTypeEntity.findOneBy: ", e);
     return null;
   });
 
@@ -51,12 +51,12 @@ export async function createBookService({
       status: statusCode.NOT_FOUND,
     });
 
-  const language = await LanguageEntity.findOne({
-    where: { uuid: languageUUID },
-  }).catch((e) => {
-    console.error("LanguageEntity.findOne: ", e);
-    return null;
-  });
+  const language = await LanguageEntity.findOneBy({ uuid: languageUUID }).catch(
+    (e) => {
+      console.error("LanguageEntity.findOneBy: ", e);
+      return null;
+    }
+  );
 
   if (!language)
     return Promise.reject({
@@ -64,12 +64,12 @@ export async function createBookService({
       status: statusCode.NOT_FOUND,
     });
 
-  const science = await ScienceEntity.findOne({
-    where: { uuid: scienceUUID },
-  }).catch((e) => {
-    console.error("ScienceEntity.findOne: ", e);
-    return null;
-  });
+  const science = await ScienceEntity.findOneBy({ uuid: scienceUUID }).catch(
+    (e) => {
+      console.error("ScienceEntity.findOneBy: ", e);
+      return null;
+    }
+  );
 
   if (!science)
     return Promise.reject({
@@ -77,10 +77,10 @@ export async function createBookService({
       status: statusCode.NOT_FOUND,
     });
 
-  const publisher = await PublisherEntity.findOne({
-    where: { uuid: publisherUUID },
+  const publisher = await PublisherEntity.findOneBy({
+    uuid: publisherUUID,
   }).catch((e) => {
-    console.error("PublisherEntity.findOne: ", e);
+    console.error("PublisherEntity.findOneBy: ", e);
     return null;
   });
 

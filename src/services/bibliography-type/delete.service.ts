@@ -2,10 +2,9 @@ import { BibliographyTypeEntity } from "../../database/entities/entity/bibliogra
 import { statusCode } from "../../utils/statusCode";
 
 export async function deleteBibliographyTypeService(uuid: string) {
-  const foundBibliographyType = await BibliographyTypeEntity.findOne({
-    where: { uuid },
+  const foundBibliographyType = await BibliographyTypeEntity.findOneBy( { uuid 
   }).catch((e) => {
-    console.error("BibliographyTypeEntity.findOne: ", e);
+    console.error("BibliographyTypeEntity.findOneBy: ", e);
     return null;
   });
 

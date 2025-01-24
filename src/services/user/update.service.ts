@@ -8,10 +8,8 @@ export async function updateUserService(
   uuid: string,
   { username, password, identification, ...payload }: UpdateUserDTO
 ) {
-  const user = await UserEntity.findOne({
-    where: { uuid },
-  }).catch((e) => {
-    console.error("UserEntity.findOne: ", e);
+  const user = await UserEntity.findOneBy({ uuid }).catch((e) => {
+    console.error("UserEntity.findOneBy: ", e);
     return null;
   });
 

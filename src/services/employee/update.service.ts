@@ -1,17 +1,15 @@
 import bcrypt from "bcrypt";
 import { statusCode } from "../../utils/statusCode";
 import { retrieveIfUserExists } from "../../utils/userUtil";
-import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
-import { UpdateEmployeeDTO } from "./../../dto/employee.dto";
+import { EmployeeEntity } from "../../database/entities/entity/employee.entity";
+import { UpdateEmployeeDTO } from "../../dto/employee.dto";
 
 export async function updateEmployeeService(
   uuid: string,
   { username, password, identification, ...payload }: UpdateEmployeeDTO
 ) {
-  const employee = await EmployeeEntity.findOne({
-    where: { uuid },
-  }).catch((e) => {
-    console.error("EmployeeEntity.findOne: ", e);
+  const employee = await EmployeeEntity.findOneBy({ uuid }).catch((e) => {
+    console.error("EmployeeEntity.findOneBy: ", e);
     return null;
   });
 

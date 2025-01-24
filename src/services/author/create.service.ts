@@ -10,7 +10,10 @@ export async function createAuthorService({
   nativeLanguageUUID,
   ...payload
 }: CreateAuthorDTO) {
-  const foundAuthor = await AuthorEntity.findOneBy({ name });
+  const foundAuthor = await AuthorEntity.findOneBy({ name }).catch((e) => {
+    console.error("AuthorEntity.findOneBy: ", e);
+    return null;
+  });
 
   if (foundAuthor)
     return Promise.reject({
@@ -18,10 +21,10 @@ export async function createAuthorService({
       status: statusCode.BAD_REQUEST,
     });
 
-  const country = await CountryEntity.findOne({
-    where: { uuid: birthCountryUUID },
+  const country = await CountryEntity.findOneBy({
+    uuid: birthCountryUUID,
   }).catch((e) => {
-    console.error("CountryEntity.findOne: ", e);
+    console.error("CountryEntity.findOneBy: ", e);
     return null;
   });
 
@@ -31,8 +34,8 @@ export async function createAuthorService({
       status: statusCode.NOT_FOUND,
     });
 
-  const language = await LanguageEntity.findOne({
-    where: { uuid: nativeLanguageUUID },
+  const language = await LanguageEntity.findOneBy({
+    uuid: nativeLanguageUUID,
   }).catch((e) => {
     console.error("LanguageEntity.findOne: ", e);
     return null;

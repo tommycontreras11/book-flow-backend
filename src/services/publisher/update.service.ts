@@ -6,10 +6,8 @@ export async function updatePublisherService(
   uuid: string,
   { description, ...payload }: UpdatePublisherDTO
 ) {
-  const publisher = await PublisherEntity.findOne({
-    where: { uuid },
-  }).catch((e) => {
-    console.error("PublisherEntity.findOne: ", e);
+  const publisher = await PublisherEntity.findOneBy({ uuid }).catch((e) => {
+    console.error("PublisherEntity.findOneBy: ", e);
     return null;
   });
 
@@ -23,7 +21,7 @@ export async function updatePublisherService(
     { uuid },
     {
       description,
-      ...payload
+      ...payload,
     }
   ).catch((e) => {
     console.error("PublisherEntity.update: ", e);

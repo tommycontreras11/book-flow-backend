@@ -3,9 +3,14 @@ import { statusCode } from "../../utils/statusCode";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 
 export async function createPublisherService({
-  description
+  description,
 }: CreatePublisherDTO) {
-  const foundPublisher = await PublisherEntity.findOneBy({ description });
+  const foundPublisher = await PublisherEntity.findOneBy({ description }).catch(
+    (e) => {
+      console.error("EmployeeEntity.findOneBy: ", e);
+      return null;
+    }
+  );
 
   if (foundPublisher)
     return Promise.reject({
@@ -15,7 +20,7 @@ export async function createPublisherService({
 
   await PublisherEntity.create({
     description,
-    state: "ACTIVE"
+    state: "ACTIVE",
   })
     .save()
     .catch((e) => {

@@ -6,10 +6,10 @@ export async function updateBibliographyTypeService(
   uuid: string,
   { description, ...payload }: UpdateBibliographyTypeDTO
 ) {
-  const bibliographyType = await BibliographyTypeEntity.findOne({
-    where: { uuid },
+  const bibliographyType = await BibliographyTypeEntity.findOneBy({
+    uuid,
   }).catch((e) => {
-    console.error("BibliographyTypeEntity.findOne: ", e);
+    console.error("BibliographyTypeEntity.findOneBy: ", e);
     return null;
   });
 
@@ -23,7 +23,7 @@ export async function updateBibliographyTypeService(
     { uuid },
     {
       description,
-      ...payload
+      ...payload,
     }
   ).catch((e) => {
     console.error("BibliographyTypeEntity.create: ", e);

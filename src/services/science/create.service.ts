@@ -6,7 +6,7 @@ export async function createScienceService({
   description
 }: CreateScienceDTO) {
   const science = await ScienceEntity.findOneBy({ description }).catch((e) => {
-    console.error("ScienceEntity.findOne: ", e);
+    console.error("ScienceEntity.findOneBy: ", e);
     return null;
   });
 
