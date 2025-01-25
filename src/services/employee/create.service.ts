@@ -10,7 +10,7 @@ export async function createEmployeeService({
   password,
   ...payload
 }: CreateEmployeeDTO) {
-  const foundEmployeeByUsername = (await retrieveIfUserExists(username)).user;
+  const foundEmployeeByUsername = (await retrieveIfUserExists(username))?.user;
 
   if (foundEmployeeByUsername)
     return Promise.reject({
@@ -19,7 +19,7 @@ export async function createEmployeeService({
     });
 
   const foundEmployeeByIdentification = (await retrieveIfUserExists("", identification))
-    .user;
+    ?.user;
 
   if (foundEmployeeByIdentification)
     return Promise.reject({

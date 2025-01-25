@@ -4,23 +4,32 @@ import { UserEntity } from "../database/entities/entity/user.entity";
 export async function retrieveIfUserExists(
   username?: string | null,
   identification?: string | null,
-  uuid?: string
+  uuid?: string | null
 ) {
   const [foundUser, foundEmployee] = await Promise.all([
     UserEntity.findOneBy({
       ...(username && { username }),
       ...(identification && { identification }),
+      ...(uuid && { uuid }),
     }),
     EmployeeEntity.findOneBy({
       ...(username && { username }),
       ...(identification && { identification }),
+      ...(uuid && { uuid }),
     }),
   ]);
 
-  return {
-    user: !!foundUser || !!foundEmployee,
-    sameUser: foundUser?.uuid === uuid || foundEmployee?.uuid === uuid,
-  };
+  const matchingEntity =
+  (foundUser?.uuid === uuid && foundUser) ||
+  (foundEmployee?.uuid === uuid && foundEmployee);
+
+return matchingEntity
+  ? {
+      user: true,
+      sameUser: true,
+      data: matchingEntity,
+    }
+  : null;
 }
 
 export async function retrieveUserByUsername(

@@ -25,7 +25,7 @@ export async function updateUserService(
     user.uuid
   );
 
-  if (validateUserByUsername.user && !validateUserByUsername.sameUser)
+  if (validateUserByUsername?.user && !validateUserByUsername?.sameUser)
     return Promise.reject({
       message: "User with this username already exists",
       status: statusCode.BAD_REQUEST,
@@ -38,8 +38,8 @@ export async function updateUserService(
   );
 
   if (
-    validateUserByIdentification.user &&
-    !validateUserByIdentification.sameUser
+    validateUserByIdentification?.user &&
+    !validateUserByIdentification?.sameUser
   )
     return Promise.reject({
       message: "User with this identification already exists",

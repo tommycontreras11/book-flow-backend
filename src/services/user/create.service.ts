@@ -10,7 +10,7 @@ export async function createUserService({
   password,
   ...payload
 }: CreateUserDTO) {
-  const foundUserByUsername = (await retrieveIfUserExists(username)).user;
+  const foundUserByUsername = (await retrieveIfUserExists(username))?.user;
 
   if (foundUserByUsername)
     return Promise.reject({
@@ -19,7 +19,7 @@ export async function createUserService({
     });
 
   const foundUserByIdentification = (await retrieveIfUserExists("", identification))
-    .user;
+    ?.user;
 
   if (foundUserByIdentification)
     return Promise.reject({
