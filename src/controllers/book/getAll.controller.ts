@@ -2,8 +2,15 @@ import { Request, Response } from "express";
 import { getAllBookService } from "../../services/book/getAll.service";
 import { statusCode } from "../../utils/status.util";
 
-export const getAllBookController = async (_req: Request, res: Response) => {
+export const getAllBookController = async (req: Request, res: Response) => {
+  const { science } = req.query as { science?: string };
+  
+  const filters = {
+    ...(science && { where: { science: { description: science } } }),
+  };
+  
   getAllBookService({
+    ...filters,
     relations: { bibliographyType: true, publisher: true, language: true, science: true },
   })
     .then((data) => {
