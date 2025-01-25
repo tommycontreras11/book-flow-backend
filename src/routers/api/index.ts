@@ -31,6 +31,6 @@ router.use("/authors", unless([{ path: '/', method: 'GET' }], authMiddleware), a
 router.use("/sciences", unless([{ path: '/', method: 'GET' }], authMiddleware), scienceRoutes);
 router.use("/books", unless([{ path: '/', method: 'GET' }], authMiddleware), bookRoutes);
 router.use("/requests", unless([{ path: '/', method: 'GET' }], authMiddleware), requestRoutes);
-router.use("/loan-managements", unless([{ path: '/', method: 'GET' }], authMiddleware), loanManagementsRoutes);
+router.use("/loan-managements", authMiddleware, loanManagementsRoutes);
 
 export default router

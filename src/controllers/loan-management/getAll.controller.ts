@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import { getAllLoanManagementService } from "../../services/loan-management/getAll.service";
 import { statusCode } from "../../utils/status.util";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
+import { retrieveIfUserExists } from "./../../utils/user.util";
 
-export const getAllLoanManagementController = async (_req: Request, res: Response) => {
+export const getAllLoanManagementController = async (req: Request, res: Response) => {
+  const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid))?.data;
   getAllLoanManagementService({
+    ...(foundUser instanceof UserEntity && { where: { request: { user: { id: foundUser.id  } } } }),
     relations: { request: { book: { authors: true }, user: true } },
   })
     .then((data) => {

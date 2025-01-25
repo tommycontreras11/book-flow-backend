@@ -6,7 +6,7 @@ import { statusCode } from "./../../utils/status.util";
 export const signInController = async (req: Request, res: Response) => {
     signInService(req.body).then(data => {
         const tokenExpiration = new Date(Date.now() + 1000 * 60 * 60 * 24)
-        const originalToken = jsonwebtoken.sign({ userId: data.uuid, expiration: tokenExpiration }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '24h' })
+        const originalToken = jsonwebtoken.sign({ uuid: data.uuid, expiration: tokenExpiration }, process.env.ACCESS_TOKEN_SECRET!, { expiresIn: '24h' })
         
         return res.cookie('access_token', originalToken, {
             httpOnly: true,
