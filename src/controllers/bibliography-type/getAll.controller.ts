@@ -7,7 +7,8 @@ export const getAllBibliographyTypeController = async (_req: Request, res: Respo
     .then((data) => {
       const bibliographyTypes = data.map((bibliographyType) => ({
         uuid: bibliographyType.uuid,
-        description: bibliographyType.description
+        description: bibliographyType.description,
+        status: bibliographyType.status
       }));
 
       return res.status(statusCode.OK).json({ data: bibliographyTypes })

@@ -5,12 +5,12 @@ import { statusCode } from "../../utils/status.util";
 export const getAllCountryController = async (_req: Request, res: Response) => {
   getAllCountryService({})
     .then((data) => {
-      const users = data.map((country) => ({
+      const countries = data.map((country) => ({
         uuid: country.uuid,
         name: country.name
       }));
 
-      return res.status(statusCode.OK).json({ data: users })
+      return res.status(statusCode.OK).json({ data: countries })
     })
     .catch((e) =>
       res
