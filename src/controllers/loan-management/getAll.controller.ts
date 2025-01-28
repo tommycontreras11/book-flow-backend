@@ -24,6 +24,8 @@ export const getAllLoanManagementController = async (req: Request, res: Response
       }),
       ...(language && { where: { request: { book: { language: { description: language } } } }}),
       ...(dateLoan && dateReturn && { where: { date_loan: Between(dateLoan, dateReturn) } }), 
+      ...(dateLoan && !dateReturn && { where: { date_loan } }), 
+      ...(!dateLoan && dateReturn && { where: { date_return: dateReturn } }), 
     };
     
     await getAllLoanManagementService({
