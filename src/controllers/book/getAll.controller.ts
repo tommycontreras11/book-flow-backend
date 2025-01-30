@@ -19,11 +19,11 @@ export const getAllBookController = async (req: Request, res: Response) => {
         description: book.description,
         topographical_signature: book.topographical_signature,
         isbn: book.isbn,
-        bibliography_type: book.bibliographyType.description,
-        publisher: book.publisher.description,
-        publication_year: book.publication_year,
-        language: book.language.description,
-        science: book.science.description,
+        publication_year: book.publication_year,        
+        bibliographyTypeName: book.bibliographyType.description,
+        publisherName: book.publisher.description,
+        languageName: book.language.description,
+        scienceDescription: book.science.description,
         status: book.status,
       }));
 
