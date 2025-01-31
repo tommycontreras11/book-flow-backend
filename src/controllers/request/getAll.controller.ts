@@ -1,9 +1,16 @@
 import { Request, Response } from "express";
 import { statusCode } from "../../utils/status.util";
 import { getAllRequestService } from "./../../services/request/getAll.service";
+import { StatusRequestEnum } from "./../../database/entities/entity/request.entity";
 
-export const getAllRequestController = async (_req: Request, res: Response) => {
-  getAllRequestService({ relations: { user: true, book: true } })
+export const getAllRequestController = async (req: Request, res: Response) => {
+  const { status } = req.query as { status?: StatusRequestEnum };
+
+  const filters = {
+    ...(status && { where: { status } }),
+  };
+
+  getAllRequestService({ ...filters, relations: { user: true, book: true } })
     .then((data) => {
       const requests = data.map((request) => ({
         uuid: request.uuid,
@@ -15,7 +22,7 @@ export const getAllRequestController = async (_req: Request, res: Response) => {
           uuid: request.book.uuid,
           description: request.book.description,
         },
-        status: request.status
+        status: request.status,
       }));
 
       return res.status(statusCode.OK).json({ data: requests });
