@@ -13,17 +13,36 @@ import scienceRoutes from "./science";
 import bookRoutes from "./book";
 import requestRoutes from "./request";
 import loanManagementsRoutes from "./loan-management";
-import authRoutes from './auth'
+import authRoutes from "./auth";
 
 const router = Router();
 
-router.use("/auth", authRoutes);
-router.use('/users', unless(
+router.use(
+  "/auth",
+  unless(
     [
-        { path: '/', method: 'POST' }
-    ], authMiddleware), userRoutes)
-router.use("/employees", unless([{ path: '/', method: 'GET' }], authMiddleware), employeeRoutes);
-router.use("/countries", unless([{ path: '/', method: 'GET' }], authMiddleware), countryRoutes);
+      { path: "/signIn", method: "POST" },
+      { path: "/signOut", method: "POST" },
+    ],
+    authMiddleware
+  ),
+  authRoutes
+);
+router.use(
+  "/users",
+  unless([{ path: "/", method: "POST" }], authMiddleware),
+  userRoutes
+);
+router.use(
+  "/employees",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  employeeRoutes
+);
+router.use(
+  "/countries",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  countryRoutes
+);
 //router.use("/languages", unless([{ path: '/', method: 'GET' }], authMiddleware), languageRoutes);
 //router.use("/bibliography-types", unless([{ path: '/', method: 'GET' }], authMiddleware), bibliographyTypeRoutes);
 //router.use("/sciences", unless([{ path: '/', method: 'GET' }], authMiddleware), scienceRoutes);
@@ -43,4 +62,4 @@ router.use("/bibliography-types", bibliographyTypeRoutes);
 //router.use("/requests", unless([{ path: '/', method: 'GET' }], authMiddleware), requestRoutes);
 router.use("/loan-managements", authMiddleware, loanManagementsRoutes);
 
-export default router
+export default router;

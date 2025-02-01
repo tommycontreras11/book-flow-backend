@@ -1,11 +1,16 @@
-import { signInController, signOutController } from "./../../../controllers/auth";
 import { Router } from "express";
 import { SignInDTO } from "../../../dto/auth.dto";
 import { validateDTO } from "../../../middlewares/dto/validate-dto.middleware";
+import {
+  meController,
+  signInController,
+  signOutController,
+} from "./../../../controllers/auth";
 
-const router = Router()
+const router = Router();
 
-router.post('/signIn', validateDTO(SignInDTO), signInController)
-router.post('/signOut', signOutController)
+router.get("/me", meController);
+router.post("/signIn", validateDTO(SignInDTO), signInController);
+router.post("/signOut", signOutController);
 
-export default router
+export default router;
