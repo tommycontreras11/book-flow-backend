@@ -14,10 +14,11 @@ import { LoanManagementEntity } from "./loan-management.entity";
 import { UserEntity } from "./user.entity";
 
 export enum StatusRequestEnum {
-  BORROWED = "BORROWED",
-  APPROVAL = "APPROVAL",
-  DENIED = "DENIED",
-  PENDING = "PENDING",
+  BORROWED = "BORROWED", // This is when the user has borrowed the book
+  COMPLETED = "COMPLETED", // This is when the user has returned the book
+  APPROVAL = "APPROVAL", // This is when the admin has approved the request
+  DENIED = "DENIED", // This is when the admin has denied the request
+  PENDING = "PENDING", // This is when the admin has not approved or denied the request
 }
 
 export type StatusRequestType = keyof typeof StatusRequestEnum;
