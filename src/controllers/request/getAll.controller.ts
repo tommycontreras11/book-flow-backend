@@ -4,18 +4,21 @@ import { getAllRequestService } from "./../../services/request/getAll.service";
 import { StatusRequestEnum } from "./../../database/entities/entity/request.entity";
 import { retrieveIfUserExists } from "./../../utils/user.util";
 import { UserEntity } from "./../../database/entities/entity/user.entity";
+import { In } from "typeorm";
 
 export const getAllRequestController = async (req: Request, res: Response) => {
-  const { status } = req.query as { status?: StatusRequestEnum };
+  const { status } = req.query as { status: StatusRequestEnum };
   const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid))
     ?.data;
 
-  const filters = {
-    ...(foundUser instanceof UserEntity && {
-      user: { id: foundUser.id } ,
-    }),
-    ...(status && { status }),
-  };
+  const statusArray = [status].join(",").split(",") as StatusRequestEnum[];
+
+const filters = {
+  ...(foundUser instanceof UserEntity && {
+    user: { id: foundUser.id } ,
+  }),
+  ...(statusArray.length > 0 && { status: In(statusArray) }),
+};
 
   getAllRequestService(foundUser, { ...(foundUser && { where: filters }), relations: { user: true, book: true } })
     .then((data) => {
