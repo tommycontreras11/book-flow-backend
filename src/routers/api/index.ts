@@ -43,23 +43,37 @@ router.use(
   unless([{ path: "/", method: "GET" }], authMiddleware),
   countryRoutes
 );
-//router.use("/languages", unless([{ path: '/', method: 'GET' }], authMiddleware), languageRoutes);
-//router.use("/bibliography-types", unless([{ path: '/', method: 'GET' }], authMiddleware), bibliographyTypeRoutes);
-//router.use("/sciences", unless([{ path: '/', method: 'GET' }], authMiddleware), scienceRoutes);
-//router.use("/publishers", unless([{ path: '/', method: 'GET' }], authMiddleware), publisherRoutes);
-//router.use("/authors", unless([{ path: '/', method: 'GET' }], authMiddleware), authorRoutes);
-
-router.use("/books", bookRoutes);
-router.use("/requests", requestRoutes);
-router.use("/sciences", scienceRoutes);
-router.use("/languages", languageRoutes);
-router.use("/publishers", publisherRoutes);
-router.use("/authors", authorRoutes);
-router.use("/bibliography-types", bibliographyTypeRoutes);
-
-//router.use("/books", unless([{ path: '/', method: 'GET' }], authMiddleware), bookRoutes);
-
-//router.use("/requests", unless([{ path: '/', method: 'GET' }], authMiddleware), requestRoutes);
+router.use(
+  "/languages",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  languageRoutes
+);
+router.use(
+  "/bibliography-types",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  bibliographyTypeRoutes
+);
+router.use(
+  "/sciences",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  scienceRoutes
+);
+router.use(
+  "/publishers",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  publisherRoutes
+);
+router.use(
+  "/authors",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  authorRoutes
+);
+router.use(
+  "/books",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  bookRoutes
+);
+router.use("/requests", authMiddleware, requestRoutes);
 router.use("/loan-managements", authMiddleware, loanManagementsRoutes);
 
 export default router;

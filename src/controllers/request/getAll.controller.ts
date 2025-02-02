@@ -2,15 +2,22 @@ import { Request, Response } from "express";
 import { statusCode } from "../../utils/status.util";
 import { getAllRequestService } from "./../../services/request/getAll.service";
 import { StatusRequestEnum } from "./../../database/entities/entity/request.entity";
+import { retrieveIfUserExists } from "./../../utils/user.util";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
 
 export const getAllRequestController = async (req: Request, res: Response) => {
   const { status } = req.query as { status?: StatusRequestEnum };
+  const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid))
+    ?.data;
 
   const filters = {
+    ...(foundUser instanceof UserEntity && {
+      where: { user: { id: foundUser.id } },
+    }),
     ...(status && { where: { status } }),
   };
 
-  getAllRequestService({ ...filters, relations: { user: true, book: true } })
+  getAllRequestService(foundUser !== undefined, { ...(foundUser && {...filters}), relations: { user: true, book: true } })
     .then((data) => {
       const requests = data.map((request) => ({
         uuid: request.uuid,

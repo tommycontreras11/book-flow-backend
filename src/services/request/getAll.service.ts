@@ -2,7 +2,9 @@ import { FindManyOptions } from "typeorm";
 import { RequestEntity } from "../../database/entities/entity/request.entity";
 import { statusCode } from "../../utils/status.util";
 
-export async function getAllRequestService(options: FindManyOptions<RequestEntity>) {
+export async function getAllRequestService(userLogged: boolean, options: FindManyOptions<RequestEntity>) {
+  if(!userLogged) return []
+
   const requests = await RequestEntity.find(options).catch((e) => {
     console.error("RequestEntity.find: ", e);
     return null;
