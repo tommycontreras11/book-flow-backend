@@ -17,19 +17,19 @@ export const getAllLoanManagementController = async (req: Request, res: Response
 
     const filters = {
       ...(foundUser instanceof UserEntity && {
-        where: { request: { user: { id: foundUser.id } } },
+        request: { user: { id: foundUser.id } },
       }),
       ...(bibliographyType && {
-        where: { request: { book: { bibliographyType: { description: bibliographyType } } }},
+        request: { book: { bibliographyType: { description: bibliographyType } } },
       }),
-      ...(language && { where: { request: { book: { language: { description: language } } } }}),
-      ...(dateLoan && dateReturn && { where: { date_loan: Between(dateLoan, dateReturn) } }), 
-      ...(dateLoan && !dateReturn && { where: { date_loan: dateLoan } }), 
-      ...(!dateLoan && dateReturn && { where: { date_return: dateReturn } }), 
+      ...(language && { request: { book: { language: { description: language } } } }),
+      ...(dateLoan && dateReturn && { date_loan: Between(dateLoan, dateReturn) }), 
+      ...(dateLoan && !dateReturn && { date_loan: dateLoan }), 
+      ...(!dateLoan && dateReturn && { date_return: dateReturn }), 
     };
     
-    await getAllLoanManagementService({
-      ...filters,
+    await getAllLoanManagementService(foundUser, { 
+      ...(foundUser && { where: filters }),
       relations: { request: { book: { authors: true, bibliographyType: true, language: true }, user: true } },
     }).then((data) => {
       const loanManagements = data.map((loanManagement) => ({

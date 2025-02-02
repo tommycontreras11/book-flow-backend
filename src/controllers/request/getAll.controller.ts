@@ -12,12 +12,12 @@ export const getAllRequestController = async (req: Request, res: Response) => {
 
   const filters = {
     ...(foundUser instanceof UserEntity && {
-      where: { user: { id: foundUser.id } },
+      user: { id: foundUser.id } ,
     }),
-    ...(status && { where: { status } }),
+    ...(status && { status }),
   };
 
-  getAllRequestService(foundUser !== undefined, { ...(foundUser && {...filters}), relations: { user: true, book: true } })
+  getAllRequestService(foundUser, { ...(foundUser && { where: filters }), relations: { user: true, book: true } })
     .then((data) => {
       const requests = data.map((request) => ({
         uuid: request.uuid,
