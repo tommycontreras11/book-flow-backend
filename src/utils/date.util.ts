@@ -9,3 +9,12 @@ export const getDaysBetweenDates = (
 
   return Math.ceil(diffInMs / (1000 * 60 * 60 * 24));
 };
+
+export const getTodayFullDate = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+}
