@@ -26,7 +26,7 @@ export class LoanManagementEntity extends BaseEntity {
     @Column()
     quantity_day: number
 
-    @Column({ length: 250 })
+    @Column({ length: 250, nullable: true })
     comment: string
 
     @Column()

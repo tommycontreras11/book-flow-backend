@@ -41,7 +41,7 @@ export class CreateLoanManagementDTO {
 
   @IsString()
   @MaxLength(250)
-  @IsNotEmpty()
+  @IsOptional()
   comment: string;
 }
 
