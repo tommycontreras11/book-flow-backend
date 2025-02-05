@@ -1,6 +1,5 @@
-export const generateLoanNumber = (
+export const generateRandomCode = (prefix: string
 ) => {
-  const prefix = "LN";
   const date = new Date();
 
   const year = date.getFullYear();

@@ -3,6 +3,7 @@ import { CreateUserDTO } from "./../../dto/user.dto";
 import { statusCode } from "../../utils/status.util";
 import { retrieveIfUserExists } from "../../utils/user.util";
 import bcrypt from "bcrypt";
+import { generateRandomCode } from "./../../utils/common.util";
 
 export async function createUserService({
   username,
@@ -32,6 +33,7 @@ export async function createUserService({
   await UserEntity.create({
     username,
     identification,
+    carnet_number: generateRandomCode("CAR"),
     status: "ACTIVE",
     password: hashedPassword,
     ...payload,

@@ -22,11 +22,6 @@ export class CreateUserDTO {
     identification: string;
 
     @IsNotEmpty()
-    @IsString()
-    @MaxLength(100)
-    carnet_number: string;
-
-    @IsNotEmpty()
     @IsEnum(PersonTypeEnum)
     person_type: keyof typeof PersonTypeEnum;
 }

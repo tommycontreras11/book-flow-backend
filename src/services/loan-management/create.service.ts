@@ -1,4 +1,4 @@
-import { generateLoanNumber } from "./../../utils/loan-management.util";
+import { generateRandomCode } from "../../utils/common.util";
 import {
   RequestEntity,
   StatusRequestEnum,
@@ -46,7 +46,7 @@ export async function createLoanManagementService(
   await LoanManagementEntity.create({
     loan_number: hasLoanManagementBorrow
       ? loanManagement[0].loan_number
-      : generateLoanNumber(),
+      : generateRandomCode("LM"),
     date_loan: hasLoanManagementBorrow
       ? loanManagement[0].date_loan
       : date_loan,
