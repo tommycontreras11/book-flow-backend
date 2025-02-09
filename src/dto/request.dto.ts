@@ -23,7 +23,7 @@ export class UpdateRequestDTO {
   @IsString()
   @MaxLength(100)
   @IsOptional()
-  description: string;
+  name: string;
 
   @IsUUID("4")
   @IsString()

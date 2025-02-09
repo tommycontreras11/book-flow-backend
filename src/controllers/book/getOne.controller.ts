@@ -12,25 +12,25 @@ export const getOneBookController = async (req: Request, res: Response) => {
     .then((data) => {
       const book = {
         uuid: data.uuid,
-        description: data.description,
+        name: data.name,
         topographical_signature: data.topographical_signature,
         isbn: data.isbn,
         publication_year: data.publication_year,
         bibliography_type: {
           uuid: data.bibliographyType.uuid,
-          description: data.bibliographyType.description,
+          name: data.bibliographyType.name,
         },
         publisher: {
           uuid: data.publisher.uuid,
-          description: data.publisher.description,
+          name: data.publisher.name,
         },
         language: {
           uuid: data.language.uuid,
-          description: data.language.description,
+          name: data.language.name,
         },
         science: {
           uuid: data.science.uuid,
-          description: data.science.description,
+          name: data.science.name,
         },
         status: data.status,
       };

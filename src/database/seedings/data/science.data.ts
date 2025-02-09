@@ -14,5 +14,5 @@ const sciences = [
 ];
 
 export const ScienceData: Partial<ScienceEntity>[] = sciences.map((science) => ({
-    description: science
+    name: science
 }));

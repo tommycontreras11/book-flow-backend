@@ -5,7 +5,7 @@ import { statusCode } from "../../utils/status.util";
 export async function updateScienceService(
   uuid: string,
   {
-    description,
+    name,
     ...payload
   }: UpdateScienceDTO)  {
   const science = await ScienceEntity.findOneBy({ uuid }).catch((e) => {
@@ -21,7 +21,7 @@ export async function updateScienceService(
 
   await ScienceEntity.update(
     { uuid },
-    { description, ...payload }
+    { name, ...payload }
   ).catch((e) => {
     console.error("ScienceEntity.update: ", e);
     return null;

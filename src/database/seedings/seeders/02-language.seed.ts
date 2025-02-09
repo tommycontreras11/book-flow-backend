@@ -9,7 +9,7 @@ export class LanguageSeeder implements Seeder {
             const languageRepository = dataSource.getRepository(LanguageEntity);
 
             await Promise.all(LanguageData.map(async (language) => {
-                const exists = await languageRepository.findOneBy({ description: language.description });
+                const exists = await languageRepository.findOneBy({ name: language.name });
 
                 if(exists) return;
 

@@ -4,7 +4,7 @@ import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliog
 
 export async function updateBibliographyTypeService(
   uuid: string,
-  { description, ...payload }: UpdateBibliographyTypeDTO
+  { name, ...payload }: UpdateBibliographyTypeDTO
 ) {
   const bibliographyType = await BibliographyTypeEntity.findOneBy({
     uuid,
@@ -22,7 +22,7 @@ export async function updateBibliographyTypeService(
   await BibliographyTypeEntity.update(
     { uuid },
     {
-      description,
+      name,
       ...payload,
     }
   ).catch((e) => {

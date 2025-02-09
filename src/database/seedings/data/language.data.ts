@@ -15,6 +15,6 @@ const languages = [
 ];
 
 export const LanguageData: Partial<LanguageEntity>[] = languages.map((language) => ({
-    description: language,
+    name: language,
     status: "ACTIVE" as StatusEnum
 }));

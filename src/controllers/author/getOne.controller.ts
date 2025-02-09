@@ -19,7 +19,7 @@ export const getOneAuthorController = async (req: Request, res: Response) => {
         },
         nativeLanguage: {
           uuid: data.nativeLanguage.uuid,
-          description: data.nativeLanguage.description,
+          name: data.nativeLanguage.name,
         },
         status: data.status,
       };

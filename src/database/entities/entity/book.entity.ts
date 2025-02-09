@@ -10,7 +10,7 @@ import { ScienceEntity } from "./science.entity"
 @Entity({ name: 'books' })
 export class BookEntity extends BaseEntity {
     @Column({ length: 250 })
-    description: string
+    name: string
 
     @Column()
     topographical_signature: string

@@ -5,14 +5,14 @@ export class CreatePublisherDTO {
     @IsNotEmpty()
     @IsString()
     @MaxLength(100)
-    description: string;
+    name: string;
 }
 
 export class UpdatePublisherDTO {
     @IsOptional()
     @IsString()
     @MaxLength(100)
-    description: string;
+    name: string;
 
     @IsOptional()
     @IsEnum(StatusEnum)

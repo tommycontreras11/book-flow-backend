@@ -3,10 +3,10 @@ import { statusCode } from "../../utils/status.util";
 import { BibliographyTypeEntity } from "./../../database/entities/entity/bibliography-type.entity";
 
 export async function createBibliographyTypeService({
-  description,
+  name,
 }: CreateBibliographyTypeDTO) {
   const foundBibliographyType = await BibliographyTypeEntity.findOneBy({
-    description,
+    name,
   }).catch((e) => {
     console.error("BibliographyTypeEntity.findOneBy: ", e);
     return null;
@@ -19,7 +19,7 @@ export async function createBibliographyTypeService({
     });
 
   await BibliographyTypeEntity.create({
-    description,
+    name,
     status: "ACTIVE",
   })
     .save()

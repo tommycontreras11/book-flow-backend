@@ -7,7 +7,7 @@ export const getAllPublisherController = async (_req: Request, res: Response) =>
     .then((data) => {
       const publishers = data.map((publisher) => ({
         uuid: publisher.uuid,
-        description: publisher.description,
+        name: publisher.name,
         status: publisher.status
       }));
 

@@ -6,7 +6,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
   const { science } = req.query as { science?: string };
   
   const filters = {
-    ...(science && { where: { science: { description: science } } }),
+    ...(science && { where: { science: { name: science } } }),
   };
   
   getAllBookService({
@@ -16,14 +16,14 @@ export const getAllBookController = async (req: Request, res: Response) => {
     .then((data) => {
       const books = data.map((book) => ({
         uuid: book.uuid,
-        description: book.description,
+        name: book.name,
         topographical_signature: book.topographical_signature,
         isbn: book.isbn,
         publication_year: book.publication_year,        
-        bibliographyTypeName: book.bibliographyType.description,
-        publisherName: book.publisher.description,
-        languageName: book.language.description,
-        scienceDescription: book.science.description,
+        bibliographyTypeName: book.bibliographyType.name,
+        publisherName: book.publisher.name,
+        languageName: book.language.name,
+        scienceDescription: book.science.name,
         status: book.status,
       }));
 

@@ -7,7 +7,7 @@ export const getAllScienceController = async (_req: Request, res: Response) => {
     .then((data) => {
       const sciences = data.map((science) => ({
         uuid: science.uuid,
-        description: science.description,
+        name: science.name,
         status: science.status
       }));
 

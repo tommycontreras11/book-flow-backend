@@ -5,7 +5,7 @@ import { BookEntity } from "./book.entity"
 @Entity({ name: 'sciences' })
 export class ScienceEntity extends BaseEntity {
     @Column({ length: 100 })
-    description: string
+    name: string
 
     @Column({ type: 'enum', enum: StatusEnum })
     status: StatusType

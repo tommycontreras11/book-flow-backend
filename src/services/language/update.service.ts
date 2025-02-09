@@ -4,7 +4,7 @@ import { statusCode } from "../../utils/status.util";
 
 export async function updateLanguageService(
   uuid: string,
-  { description }: UpdateLanguageDTO
+  { name }: UpdateLanguageDTO
 ) {
   const foundLanguage = await LanguageEntity.findOneBy({ uuid }).catch((e) => {
     console.error("LanguageEntity.findOneBy: ", e);
@@ -18,7 +18,7 @@ export async function updateLanguageService(
     });
 
   const foundDescription = await LanguageEntity.findOneBy({
-    description,
+    name,
   }).catch((e) => {
     console.error("LanguageEntity.findOneBy: ", e);
     return null;
@@ -32,7 +32,7 @@ export async function updateLanguageService(
 
   await LanguageEntity.update(
     { id: foundLanguage.id },
-    { ...(description && { description }) }
+    { ...(name && { name }) }
   ).catch((e) => {
     console.error("LanguageEntity.update: ", e);
     return null;

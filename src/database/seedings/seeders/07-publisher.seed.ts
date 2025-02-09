@@ -9,7 +9,7 @@ export class PublisherSeeder implements Seeder {
             const publisherRepository = dataSource.getRepository(PublisherEntity);
 
             await Promise.all(PublisherData.map(async (publisher) => {
-                const exists = await publisherRepository.findOneBy({ description: publisher.description });
+                const exists = await publisherRepository.findOneBy({ name: publisher.name });
 
                 if(exists) return;
 

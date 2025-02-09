@@ -8,7 +8,7 @@ export const getOneBibliographyTypeController = async (req: Request, res: Respon
   getOneBibliographyTypeService({ where: { uuid } })
     .then((data) => {
       const bibliographyType = {
-        description: data.description
+        name: data.name
       };
 
       return res.status(statusCode.OK).json({ data: bibliographyType });

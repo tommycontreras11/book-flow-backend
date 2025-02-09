@@ -30,7 +30,7 @@ const filters = {
         },
         book: {
           uuid: request.book.uuid,
-          description: request.book.description,
+          name: request.book.name,
         },
         status: request.status,
       }));

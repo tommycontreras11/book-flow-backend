@@ -8,7 +8,7 @@ export const getOnePublisherController = async (req: Request, res: Response) => 
   getOnePublisherService({ where: { uuid } })
     .then((data) => {
       const publisher = {
-        description: data.description
+        name: data.name
       };
 
       return res.status(statusCode.OK).json({ data: publisher });

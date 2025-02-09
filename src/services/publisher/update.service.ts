@@ -4,7 +4,7 @@ import { PublisherEntity } from "./../../database/entities/entity/publisher.enti
 
 export async function updatePublisherService(
   uuid: string,
-  { description, ...payload }: UpdatePublisherDTO
+  { name, ...payload }: UpdatePublisherDTO
 ) {
   const publisher = await PublisherEntity.findOneBy({ uuid }).catch((e) => {
     console.error("PublisherEntity.findOneBy: ", e);
@@ -20,7 +20,7 @@ export async function updatePublisherService(
   await PublisherEntity.update(
     { uuid },
     {
-      description,
+      name,
       ...payload,
     }
   ).catch((e) => {

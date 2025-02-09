@@ -8,7 +8,7 @@ export const getOneLanguageController = async (req: Request, res: Response) => {
   getOneLanguageService({ where: { uuid } })
     .then((data) => {
       const language = {
-        description: data.description
+        name: data.name
       };
 
       return res.status(statusCode.OK).json({ data: language });

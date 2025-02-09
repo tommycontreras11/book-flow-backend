@@ -9,7 +9,7 @@ export const getOneScienceController = async (req: Request, res: Response) => {
     .then((data) => {
       const science = {
         uuid: data.uuid,
-        description: data.description
+        name: data.name
       };
 
       return res.status(statusCode.OK).json({ data: science });

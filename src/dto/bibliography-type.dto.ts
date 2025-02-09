@@ -5,14 +5,14 @@ export class CreateBibliographyTypeDTO {
     @IsNotEmpty()
     @IsString()
     @MaxLength(100)
-    description: string;
+    name: string;
 }
 
 export class UpdateBibliographyTypeDTO {
     @IsOptional()
     @IsString()
     @MaxLength(100)
-    description: string;
+    name: string;
 
     @IsOptional()
     @IsEnum(StatusEnum)

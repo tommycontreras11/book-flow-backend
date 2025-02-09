@@ -14,11 +14,11 @@ export async function createBookService({
   publisherUUID,
   languageUUID,
   scienceUUID,
-  description,
+  name,
   authorUUIDs,
   ...payload
 }: CreateBookDTO) {
-  const foundBook = await BookEntity.findOneBy({ description });
+  const foundBook = await BookEntity.findOneBy({ name });
 
   if (foundBook)
     return Promise.reject({
@@ -96,7 +96,7 @@ export async function createBookService({
     publisher_id: publisher.id,
     language_id: language.id,
     science_id: science.id,
-    description,
+    name,
     status: "ACTIVE",
   })
     .save()

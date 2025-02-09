@@ -3,7 +3,7 @@ import { BookEntity } from "./../../../database/entities/entity/book.entity";
 
 const books = [
     {
-        description: "Advanced Mathematics",
+        name: "Advanced Mathematics",
         topographical_signature: "QA76.73.J38",
         isbn: "9781234567890",
         bibliography_type_id: 1,
@@ -14,7 +14,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Introduction to Physics",
+        name: "Introduction to Physics",
         topographical_signature: "QC23.2",
         isbn: "9789876543210",
         bibliography_type_id: 3,
@@ -25,7 +25,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Modern Chemistry",
+        name: "Modern Chemistry",
         topographical_signature: "QD31.2",
         isbn: "9785678901234",
         bibliography_type_id: 4,
@@ -36,7 +36,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "World History Overview",
+        name: "World History Overview",
         topographical_signature: "D20.5",
         isbn: "9783456789012",
         bibliography_type_id: 2,
@@ -47,7 +47,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Theoretical Computer Science",
+        name: "Theoretical Computer Science",
         topographical_signature: "QA76.9.A25",
         isbn: "9788901234567",
         bibliography_type_id: 7,
@@ -58,7 +58,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Basic Economics",
+        name: "Basic Economics",
         topographical_signature: "HB171.5",
         isbn: "9789012345678",
         bibliography_type_id: 8,
@@ -69,7 +69,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Human Anatomy",
+        name: "Human Anatomy",
         topographical_signature: "QM25",
         isbn: "9786789012345",
         bibliography_type_id: 9,
@@ -80,7 +80,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Astronomy Fundamentals",
+        name: "Astronomy Fundamentals",
         topographical_signature: "QB43.3",
         isbn: "9782345678901",
         bibliography_type_id: 6,
@@ -91,7 +91,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Introduction to Psychology",
+        name: "Introduction to Psychology",
         topographical_signature: "BF121",
         isbn: "9784567890123",
         bibliography_type_id: 10,
@@ -102,7 +102,7 @@ const books = [
         status: StatusEnum.ACTIVE
     },
     {
-        description: "Environmental Science Basics",
+        name: "Environmental Science Basics",
         topographical_signature: "GE105",
         isbn: "9780123456789",
         bibliography_type_id: 5,
@@ -115,7 +115,7 @@ const books = [
 ];
 
 export const BookData: Partial<BookEntity>[] = books.map((book) => ({
-    description: book.description,
+    name: book.name,
     topographical_signature: book.topographical_signature,
     isbn: book.isbn,
     bibliography_type_id: book.bibliography_type_id,

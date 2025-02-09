@@ -11,14 +11,14 @@ export class CreateScienceDTO {
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)
-  description: string;
+  name: string;
 }
 
 export class UpdateScienceDTO {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  description: string;
+  name: string;
 
   @IsOptional()
   @IsEnum(StatusEnum)

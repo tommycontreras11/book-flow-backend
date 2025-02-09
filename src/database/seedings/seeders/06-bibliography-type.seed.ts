@@ -9,7 +9,7 @@ export class BibliographyTypeSeeder implements Seeder {
             const bibliographyTypeRepository = dataSource.getRepository(BibliographyTypeEntity);
 
             await Promise.all(BibliographyTypeData.map(async (bibliographyType) => {
-                const exists = await bibliographyTypeRepository.findOneBy({ description: bibliographyType.description });
+                const exists = await bibliographyTypeRepository.findOneBy({ name: bibliographyType.name });
 
                 if(exists) return;
 

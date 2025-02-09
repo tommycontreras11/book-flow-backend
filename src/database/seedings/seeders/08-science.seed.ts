@@ -11,7 +11,7 @@ export class ScienceSeeder implements Seeder {
       await Promise.all(
         ScienceData.map(async (science) => {
           const exists = await scienceRepository.findOneBy({
-            description: science.description,
+            name: science.name,
           });
 
           if (exists) return;

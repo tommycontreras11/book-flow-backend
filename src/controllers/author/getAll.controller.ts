@@ -11,7 +11,7 @@ export const getAllAuthorController = async (_req: Request, res: Response) => {
         uuid: author.uuid,
         name: author.name,
         birthCountryName: author.birthCountry.name,
-        nativeLanguageDescription: author.nativeLanguage.description,
+        nativeLanguageDescription: author.nativeLanguage.name,
         status: author.status,
       }));
 

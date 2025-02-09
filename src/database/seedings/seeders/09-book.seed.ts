@@ -15,7 +15,7 @@ export class BookSeeder implements Seeder {
             for (let i = 0; i < BookData.length; i++) {
                 const book = BookData[i];
 
-                const exists = await bookRepository.findOneBy({ description: book.description });
+                const exists = await bookRepository.findOneBy({ name: book.name });
 
                 if (exists) continue;
 

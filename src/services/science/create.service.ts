@@ -3,9 +3,9 @@ import { CreateScienceDTO } from "./../../dto/science.dto";
 import { statusCode } from "../../utils/status.util";
 
 export async function createScienceService({
-  description
+  name
 }: CreateScienceDTO) {
-  const science = await ScienceEntity.findOneBy({ description }).catch((e) => {
+  const science = await ScienceEntity.findOneBy({ name }).catch((e) => {
     console.error("ScienceEntity.findOneBy: ", e);
     return null;
   });
@@ -17,7 +17,7 @@ export async function createScienceService({
     });
 
   await ScienceEntity.create({
-    description,
+    name,
     status: "ACTIVE"
   })
     .save()

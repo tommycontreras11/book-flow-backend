@@ -17,7 +17,7 @@ export async function updateBookService(
     languageUUID,
     scienceUUID,
     authorUUIDs,
-    description,
+    name,
     ...payload
   }: UpdateBookDTO
 ) {
@@ -30,12 +30,12 @@ export async function updateBookService(
     });
 
   const foundBookByDescription = await BookEntity.findOne({
-    where: { description, uuid: Not(uuid) },
+    where: { name, uuid: Not(uuid) },
   });
 
   if (foundBookByDescription)
     return Promise.reject({
-      message: "Book's description already exists",
+      message: "Book's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -122,7 +122,7 @@ export async function updateBookService(
       });
   }
 
-  foundBook.description = description;
+  foundBook.name = name;
   if (publisher) foundBook.publisher_id = publisher.id;
   if (bibliographyType) foundBook.bibliography_type_id = bibliographyType.id;
   if (language) foundBook.language_id = language.id;

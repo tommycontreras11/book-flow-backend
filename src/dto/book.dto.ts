@@ -14,7 +14,7 @@ export class CreateBookDTO {
   @IsNotEmpty()
   @IsString()
   @MaxLength(250)
-  description: string;
+  name: string;
 
   @IsNotEmpty()
   @IsString()
@@ -58,7 +58,7 @@ export class UpdateBookDTO {
   @IsOptional()
   @IsString()
   @MaxLength(250)
-  description: string;
+  name: string;
 
   @IsOptional()
   @IsString()

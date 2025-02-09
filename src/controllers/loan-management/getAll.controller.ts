@@ -20,9 +20,9 @@ export const getAllLoanManagementController = async (req: Request, res: Response
         request: { user: { id: foundUser.id } },
       }),
       ...(bibliographyType && {
-        request: { book: { bibliographyType: { description: bibliographyType } } },
+        request: { book: { bibliographyType: { name: bibliographyType } } },
       }),
-      ...(language && { request: { book: { language: { description: language } } } }),
+      ...(language && { request: { book: { language: { name: language } } } }),
       ...(dateLoan && dateReturn && { date_loan: Between(dateLoan, dateReturn) }), 
       ...(dateLoan && !dateReturn && { date_loan: dateLoan }), 
       ...(!dateLoan && dateReturn && { date_return: dateReturn }), 
@@ -43,8 +43,8 @@ export const getAllLoanManagementController = async (req: Request, res: Response
           uuid: loanManagement.request.uuid,
           book: {
             uuid: loanManagement.request.book.uuid,
-            description: loanManagement.request.book.description,
-            language: loanManagement.request.book.language.description,
+            name: loanManagement.request.book.name,
+            language: loanManagement.request.book.language.name,
             publication_year: loanManagement.request.book.publication_year,
             authors: loanManagement.request.book.authors.map((author) => author.name),
           },
