@@ -13,8 +13,14 @@ export const getOneAuthorController = async (req: Request, res: Response) => {
       const author = {
         uuid: data.uuid,
         name: data.name,
-        birthCountry: data.birthCountry.name,
-        nativeLanguage: data.nativeLanguage.description,
+        birthCountry: {
+          uuid: data.birthCountry.uuid,
+          name: data.birthCountry.name,
+        },
+        nativeLanguage: {
+          uuid: data.nativeLanguage.uuid,
+          description: data.nativeLanguage.description,
+        },
         status: data.status,
       };
 
