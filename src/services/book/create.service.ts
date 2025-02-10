@@ -92,6 +92,8 @@ export async function createBookService({
 
   const book = await BookEntity.create({
     ...payload,
+    topographical_signature: payload.topographicalSignature,
+    publication_year: payload.publicationYear,
     bibliography_type_id: bibliographyType.id,
     publisher_id: publisher.id,
     language_id: language.id,

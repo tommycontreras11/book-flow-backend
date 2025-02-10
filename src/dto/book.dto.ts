@@ -18,7 +18,7 @@ export class CreateBookDTO {
 
   @IsNotEmpty()
   @IsString()
-  topographical_signature: string;
+  topographicalSignature: string;
 
   @IsNotEmpty()
   @IsString()
@@ -26,7 +26,7 @@ export class CreateBookDTO {
 
   @IsNotEmpty()
   @IsNumber()
-  publication_year: number;
+  publicationYear: number;
 
   @IsUUID("4")
   @IsString()
@@ -62,7 +62,7 @@ export class UpdateBookDTO {
 
   @IsOptional()
   @IsString()
-  topographical_signature: string;
+  topographicalSignature: string;
 
   @IsOptional()
   @IsString()
@@ -70,7 +70,7 @@ export class UpdateBookDTO {
 
   @IsOptional()
   @IsNumber()
-  publication_year: number;
+  publicationYear: number;
 
   @IsUUID("4")
   @IsString()

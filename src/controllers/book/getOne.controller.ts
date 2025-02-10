@@ -13,9 +13,9 @@ export const getOneBookController = async (req: Request, res: Response) => {
       const book = {
         uuid: data.uuid,
         name: data.name,
-        topographical_signature: data.topographical_signature,
+        topographicalSignature: data.topographical_signature,
         isbn: data.isbn,
-        publication_year: data.publication_year,
+        publicationYear: data.publication_year,
         bibliography_type: {
           uuid: data.bibliographyType.uuid,
           name: data.bibliographyType.name,

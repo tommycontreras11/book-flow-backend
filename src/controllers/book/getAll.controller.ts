@@ -17,9 +17,9 @@ export const getAllBookController = async (req: Request, res: Response) => {
       const books = data.map((book) => ({
         uuid: book.uuid,
         name: book.name,
-        topographical_signature: book.topographical_signature,
+        topographicalSignature: book.topographical_signature,
         isbn: book.isbn,
-        publication_year: book.publication_year,        
+        publicationYear: book.publication_year,        
         bibliographyTypeName: book.bibliographyType.name,
         publisherName: book.publisher.name,
         languageName: book.language.name,
