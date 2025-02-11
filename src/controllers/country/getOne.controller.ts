@@ -8,7 +8,8 @@ export const getOneCountryController = async (req: Request, res: Response) => {
   getOneCountryService({ where: { uuid } })
     .then((data) => {
       const country = {
-        name: data.name
+        name: data.name,
+        status: data.status
       };
 
       return res.status(statusCode.OK).json({ data: country });

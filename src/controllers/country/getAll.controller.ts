@@ -7,7 +7,8 @@ export const getAllCountryController = async (_req: Request, res: Response) => {
     .then((data) => {
       const countries = data.map((country) => ({
         uuid: country.uuid,
-        name: country.name
+        name: country.name,
+        status: country.status
       }));
 
       return res.status(statusCode.OK).json({ data: countries })
