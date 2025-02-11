@@ -7,7 +7,13 @@ export const getOneBookController = async (req: Request, res: Response) => {
 
   getOneBookService({
     where: { uuid },
-    relations: { bibliographyType: true, publisher: true, language: true, science: true },
+    relations: {
+      bibliographyType: true,
+      publisher: true,
+      language: true,
+      science: true,
+      authors: true,
+    },
   })
     .then((data) => {
       const book = {
@@ -16,22 +22,11 @@ export const getOneBookController = async (req: Request, res: Response) => {
         topographicalSignature: data.topographical_signature,
         isbn: data.isbn,
         publicationYear: data.publication_year,
-        bibliography_type: {
-          uuid: data.bibliographyType.uuid,
-          name: data.bibliographyType.name,
-        },
-        publisher: {
-          uuid: data.publisher.uuid,
-          name: data.publisher.name,
-        },
-        language: {
-          uuid: data.language.uuid,
-          name: data.language.name,
-        },
-        science: {
-          uuid: data.science.uuid,
-          name: data.science.name,
-        },
+        bibliographyTypeUUID: data.bibliographyType.uuid,
+        publisherUUID: data.publisher.uuid,
+        languageUUID: data.language.uuid,
+        scienceUUID: data.science.uuid,
+        authorUUIDs: data.authors.map((author) => author.uuid),
         status: data.status,
       };
 
