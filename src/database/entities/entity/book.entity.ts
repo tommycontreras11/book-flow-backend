@@ -32,6 +32,9 @@ export class BookEntity extends BaseEntity {
 
     @Column()
     science_id: number
+
+    @Column()
+    file_name: string
     
     @Column({ type: 'enum', enum: StatusEnum })
     status: StatusType

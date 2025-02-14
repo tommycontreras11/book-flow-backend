@@ -8,6 +8,9 @@ import { CreateBookDTO } from "../../dto/book.dto";
 import { statusCode } from "../../utils/status.util";
 import { In } from "typeorm";
 import { recursiveCreateBookAuthor } from "../../utils/book.util";
+import { generateUniqueFileName, getExtensionByFileName } from "./../../utils/dir.util";
+import { ObjectStorage } from "./../../libs/object-storage";
+import { ALLOWED_EXTENSION } from "./../../constants/multer.constant";
 
 export async function createBookService({
   bibliographyTypeUUID,
@@ -17,7 +20,11 @@ export async function createBookService({
   name,
   authorUUIDs,
   ...payload
-}: CreateBookDTO) {
+}: CreateBookDTO, file:
+| Express.Multer.File
+| undefined) {
+  if(file === undefined) return Promise.reject({ message: "File not found", status: statusCode.BAD_REQUEST });
+
   const foundBook = await BookEntity.findOneBy({ name });
 
   if (foundBook)
@@ -108,6 +115,33 @@ export async function createBookService({
     });
 
   book && (await recursiveCreateBookAuthor(book, [...foundAuthors]));
+  
+  book && (await uploadFile(book, file));
 
   return "Book created successfully";
+}
+
+async function uploadFile(book: BookEntity, file: Express.Multer.File): Promise<unknown> {
+  const extension = getExtensionByFileName(file.originalname)
+  if(!extension || !ALLOWED_EXTENSION.includes(extension)) {
+      return Promise.reject({ message: "File extension not allowed. Valid extensions are: " + ALLOWED_EXTENSION.join(", ") + "", status: statusCode.BAD_REQUEST })
+  }
+
+  const storage = ObjectStorage.instance
+
+  const fileName = await generateUniqueFileName(extension)
+
+  const minio = await storage.uploadDocument(
+      fileName,
+      file.buffer,
+      file.size,
+  ).catch(async (e) => {
+      console.error("createFileService -> storage.uploadDocument: ", e);
+      await book.remove()
+      return null;
+  })
+
+  if(!minio) return Promise.reject({ message: "File not uploaded to minio", status: statusCode.BAD_REQUEST })
+
+  return fileName;
 }

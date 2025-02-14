@@ -3,7 +3,7 @@ import { createBookService } from "../../services/book/create.service";
 import { statusCode } from "../../utils/status.util";
 
 export const createBookController = async (req: Request, res: Response) => {
-  createBookService(req.body)
+  createBookService(req.body, req.file)
     .then((data) => res.status(statusCode.CREATED).json({ message: data }))
     .catch((e) =>
       res

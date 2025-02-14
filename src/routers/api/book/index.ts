@@ -7,12 +7,14 @@ import { getOneBookController } from "../../../controllers/book/getOne.controlle
 import { updateBookController } from "../../../controllers/book/update.controller";
 import { deleteBookController } from "../../../controllers/book/delete.controller";
 import { UuidDTO } from "../../../dto/common.dto";
+import { userSchema } from "./../../../schemas/bookSchema";
+import validateSchema from "./../../../middlewares/schema/validate-schema.middleware";
 
 const router = Router()
 
 router.get('/', getAllBookController)
 router.get('/:uuid', validateDTO(UuidDTO, 'params'), getOneBookController)
-router.post('/', validateDTO(CreateBookDTO), createBookController)
+router.post('/', validateSchema(userSchema), createBookController)
 router.patch('/:uuid', validateDTO(UpdateBookDTO), updateBookController)
 router.delete('/:uuid', validateDTO(UuidDTO, 'params'), deleteBookController)
 
