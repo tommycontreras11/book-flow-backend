@@ -1,6 +1,7 @@
-import { Client, UploadedObjectInfo } from 'minio';
+import { Client } from 'minio';
 import { Readable } from 'stream';
 import { IListOfObjects, IObjectStorageConfig } from './object-storage.interface';
+import { UploadedObjectInfo } from 'minio/dist/main/internal/type';
 
 class MinioStorage {
 
@@ -26,25 +27,22 @@ class MinioStorage {
     }
 
     public async createBucket(): Promise<boolean> {
-
-        return new Promise((resolve, reject) => {
-
-            this.client.bucketExists(this.bucket, (error, exists) => {
-                if (error) return reject(error)
-
-                if (exists) return resolve(true)
-
-                this.client.makeBucket(this.bucket, (error) => {
-                    if (error) return reject(error)
-                    return resolve(true)
-                })
-            })
-        })
+        try {
+            const exists = await this.client.bucketExists(this.bucket);
+            if (exists) return true;
+    
+            await this.client.makeBucket(this.bucket, ""); // Second argument for region
+            return true;
+        } catch (error) {
+            console.error("Error creating bucket:", error);
+            throw error;
+        }
     }
+    
 
-    public async upload(filename: string, file: string | Buffer | Readable, size: number, metadata: Record<string, any>): Promise<UploadedObjectInfo> {
+    public async upload(filename: string, file: string | Buffer | Readable, size: number): Promise<UploadedObjectInfo> {
         return new Promise((resolve, reject) => {
-            this.client.putObject(this.bucket, filename, file, size, metadata, (error, info) => {
+            this.client.putObject(this.bucket, filename, file, size, (error: any, info: any) => {
                 if (error) return reject(error)
                 return resolve(info)
             })
@@ -52,23 +50,22 @@ class MinioStorage {
     }
 
     public async download(filename: string): Promise<Buffer> {
-        return new Promise((resolve, reject) => {
-            this.client.getObject(this.bucket, filename, (error, stream) => {
-                if (error) return reject(error)
-
-                const buffers: Array<Uint8Array> = [];
-
-                stream.on("data", buffers.push.bind(buffers));
-
-                stream.on('end', () => {
-                    const buffer = Buffer.concat(buffers);
-                    return resolve(buffer);
-                })
-
-                stream.on('error', (error) => reject(error))
-            })
-        })
+        return new Promise(async (resolve, reject) => {
+            const stream = await this.client.getObject(this.bucket, filename);
+    
+            const buffers: Uint8Array[] = [];
+    
+            stream.on("data", (chunk: Uint8Array) => buffers.push(chunk));
+    
+            stream.on("end", () => {
+                const buffer = Buffer.concat(buffers);
+                resolve(buffer);
+            });
+    
+            stream.on("error", (error: Error) => reject(error));
+        });
     }
+    
 
     public async listOfObjects(): Promise<IListOfObjects[]> {
 
@@ -89,13 +86,15 @@ class MinioStorage {
     }
 
     public async generatePresignedUrl(filename: string): Promise<string> {
-        return new Promise((resolve, reject) => {
-            this.client.presignedGetObject(this.bucket, filename, (error, url) => {
-                if (error) return reject(error)
-                return resolve(url)
-            })
-        })
+        try {
+            const url = await this.client.presignedGetObject(this.bucket, filename, 24 * 60 * 60);
+            return url;
+        } catch (error) {
+            console.error("Error generating presigned URL:", error);
+            throw error;
+        }
     }
+    
 
     public async delete(filename: string): Promise<boolean> {
         return new Promise((resolve, reject) => {

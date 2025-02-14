@@ -1,9 +1,9 @@
 import { objectStorageConfig } from "../../config/";
 import MinioStorage from "./minio";
 import { Readable } from "stream";
-import { UploadedObjectInfo } from "minio";
 import { EXTENSION_MIME_TYPE } from "../../utils/upload.util";
 import { IListOfObjects } from "./object-storage.interface";
+import { UploadedObjectInfo } from "minio/dist/main/internal/type";
 
 export class ObjectStorage {
     private static _instance: ObjectStorage;
@@ -30,11 +30,9 @@ export class ObjectStorage {
         return this.provider.delete(filename);
     }
 
-    public uploadDocument(filename: string, file: string | Buffer | Readable, size: number, metadata: Record<string, any> | string): Promise<UploadedObjectInfo> {
+    public uploadDocument(filename: string, file: string | Buffer | Readable, size: number): Promise<UploadedObjectInfo> {
 
-        (typeof metadata === 'string') && (metadata = { 'Content-Type': EXTENSION_MIME_TYPE[metadata] })
-
-        return this.provider.upload(filename, file, size, metadata)
+        return this.provider.upload(filename, file, size)
     }
 
 
