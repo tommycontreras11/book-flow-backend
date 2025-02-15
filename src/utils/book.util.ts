@@ -11,7 +11,11 @@ export const recursiveCreateBookAuthor = async (
   
     book.authors = [...(book.authors || []), payload];
   
-    await book.save();
+    await book.save().catch((e) => {
+          console.error("BookEntity.create: ", e);
+          return null;
+        });
+    ;
   
     return recursiveCreateBookAuthor(book, authors);
   };

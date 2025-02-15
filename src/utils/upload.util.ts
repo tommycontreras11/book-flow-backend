@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const EXTENSION_MIME_TYPE: Record<string, string> = Object.freeze({
     "png": "image/png",
     "jpg": "image/jpeg",
@@ -17,3 +19,8 @@ export const EXTENSION_MIME_TYPE: Record<string, string> = Object.freeze({
     "tar": "application/x-tar",
     "gz": "application/gzip",
 })
+
+export const upload = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 5 * 1024 * 1024 },
+});

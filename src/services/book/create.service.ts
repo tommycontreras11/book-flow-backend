@@ -108,20 +108,14 @@ export async function createBookService({
     name,
     status: "ACTIVE",
   })
-    .save()
-    .catch((e) => {
-      console.error("BookEntity.create: ", e);
-      return null;
-    });
 
-  book && (await recursiveCreateBookAuthor(book, [...foundAuthors]));
+  book.file_name = await uploadFile(book, file);
+  await recursiveCreateBookAuthor(book, [...foundAuthors]);
   
-  book && (await uploadFile(book, file));
-
   return "Book created successfully";
 }
 
-async function uploadFile(book: BookEntity, file: Express.Multer.File): Promise<unknown> {
+async function uploadFile(book: BookEntity, file: Express.Multer.File): Promise<string> {
   const extension = getExtensionByFileName(file.originalname)
   if(!extension || !ALLOWED_EXTENSION.includes(extension)) {
       return Promise.reject({ message: "File extension not allowed. Valid extensions are: " + ALLOWED_EXTENSION.join(", ") + "", status: statusCode.BAD_REQUEST })

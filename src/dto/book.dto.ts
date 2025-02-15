@@ -9,6 +9,7 @@ import {
   MaxLength
 } from "class-validator";
 import { StatusEnum } from "../database/entities/base/base.entity";
+import { Transform } from "class-transformer";
 
 export class CreateBookDTO {
   @IsNotEmpty()
@@ -26,6 +27,7 @@ export class CreateBookDTO {
 
   @IsNotEmpty()
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   publicationYear: number;
 
   @IsUUID("4")
@@ -51,6 +53,17 @@ export class CreateBookDTO {
   @IsArray()
   @IsUUID('4', { each: true })
   @IsNotEmpty()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [parsed];
+      } catch {
+        return [value]; 
+      }
+    }
+    return value;
+  })
   authorUUIDs: string[];
 }
 
