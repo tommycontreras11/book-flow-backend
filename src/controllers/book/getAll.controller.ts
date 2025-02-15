@@ -7,12 +7,13 @@ export const getAllBookController = async (req: Request, res: Response) => {
   const { science } = req.query as { science?: string };
 
   const filters = {
-    ...(science && { where: { science: { name: science } } }),
+    ...(science && { where: { science: { name: science } } })
   };
 
   getAllBookService({
     ...filters,
     relations: {
+      requests: { user: true, book: true },
       bibliographyType: true,
       publisher: true,
       language: true,
@@ -35,6 +36,16 @@ export const getAllBookController = async (req: Request, res: Response) => {
             publisherName: book.publisher.name,
             languageName: book.language.name,
             scienceDescription: book.science.name,
+            requests: book.requests.map((request) => ({
+              uuid: request.uuid,
+              user: {
+                uuid: request.user.uuid,
+                name: request.user.name,
+              },
+              book: {
+                uuid: request.book.uuid,
+              }
+            })),
             status: book.status,
             url,
           };
