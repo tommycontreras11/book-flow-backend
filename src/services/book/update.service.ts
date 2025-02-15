@@ -5,9 +5,9 @@ import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { UpdateBookDTO } from "../../dto/book.dto";
+import { deleteFile, recursiveCreateBookAuthor, uploadFile } from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "./../../database/entities/entity/author.entity";
-import { recursiveCreateBookAuthor } from "../../utils/book.util";
 
 export async function updateBookService(
   uuid: string,
@@ -18,8 +18,11 @@ export async function updateBookService(
     scienceUUID,
     authorUUIDs,
     name,
-    ...payload
-  }: UpdateBookDTO
+    isbn,
+    topographicalSignature,
+    publicationYear,
+    status
+  }: UpdateBookDTO, file: Express.Multer.File | null
 ) {
   const foundBook = await BookEntity.findOneBy({ uuid });
 
@@ -128,17 +131,22 @@ export async function updateBookService(
   if (language) foundBook.language_id = language.id;
   if (science) foundBook.science_id = science.id;
 
-  Object.assign(foundBook, payload);
-
-  foundBook.status = "ACTIVE";
-
+  foundBook.status = status ?? foundBook.status;
+  foundBook.publication_year = publicationYear ?? foundBook.publication_year;
+  foundBook.isbn = isbn ?? foundBook.isbn;
+  foundBook.topographical_signature = topographicalSignature ?? foundBook.topographical_signature;
+  
   const bookUpdated = await foundBook.save().catch((e) => {
     console.error("BookEntity.updated: ", e);
     return null;
   });
 
-  if (bookUpdated)
-    await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
+  if(file) {
+    await deleteFile(foundBook.file_name);
+    foundBook.file_name = await uploadFile(foundBook, file)
+  };
+
+  if (bookUpdated) await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
 
   return "Book updated successfully";
 }

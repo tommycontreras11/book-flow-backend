@@ -1,19 +1,13 @@
-import { AuthorEntity } from "./../../database/entities/entity/author.entity";
+import { In } from "typeorm";
 import { BibliographyTypeEntity } from "../../database/entities/entity/bibliography-type.entity";
 import { BookEntity } from "../../database/entities/entity/book.entity";
 import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { CreateBookDTO } from "../../dto/book.dto";
+import { recursiveCreateBookAuthor, uploadFile } from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
-import { In } from "typeorm";
-import { recursiveCreateBookAuthor } from "../../utils/book.util";
-import {
-  generateUniqueFileName,
-  getExtensionByFileName,
-} from "./../../utils/dir.util";
-import { ObjectStorage } from "./../../libs/object-storage";
-import { ALLOWED_EXTENSION } from "./../../constants/multer.constant";
+import { AuthorEntity } from "./../../database/entities/entity/author.entity";
 
 export async function createBookService(
   {
@@ -121,40 +115,4 @@ export async function createBookService(
   await recursiveCreateBookAuthor(book, [...foundAuthors]);
 
   return "Book created successfully";
-}
-
-async function uploadFile(
-  book: BookEntity,
-  file: Express.Multer.File
-): Promise<string> {
-  const extension = getExtensionByFileName(file.originalname);
-  if (!extension || !ALLOWED_EXTENSION.includes(extension)) {
-    return Promise.reject({
-      message:
-        "File extension not allowed. Valid extensions are: " +
-        ALLOWED_EXTENSION.join(", ") +
-        "",
-      status: statusCode.BAD_REQUEST,
-    });
-  }
-
-  const storage = ObjectStorage.instance;
-
-  const fileName = await generateUniqueFileName(extension);
-
-  const minio = await storage
-    .uploadDocument(fileName, file.buffer, file.size)
-    .catch(async (e) => {
-      console.error("createFileService -> storage.uploadDocument: ", e);
-      await book.remove();
-      return null;
-    });
-
-  if (!minio)
-    return Promise.reject({
-      message: "File not uploaded to minio",
-      status: statusCode.BAD_REQUEST,
-    });
-
-  return fileName;
 }

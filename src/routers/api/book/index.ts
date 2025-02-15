@@ -14,7 +14,7 @@ const router = Router()
 router.get('/', getAllBookController)
 router.get('/:uuid', validateDTO(UuidDTO, 'params'), getOneBookController)
 router.post('/', upload.single('file'), validateDTO(CreateBookDTO), createBookController)
-router.patch('/:uuid', validateDTO(UpdateBookDTO), updateBookController)
+router.patch('/:uuid', upload.single('file'), validateDTO(UpdateBookDTO), updateBookController)
 router.delete('/:uuid', validateDTO(UuidDTO, 'params'), deleteBookController)
 
 export default router

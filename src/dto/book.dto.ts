@@ -83,6 +83,7 @@ export class UpdateBookDTO {
 
   @IsOptional()
   @IsNumber()
+  @Transform(({ value }) => Number(value))
   publicationYear: number;
 
   @IsUUID("4")
@@ -108,6 +109,17 @@ export class UpdateBookDTO {
   @IsArray()
   @IsUUID('4', { each: true })
   @IsOptional()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      try {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [parsed];
+      } catch {
+        return [value]; 
+      }
+    }
+    return value;
+  })
   authorUUIDs: string[];
 
   @IsOptional()
