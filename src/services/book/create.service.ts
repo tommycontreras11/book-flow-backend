@@ -8,22 +8,30 @@ import { CreateBookDTO } from "../../dto/book.dto";
 import { statusCode } from "../../utils/status.util";
 import { In } from "typeorm";
 import { recursiveCreateBookAuthor } from "../../utils/book.util";
-import { generateUniqueFileName, getExtensionByFileName } from "./../../utils/dir.util";
+import {
+  generateUniqueFileName,
+  getExtensionByFileName,
+} from "./../../utils/dir.util";
 import { ObjectStorage } from "./../../libs/object-storage";
 import { ALLOWED_EXTENSION } from "./../../constants/multer.constant";
 
-export async function createBookService({
-  bibliographyTypeUUID,
-  publisherUUID,
-  languageUUID,
-  scienceUUID,
-  name,
-  authorUUIDs,
-  ...payload
-}: CreateBookDTO, file:
-| Express.Multer.File
-| undefined) {
-  if(file === undefined) return Promise.reject({ message: "File not found", status: statusCode.BAD_REQUEST });
+export async function createBookService(
+  {
+    bibliographyTypeUUID,
+    publisherUUID,
+    languageUUID,
+    scienceUUID,
+    name,
+    authorUUIDs,
+    ...payload
+  }: CreateBookDTO,
+  file: Express.Multer.File | undefined
+) {
+  if (file === undefined)
+    return Promise.reject({
+      message: "File not found",
+      status: statusCode.BAD_REQUEST,
+    });
 
   const foundBook = await BookEntity.findOneBy({ name });
 
@@ -107,35 +115,46 @@ export async function createBookService({
     science_id: science.id,
     name,
     status: "ACTIVE",
-  })
+  });
 
   book.file_name = await uploadFile(book, file);
   await recursiveCreateBookAuthor(book, [...foundAuthors]);
-  
+
   return "Book created successfully";
 }
 
-async function uploadFile(book: BookEntity, file: Express.Multer.File): Promise<string> {
-  const extension = getExtensionByFileName(file.originalname)
-  if(!extension || !ALLOWED_EXTENSION.includes(extension)) {
-      return Promise.reject({ message: "File extension not allowed. Valid extensions are: " + ALLOWED_EXTENSION.join(", ") + "", status: statusCode.BAD_REQUEST })
+async function uploadFile(
+  book: BookEntity,
+  file: Express.Multer.File
+): Promise<string> {
+  const extension = getExtensionByFileName(file.originalname);
+  if (!extension || !ALLOWED_EXTENSION.includes(extension)) {
+    return Promise.reject({
+      message:
+        "File extension not allowed. Valid extensions are: " +
+        ALLOWED_EXTENSION.join(", ") +
+        "",
+      status: statusCode.BAD_REQUEST,
+    });
   }
 
-  const storage = ObjectStorage.instance
+  const storage = ObjectStorage.instance;
 
-  const fileName = await generateUniqueFileName(extension)
+  const fileName = await generateUniqueFileName(extension);
 
-  const minio = await storage.uploadDocument(
-      fileName,
-      file.buffer,
-      file.size,
-  ).catch(async (e) => {
+  const minio = await storage
+    .uploadDocument(fileName, file.buffer, file.size)
+    .catch(async (e) => {
       console.error("createFileService -> storage.uploadDocument: ", e);
-      await book.remove()
+      await book.remove();
       return null;
-  })
+    });
 
-  if(!minio) return Promise.reject({ message: "File not uploaded to minio", status: statusCode.BAD_REQUEST })
+  if (!minio)
+    return Promise.reject({
+      message: "File not uploaded to minio",
+      status: statusCode.BAD_REQUEST,
+    });
 
   return fileName;
 }

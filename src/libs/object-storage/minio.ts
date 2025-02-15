@@ -2,6 +2,7 @@ import { Client } from 'minio';
 import { Readable } from 'stream';
 import { IListOfObjects, IObjectStorageConfig } from './object-storage.interface';
 import { UploadedObjectInfo } from 'minio/dist/main/internal/type';
+import { getExtensionByFileName } from './../../utils/dir.util';
 
 class MinioStorage {
 
@@ -87,7 +88,10 @@ class MinioStorage {
 
     public async generatePresignedUrl(filename: string): Promise<string> {
         try {
-            const url = await this.client.presignedGetObject(this.bucket, filename, 24 * 60 * 60);
+            const extension = getExtensionByFileName(filename)
+            const url = await this.client.presignedGetObject(this.bucket, filename, 24 * 60 * 60, {
+                "response-content-type": `image/${extension}`,
+            });
             return url;
         } catch (error) {
             console.error("Error generating presigned URL:", error);

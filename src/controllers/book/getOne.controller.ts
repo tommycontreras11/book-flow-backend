@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { statusCode } from "../../utils/status.util";
 import { getOneBookService } from "../../services/book/getOne.service";
+import { ObjectStorage } from "./../../libs/object-storage";
 
 export const getOneBookController = async (req: Request, res: Response) => {
   const { uuid } = req.params;
@@ -15,7 +16,11 @@ export const getOneBookController = async (req: Request, res: Response) => {
       authors: true,
     },
   })
-    .then((data) => {
+    .then(async (data) => {
+      const storage = ObjectStorage.instance;
+
+      const url = await storage.getUrl(data.file_name);
+
       const book = {
         uuid: data.uuid,
         name: data.name,
@@ -28,6 +33,7 @@ export const getOneBookController = async (req: Request, res: Response) => {
         scienceUUID: data.science.uuid,
         authorUUIDs: data.authors.map((author) => author.uuid),
         status: data.status,
+        url,
       };
 
       return res.status(statusCode.OK).json({ data: book });
