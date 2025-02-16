@@ -24,7 +24,6 @@ export const getAllBookController = async (req: Request, res: Response) => {
       const storage = ObjectStorage.instance;
       const books = await Promise.all(
         data.map(async (book) => {
-          const url = await storage.getUrl(book.file_name);
 
           return {
             uuid: book.uuid,
@@ -47,7 +46,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
               }
             })),
             status: book.status,
-            url,
+            url: await storage.getUrl(book.file_name)
           };
         })
       );

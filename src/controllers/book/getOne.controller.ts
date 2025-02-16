@@ -19,8 +19,6 @@ export const getOneBookController = async (req: Request, res: Response) => {
     .then(async (data) => {
       const storage = ObjectStorage.instance;
 
-      const url = await storage.getUrl(data.file_name);
-
       const book = {
         uuid: data.uuid,
         name: data.name,
@@ -33,7 +31,7 @@ export const getOneBookController = async (req: Request, res: Response) => {
         scienceUUID: data.science.uuid,
         authorUUIDs: data.authors.map((author) => author.uuid),
         status: data.status,
-        url,
+        url: await storage.getUrl(data.file_name),
       };
 
       return res.status(statusCode.OK).json({ data: book });
