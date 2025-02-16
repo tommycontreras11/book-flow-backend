@@ -98,7 +98,7 @@ class MinioStorage {
 
     public async delete(filename: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
-            this.client.presignedGetObject(this.bucket, filename).catch((error) => {
+            this.client.removeObject(this.bucket, filename).catch((error) => {
                 reject(error)
                 resolve(false)
             })
