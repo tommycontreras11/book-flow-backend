@@ -3,25 +3,25 @@ import { SignInDTO } from "./../../dto/auth.dto";
 import { statusCode } from "./../../utils/status.util";
 import { retrieveUserByUsername } from "./../../utils/user.util";
 
-export async function signInService({ username, password }: SignInDTO) {
-  const foundUserByUsername = await retrieveUserByUsername(username);
+export async function signInService({ email, password }: SignInDTO) {
+  const foundUserByEmail = await retrieveUserByUsername(email);
 
-  if (!foundUserByUsername)
+  if (!foundUserByEmail)
     return Promise.reject({
-      message: "User or password invalid",
+      message: "Email or password invalid",
       status: statusCode.BAD_REQUEST,
     });
 
   const comparePasswords = await bcrypt.compare(
     password,
-    foundUserByUsername.password
+    foundUserByEmail.password
   );
 
   if (!comparePasswords)
     return Promise.reject({
-      message: "User or password invalid",
+      message: "Email or password invalid",
       status: statusCode.BAD_REQUEST,
     });
 
-  return Promise.resolve(foundUserByUsername);
+  return Promise.resolve(foundUserByEmail);
 }

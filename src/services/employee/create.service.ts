@@ -5,16 +5,16 @@ import { EmployeeEntity } from "./../../database/entities/entity/employee.entity
 import { CreateEmployeeDTO } from "./../../dto/employee.dto";
 
 export async function createEmployeeService({
-  username,
+  email,
   identification,
   password,
   ...payload
 }: CreateEmployeeDTO) {
-  const foundEmployeeByUsername = (await retrieveIfUserExists(username))?.user;
+  const foundEmployeeByUsername = (await retrieveIfUserExists(email))?.user;
 
   if (foundEmployeeByUsername)
     return Promise.reject({
-      message: "Employee with this username already exists",
+      message: "Employee with this email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -30,7 +30,7 @@ export async function createEmployeeService({
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await EmployeeEntity.create({
-    username,
+    email,
     identification,
     status: "ACTIVE",
     password: hashedPassword,

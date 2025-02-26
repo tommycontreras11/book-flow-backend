@@ -9,7 +9,7 @@ export const getOneEmployeeController = async (req: Request, res: Response) => {
     .then((data) => {
       const employee = {
         name: data.name,
-        username: data.username,
+        email: data.email,
         identification: data.identification,
         work_shift: data.work_shift,
         commission_percentage: data.commission_percentage,

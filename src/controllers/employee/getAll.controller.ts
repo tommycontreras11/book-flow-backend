@@ -8,7 +8,7 @@ export const getAllEmployeeController = async (_req: Request, res: Response) => 
       const users = data.map((employee) => ({
         uuid: employee.uuid,
         name: employee.name,
-        username: employee.username,
+        email: employee.email,
         identification: employee.identification,
         work_shift: employee.work_shift,
         commission_percentage: employee.commission_percentage,

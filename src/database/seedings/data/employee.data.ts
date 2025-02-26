@@ -4,8 +4,8 @@ import { EmployeeEntity } from "./../../../database/entities/entity/employee.ent
 
 const employees = [
     {
-        name: "Helen Rosario",
-        username: "helen02",
+        name: "Adonaiby Nuñez",
+        email: "adonaiby20@gmail.com",
         password: bcrypt.hashSync('admin', 10),
         identification: "402-1565254-8",
         work_shift: "Morning",
@@ -17,7 +17,7 @@ const employees = [
 
 export const EmployeeData: Partial<EmployeeEntity>[] = employees.map((employee) => ({
     name: employee.name,
-    username: employee.username,
+    email: employee.email,
     password: employee.password,
     identification: employee.identification,
     work_shift: employee.work_shift,

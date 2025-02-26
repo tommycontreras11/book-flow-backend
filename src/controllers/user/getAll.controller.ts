@@ -8,7 +8,7 @@ export const getAllUserController = async (_req: Request, res: Response) => {
       const users = data.map((user) => ({
         uuid: user.uuid,
         name: user.name,
-        username: user.username,
+        email: user.email,
         identification: user.identification,
         carnet_number: user.carnet_number,
         person_type: user.person_type,

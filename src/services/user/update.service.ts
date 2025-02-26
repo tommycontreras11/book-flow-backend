@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 
 export async function updateUserService(
   uuid: string,
-  { username, password, identification, ...payload }: UpdateUserDTO
+  { email, password, identification, ...payload }: UpdateUserDTO
 ) {
   const user = await UserEntity.findOneBy({ uuid }).catch((e) => {
     console.error("UserEntity.findOneBy: ", e);
@@ -19,15 +19,15 @@ export async function updateUserService(
       status: statusCode.NOT_FOUND,
     });
 
-  const validateUserByUsername = await retrieveIfUserExists(
-    username,
+  const validateUserByEmail = await retrieveIfUserExists(
+    email,
     null,
     user.uuid
   );
 
-  if (validateUserByUsername?.user && !validateUserByUsername?.sameUser)
+  if (validateUserByEmail?.user && !validateUserByEmail?.sameUser)
     return Promise.reject({
-      message: "User with this username already exists",
+      message: "User with this email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -50,7 +50,7 @@ export async function updateUserService(
 
   await UserEntity.update(
     { uuid },
-    { ...payload, username, password: hashedPassword, identification }
+    { ...payload, email, password: hashedPassword, identification }
   ).catch((e) => {
     console.error("UserEntity.update: ", e);
     return null;

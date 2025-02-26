@@ -10,7 +10,7 @@ export class CreateUserDTO {
     @IsNotEmpty()
     @IsString()
     @MaxLength(100)
-    username: string;
+    email: string;
 
     @IsNotEmpty()
     @IsString()
@@ -34,7 +34,7 @@ export class UpdateUserDTO {
     @IsOptional()
     @IsString()
     @MaxLength(100)
-    username: string;
+    email: string;
 
     @IsOptional()
     @IsString()

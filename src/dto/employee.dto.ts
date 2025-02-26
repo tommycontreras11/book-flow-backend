@@ -16,7 +16,7 @@ export class CreateEmployeeDTO {
   @IsNotEmpty()
   @IsString()
   @MaxLength(100)
-  username: string;
+  email: string;
 
   @IsNotEmpty()
   @IsString()
@@ -48,7 +48,7 @@ export class UpdateEmployeeDTO {
   @IsOptional()
   @IsString()
   @MaxLength(100)
-  username: string;
+  email: string;
 
   @IsOptional()
   @IsString()

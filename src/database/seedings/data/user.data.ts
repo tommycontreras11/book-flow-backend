@@ -5,7 +5,7 @@ import { PersonTypeEnum, UserEntity } from "./../../../database/entities/entity/
 const users = [
     {
         name: "Tommy Contreras",
-        username: "tommy11",
+        email: "tommy11@gmail.com",
         password: bcrypt.hashSync('admin', 10),
         identification: "402-1563214-8",
         carnet_number: "CAR123456",
@@ -16,7 +16,7 @@ const users = [
 
 export const UserData: Partial<UserEntity>[] = users.map((user) => ({
     name: user.name,
-    username: user.username,
+    email: user.email,
     password: user.password,
     identification: user.identification,
     carnet_number: user.carnet_number,

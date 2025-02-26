@@ -9,7 +9,7 @@ export const getOneUserController = async (req: Request, res: Response) => {
     .then((data) => {
       const user = {
         name: data.name,
-        username: data.username,
+        email: data.email,
         identification: data.identification,
         carnet_number: data.carnet_number,
         person_type: data.person_type,

@@ -2,18 +2,18 @@ import { EmployeeEntity } from "../database/entities/entity/employee.entity";
 import { UserEntity } from "../database/entities/entity/user.entity";
 
 export async function retrieveIfUserExists(
-  username?: string | null,
+  email?: string | null,
   identification?: string | null,
   uuid?: string | null
 ) {
   const [foundUser, foundEmployee] = await Promise.all([
     UserEntity.findOneBy({
-      ...(username && { username }),
+      ...(email && { email }),
       ...(identification && { identification }),
       ...(uuid && { uuid }),
     }),
     EmployeeEntity.findOneBy({
-      ...(username && { username }),
+      ...(email && { email }),
       ...(identification && { identification }),
       ...(uuid && { uuid }),
     }),
@@ -33,14 +33,14 @@ return matchingEntity
 }
 
 export async function retrieveUserByUsername(
-  username: string
+  email: string
 ) {
   const [foundUser, foundEmployee] = await Promise.all([
     UserEntity.findOneBy({
-      ...(username && { username }),
+      ...(email && { email }),
     }),
     EmployeeEntity.findOneBy({
-      ...(username && { username }),
+      ...(email && { email }),
     }),
   ]);
 

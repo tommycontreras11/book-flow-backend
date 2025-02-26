@@ -6,7 +6,7 @@ import { UpdateEmployeeDTO } from "../../dto/employee.dto";
 
 export async function updateEmployeeService(
   uuid: string,
-  { username, password, identification, ...payload }: UpdateEmployeeDTO
+  { email, password, identification, ...payload }: UpdateEmployeeDTO
 ) {
   const employee = await EmployeeEntity.findOneBy({ uuid }).catch((e) => {
     console.error("EmployeeEntity.findOneBy: ", e);
@@ -20,14 +20,14 @@ export async function updateEmployeeService(
     });
 
   const validateUserByUsername = await retrieveIfUserExists(
-    username,
+    email,
     null,
     employee.uuid
   );
 
   if (validateUserByUsername?.user && !validateUserByUsername?.sameUser)
     return Promise.reject({
-      message: "User with this username already exists",
+      message: "User with this email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -50,7 +50,7 @@ export async function updateEmployeeService(
 
   await EmployeeEntity.update(
     { uuid },
-    { ...payload, username, password: hashedPassword, identification }
+    { ...payload, email, password: hashedPassword, identification }
   ).catch((e) => {
     console.error("EmployeeEntity.update: ", e);
     return null;

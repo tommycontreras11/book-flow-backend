@@ -5,7 +5,7 @@ export class SignInDTO {
     @IsNotEmpty()
     @IsString()
     @Expose()
-    username: string
+    email: string
 
     @IsNotEmpty()
     @IsString()

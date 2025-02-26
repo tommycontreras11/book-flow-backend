@@ -6,16 +6,16 @@ import bcrypt from "bcrypt";
 import { generateRandomCode } from "./../../utils/common.util";
 
 export async function createUserService({
-  username,
+  email,
   identification,
   password,
   ...payload
 }: CreateUserDTO) {
-  const foundUserByUsername = (await retrieveIfUserExists(username))?.user;
+  const foundUserByEmail = (await retrieveIfUserExists(email))?.user;
 
-  if (foundUserByUsername)
+  if (foundUserByEmail)
     return Promise.reject({
-      message: "User with this username already exists",
+      message: "User with this email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
@@ -31,7 +31,7 @@ export async function createUserService({
   const hashedPassword = await bcrypt.hash(password, 10);
 
   await UserEntity.create({
-    username,
+    email,
     identification,
     carnet_number: generateRandomCode("CAR"),
     status: "ACTIVE",
