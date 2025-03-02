@@ -9,6 +9,7 @@ export const getAllUserController = async (_req: Request, res: Response) => {
         uuid: user.uuid,
         name: user.name,
         email: user.email,
+        password: user.password.slice(0, 10),
         identification: user.identification,
         carnet_number: user.carnet_number,
         person_type: user.person_type,

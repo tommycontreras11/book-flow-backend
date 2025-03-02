@@ -10,6 +10,7 @@ export const getOneUserController = async (req: Request, res: Response) => {
       const user = {
         name: data.name,
         email: data.email,
+        password: data.password,
         identification: data.identification,
         carnet_number: data.carnet_number,
         person_type: data.person_type,

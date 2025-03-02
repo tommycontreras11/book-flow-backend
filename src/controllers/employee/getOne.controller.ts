@@ -10,6 +10,7 @@ export const getOneEmployeeController = async (req: Request, res: Response) => {
       const employee = {
         name: data.name,
         email: data.email,
+        password: data.password.slice(0, 10),
         identification: data.identification,
         work_shift: data.work_shift,
         commission_percentage: data.commission_percentage,

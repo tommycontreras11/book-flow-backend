@@ -9,6 +9,7 @@ export const getAllEmployeeController = async (_req: Request, res: Response) => 
         uuid: employee.uuid,
         name: employee.name,
         email: employee.email,
+        password: employee.password.slice(0, 10),
         identification: employee.identification,
         work_shift: employee.work_shift,
         commission_percentage: employee.commission_percentage,
