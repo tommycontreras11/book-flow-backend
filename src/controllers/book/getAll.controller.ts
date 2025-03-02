@@ -41,6 +41,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
                 uuid: request.user.uuid,
                 name: request.user.name,
               },
+              status: request.status,
               book: {
                 uuid: request.book.uuid,
               }
