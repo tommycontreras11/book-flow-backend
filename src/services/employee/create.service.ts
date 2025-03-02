@@ -3,11 +3,13 @@ import { statusCode } from "../../utils/status.util";
 import { retrieveIfUserExists } from "../../utils/user.util";
 import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 import { CreateEmployeeDTO } from "./../../dto/employee.dto";
+import { getFullDate } from "./../../utils/date.util";
 
 export async function createEmployeeService({
   email,
   identification,
   password,
+  entry_date,
   ...payload
 }: CreateEmployeeDTO) {
   const foundEmployeeByUsername = (await retrieveIfUserExists(email))?.user;
@@ -34,6 +36,7 @@ export async function createEmployeeService({
     identification,
     status: "ACTIVE",
     password: hashedPassword,
+    entry_date: getFullDate(new Date(entry_date)),
     ...payload,
   })
     .save()

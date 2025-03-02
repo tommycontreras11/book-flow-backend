@@ -9,7 +9,7 @@ import {
   LoanManagementEntity,
   LoanManagementEnum,
 } from "./../../database/entities/entity/loan-management.entity";
-import { getDaysBetweenDates, getTodayFullDate } from "./../../utils/date.util";
+import { getDaysBetweenDates, getFullDate } from "./../../utils/date.util";
 
 export async function createLoanManagementService(
   requestUUID: string,
@@ -35,7 +35,7 @@ export async function createLoanManagementService(
       status: statusCode.BAD_REQUEST,
     });
 
-  const todayFullDate = getTodayFullDate();
+  const todayFullDate = getFullDate();
 
   const loanManagement = foundRequest.loanManagements;
 

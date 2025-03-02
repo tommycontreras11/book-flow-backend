@@ -10,11 +10,12 @@ export const meController = async (req: Request, res: Response) => {
         const user = {
             uuid: data.uuid,
             name: data.name,
+            email: data.email,
             status: data.status,
             role: data instanceof UserEntity ? UserRoleEnum.USER : UserRoleEnum.EMPLOYEE,
         }
 
-        return res.status(statusCode.OK).json({ data: user });
+        return res.status(statusCode.OK).json({ data: user ?? null });
     })
     .catch((e) => {
       return res

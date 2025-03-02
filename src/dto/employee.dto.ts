@@ -4,7 +4,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  MaxLength,
+  MaxLength
 } from "class-validator";
 import { StatusEnum } from "./../database/entities/base/base.entity";
 
