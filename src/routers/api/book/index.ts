@@ -2,6 +2,7 @@ import { Router } from "express";
 import { createBookController } from "../../../controllers/book/create.controller";
 import { deleteBookController } from "../../../controllers/book/delete.controller";
 import { getAllBookController } from "../../../controllers/book/getAll.controller";
+import { getAllStatBookController } from "../../../controllers/book/getAllStat.controller";
 import { getOneBookController } from "../../../controllers/book/getOne.controller";
 import { updateBookController } from "../../../controllers/book/update.controller";
 import { CreateBookDTO, UpdateBookDTO } from "../../../dto/book.dto";
@@ -12,6 +13,7 @@ import { upload } from "./../../../utils/upload.util";
 const router = Router()
 
 router.get('/', getAllBookController)
+router.get('/stats', getAllStatBookController)
 router.get('/:uuid', validateDTO(UuidDTO, 'params'), getOneBookController)
 router.post('/', upload.single('file'), validateDTO(CreateBookDTO), createBookController)
 router.patch('/:uuid', upload.single('file'), validateDTO(UpdateBookDTO), updateBookController)
