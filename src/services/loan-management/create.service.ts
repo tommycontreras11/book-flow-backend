@@ -13,7 +13,7 @@ import { getDaysBetweenDates, getFullDate } from "./../../utils/date.util";
 
 export async function createLoanManagementService(
   requestUUID: string,
-  { date_loan, comment }: CreateLoanManagementDTO
+  { comment, date_return }: CreateLoanManagementDTO
 ) {
   const foundRequest = await RequestEntity.findOne({
     where: { uuid: requestUUID },
@@ -35,7 +35,7 @@ export async function createLoanManagementService(
       status: statusCode.BAD_REQUEST,
     });
 
-  const todayFullDate = getFullDate();
+  const todayFullDate = getFullDate(undefined);
 
   const loanManagement = foundRequest.loanManagements;
 
@@ -43,20 +43,27 @@ export async function createLoanManagementService(
     (loanManagement) => loanManagement.status === "BORROWED"
   );
 
+  if (!hasLoanManagementBorrow && !date_return)
+    return Promise.reject({
+      message: "Date return is required",
+      status: statusCode.BAD_REQUEST,
+    });
+
+  const dateReturnFormatted = getFullDate(date_return ? new Date(date_return) : new Date(), false);
+
+  const date_loan = hasLoanManagementBorrow
+    ? loanManagement[0].date_loan
+    : getFullDate(new Date(), false);
+
   await LoanManagementEntity.create({
     loan_number: hasLoanManagementBorrow
       ? loanManagement[0].loan_number
       : generateRandomCode("LM"),
-    date_loan: hasLoanManagementBorrow
-      ? loanManagement[0].date_loan
-      : date_loan,
+    date_loan,
     ...(hasLoanManagementBorrow && { date_return: todayFullDate }),
     ...(comment && { comment }),
     amount_day: 20,
-    quantity_day: getDaysBetweenDates(
-      hasLoanManagementBorrow ? loanManagement[0].date_loan : date_loan,
-      todayFullDate
-    ),
+    quantity_day: getDaysBetweenDates(date_loan, dateReturnFormatted),
     request_id: foundRequest.id,
     status: hasLoanManagementBorrow
       ? LoanManagementEnum.RETURNED

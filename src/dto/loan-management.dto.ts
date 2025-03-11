@@ -1,6 +1,5 @@
 import {
   IsEnum,
-  IsNotEmpty,
   IsOptional,
   IsString,
   MaxLength
@@ -9,8 +8,8 @@ import { LoanManagementEnum } from "./../database/entities/entity/loan-managemen
 
 export class CreateLoanManagementDTO {
   @IsString()
-  @IsNotEmpty()
-  date_loan: string;
+  @IsOptional()
+  date_return: string;
 
   @IsString()
   @MaxLength(250)
