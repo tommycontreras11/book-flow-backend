@@ -20,18 +20,12 @@ export class UpdateRequestEmployeeStatusDTO {
 }
 
 export class UpdateRequestDTO {
-  @IsString()
-  @MaxLength(100)
-  @IsOptional()
-  name: string;
-
-  @IsUUID("4")
-  @IsString()
-  @IsOptional()
-  userUUID: string;
-
   @IsUUID("4")
   @IsString()
   @IsOptional()
   bookUUID: string;
+
+  @IsEnum(StatusRequestEnum)
+  @IsOptional()
+  status: StatusRequestType;
 }

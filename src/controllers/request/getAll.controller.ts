@@ -20,7 +20,7 @@ const filters = {
   ...(statusArray.length > 0 && { status: In(statusArray) }),
 };
 
-  getAllRequestService(foundUser, { ...(foundUser && { where: filters }), relations: { user: true, book: true } })
+  getAllRequestService(foundUser, { ...(foundUser instanceof UserEntity && { where: filters }), relations: { user: true, book: true } })
     .then((data) => {
       const requests = data.map((request) => ({
         uuid: request.uuid,
