@@ -60,11 +60,11 @@ const getFilteredBookByStatusAndDate = (
   const date = getFullDate();
 
   const booksFiltered = books?.filter((book) =>
-    book?.requests.filter(
+    book.requests.every(
       (request) =>
-        request?.status === status &&
-        request?.loanManagements?.filter(
-          (loanManagement) => getFullDate(loanManagement.createdAt) === date
+        request.status === status &&
+        request.loanManagements.every(
+          (loanManagement) => getFullDate(loanManagement?.createdAt ?? null, true) === date
         )
     )
   );
@@ -117,5 +117,5 @@ const getLastedUserRegister = async () => {
     (user) => getFullDate(user?.createdAt) === date
   );
 
-  return users[users?.length - 1].name ?? null;
+  return users[users?.length - 1]?.name ?? null;
 };
