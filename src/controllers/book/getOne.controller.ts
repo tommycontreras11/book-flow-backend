@@ -25,11 +25,28 @@ export const getOneBookController = async (req: Request, res: Response) => {
         topographicalSignature: data.topographical_signature,
         isbn: data.isbn,
         publicationYear: data.publication_year,
-        bibliographyTypeUUID: data.bibliographyType.uuid,
-        publisherUUID: data.publisher.uuid,
-        languageUUID: data.language.uuid,
-        scienceUUID: data.science.uuid,
-        authorUUIDs: data.authors.map((author) => author.uuid),
+        bibliographyType: {
+          uuid: data.bibliographyType.uuid,
+          name: data.bibliographyType.name,
+        },
+        publisher: {
+          uuid: data.publisher.uuid,
+          name: data.publisher.name,
+        },
+        language: {
+          uuid: data.language.uuid,
+          name: data.language.name,
+        },
+        science: {
+          uuid: data.science.uuid,
+          name: data.science.name,
+        },
+        authors: data.authors.map((author) => {
+          return {
+            uuid: author.uuid,
+            name: author.name
+          }
+        }),
         status: data.status,
         url: await storage.getUrl(data.file_name),
       };

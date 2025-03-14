@@ -11,7 +11,7 @@
     "m:generate": "npm run typeorm migration:generate ./src/database/migrations/%npm_config_name%",
     "m:run": "npm run typeorm migration:run",
     "m:revert": "npm run typeorm migration:revert",
-    "m:fresh": "npm run typeorm schema:drop && npm run typeorm migration:run",
+    "m:fresh": "npm run typeorm schema:drop && npm run typeorm migration:run && npm run db:seed",
     "db:seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed -n ./src/config/ormconfig.ts"
   },
   "keywords": [],

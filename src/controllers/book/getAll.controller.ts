@@ -31,10 +31,28 @@ export const getAllBookController = async (req: Request, res: Response) => {
             topographicalSignature: book.topographical_signature,
             isbn: book.isbn,
             publicationYear: book.publication_year,
-            bibliographyTypeName: book.bibliographyType.name,
-            publisherName: book.publisher.name,
-            languageName: book.language.name,
-            scienceDescription: book.science.name,
+            bibliographyType: {
+              uuid: book.bibliographyType.uuid,
+              name: book.bibliographyType.name,
+            },
+            publisher: {
+              uuid: book.publisher.uuid,
+              name: book.publisher.name,
+            },
+            language: {
+              uuid: book.language.uuid,
+              name: book.language.name,
+            },
+            science: {
+              uuid: book.science.uuid,
+              name: book.science.name,
+            },
+            authors: book.authors.map((author) => {
+              return {
+                uuid: author.uuid,
+                name: author.name
+              }
+            }),
             requests: book.requests.map((request) => ({
               uuid: request.uuid,
               user: {
