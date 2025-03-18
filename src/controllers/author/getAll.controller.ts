@@ -10,8 +10,14 @@ export const getAllAuthorController = async (_req: Request, res: Response) => {
       const authors = data.map((author) => ({
         uuid: author.uuid,
         name: author.name,
-        birthCountryName: author.birthCountry.name,
-        nativeLanguageDescription: author.nativeLanguage.name,
+        birthCountry: {
+          uuid: author.birthCountry.uuid,
+          name: author.birthCountry.name,
+        },
+        nativeLanguage: {
+          uuid: author.nativeLanguage.uuid,
+          name: author.nativeLanguage.name,
+        },
         status: author.status,
       }));
 
