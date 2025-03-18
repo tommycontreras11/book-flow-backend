@@ -7,6 +7,7 @@ import {
   MaxLength
 } from "class-validator";
 import { StatusEnum } from "./../database/entities/base/base.entity";
+import { WorkShiftEnum, WorkShiftType } from "./../database/entities/entity/employee.entity";
 
 export class CreateEmployeeDTO {
   @IsNotEmpty()
@@ -27,9 +28,9 @@ export class CreateEmployeeDTO {
   @MaxLength(100)
   identification: string;
 
+  @IsEnum(WorkShiftEnum)
   @IsNotEmpty()
-  @IsString()
-  work_shift: string;
+  work_shift: WorkShiftType;
 
   @IsNotEmpty()
   @IsNumber()
@@ -59,9 +60,9 @@ export class UpdateEmployeeDTO {
   @MaxLength(100)
   identification: string;
 
+  @IsEnum(WorkShiftEnum)
   @IsOptional()
-  @IsString()
-  work_shift: string;
+  work_shift: WorkShiftType;
 
   @IsOptional()
   @IsNumber()
