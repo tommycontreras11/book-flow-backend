@@ -18,6 +18,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
       publisher: true,
       language: true,
       science: true,
+      authors: true
     },
   })
     .then(async (data) => {
@@ -53,7 +54,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
                 name: author.name
               }
             }),
-            requests: book.requests.map((request) => ({
+            requests: book?.requests.map((request) => ({
               uuid: request.uuid,
               user: {
                 uuid: request.user.uuid,
