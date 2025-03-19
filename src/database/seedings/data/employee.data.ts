@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import { StatusEnum } from "./../../../database/entities/base/base.entity";
-import { EmployeeEntity } from "./../../../database/entities/entity/employee.entity";
+import { EmployeeEntity, WorkShiftEnum } from "./../../../database/entities/entity/employee.entity";
 
 const employees = [
     {
@@ -8,7 +8,7 @@ const employees = [
         email: "adonaiby20@gmail.com",
         password: bcrypt.hashSync('admin', 10),
         identification: "402-1565254-8",
-        work_shift: "Morning",
+        work_shift: WorkShiftEnum.MORNING,
         commission_percentage: 10.5,
         entry_date: "2023-01-15",
         status: StatusEnum.ACTIVE
