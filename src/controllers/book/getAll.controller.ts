@@ -66,7 +66,8 @@ export const getAllBookController = async (req: Request, res: Response) => {
               }
             })),
             status: book.status,
-            url: await storage.getUrl(book.file_name)
+            // url: await storage.getUrl(book.file_name),
+            url: book.file_name
           };
         })
       );

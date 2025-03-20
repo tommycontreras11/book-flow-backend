@@ -9,8 +9,8 @@ export const getAllLoanManagementController = async (req: Request, res: Response
   const { bibliographyType, language, dateLoan, dateReturn } = req.query as {
     bibliographyType?: string;
     language?: string;
-    dateLoan?: string;
-    dateReturn?: string;
+    dateLoan?: Date;
+    dateReturn?: Date;
   };
       
     const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid))?.data;

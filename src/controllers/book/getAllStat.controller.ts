@@ -5,6 +5,8 @@ import { getFullDate } from "./../../utils/date.util";
 import { getAllBookService } from "../../services/book/getAll.service";
 import { statusCode } from "../../utils/status.util";
 import { UserEntity } from "./../../database/entities/entity/user.entity";
+import { IQuickStats, IRecentActivities, ITopBorrowedBooks } from "./../../interfaces/book-stats.interface";
+import { BookQuickStatsEnum, BookRecentActivitiesEnum } from "./../../enums/book.enum";
 
 export const getAllStatBookController = async (
   _req: Request,
@@ -24,24 +26,61 @@ export const getAllStatBookController = async (
       ).length;
       const availableBooks = totalBooks - borrowedBooks;
 
+      const quickStats: IQuickStats[] = [
+        {
+          title: "Total Books",
+          value: totalBooks,
+          type: BookQuickStatsEnum.TOTAL,
+        },
+        {
+          title: "Available Books",
+          value: availableBooks,
+          type: BookQuickStatsEnum.AVAILABLE,
+        },
+        {
+          title: "Borrowed Books",
+          value: borrowedBooks,
+          type: BookQuickStatsEnum.BORROWED,
+        },
+      ];
+
+      const bookBorrowed = getLastedReturnedOrBorrowedBook(
+        data,
+        StatusRequestEnum.BORROWED
+      )
+
+      const bookReturned = getLastedReturnedOrBorrowedBook(
+        data,
+        StatusRequestEnum.COMPLETED
+      )
+
+      const userRegister = await getLastedUserRegister()
+
+      const recentActivities: IRecentActivities[] = [
+        {
+          title: bookBorrowed?.name ?? null,
+          date: getFullDate(bookBorrowed?.requests[0]?.loanManagements[0]?.createdAt, false) || null,
+          type: BookRecentActivitiesEnum.BORROWED,
+        },
+        {
+          title: bookReturned?.name ?? null,
+          date: getFullDate(bookReturned?.requests[0]?.loanManagements[0]?.date_return, false) || null,
+          type: BookRecentActivitiesEnum.RETURNED,
+        },
+        {
+          title: userRegister?.name ?? null,
+          date: getFullDate(userRegister?.createdAt, false) || null,
+          type: BookRecentActivitiesEnum.REGISTERED,
+        }
+      ];
+
       const books = {
-        quickStats: {
-          totalBooks,
-          availableBooks,
-          borrowedBooks,
-        },
-        recentActivities: {
-          bookBorrowed: getLastedReturnedOrBorrowedBook(
-            data,
-            StatusRequestEnum.BORROWED
-          ),
-          bookReturned: getLastedReturnedOrBorrowedBook(
-            data,
-            StatusRequestEnum.COMPLETED
-          ),
-          userRegister: await getLastedUserRegister(),
-        },
-        topBorrowedBooks: getLastedBorrowedBook(data, StatusRequestEnum.BORROWED),
+        quickStats,
+        recentActivities,
+        topBorrowedBooks: getLastedBorrowedBook(
+          data,
+          StatusRequestEnum.BORROWED
+        ),
       };
 
       return res.status(statusCode.OK).json({ data: books });
@@ -64,7 +103,8 @@ const getFilteredBookByStatusAndDate = (
       (request) =>
         request.status === status &&
         request.loanManagements.every(
-          (loanManagement) => getFullDate(loanManagement?.createdAt ?? null, true) === date
+          (loanManagement) =>
+            getFullDate(loanManagement?.createdAt ?? null, true) === date
         )
     )
   );
@@ -77,7 +117,7 @@ const getLastedReturnedOrBorrowedBook = (
   status: StatusRequestEnum
 ) => {
   const booksFiltered = getFilteredBookByStatusAndDate(books, status);
-  return booksFiltered[booksFiltered?.length - 1]?.name ?? null;
+  return booksFiltered[booksFiltered?.length - 1] ?? null;
 };
 
 const getLastedBorrowedBook = (
@@ -87,7 +127,7 @@ const getLastedBorrowedBook = (
   const booksFiltered = getFilteredBookByStatusAndDate(books, status);
 
   const booksSaved: string[] = [];
-  const data: { name: string; count: number }[] = [];
+  const data: ITopBorrowedBooks[] = [];
 
   booksFiltered.map((book) => {
     const name = book.name;
@@ -98,7 +138,7 @@ const getLastedBorrowedBook = (
 
     if (booksSaved.length > 0) {
       data.push({
-        name: name,
+        title: name,
         count: booksSaved.filter((book) => book === name).length,
       });
     }
@@ -117,5 +157,5 @@ const getLastedUserRegister = async () => {
     (user) => getFullDate(user?.createdAt) === date
   );
 
-  return users[users?.length - 1]?.name ?? null;
+  return users[users?.length - 1] ?? null;
 };
