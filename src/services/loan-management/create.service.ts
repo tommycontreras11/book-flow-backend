@@ -52,7 +52,7 @@ export async function createLoanManagementService(
   const dateReturnFormatted = getFullDate(date_return ? new Date(date_return) : new Date(), false);
 
   const date_loan = hasLoanManagementBorrow
-    ? loanManagement[0].date_loan
+    ? getFullDate(loanManagement[0].date_loan, false)
     : getFullDate(new Date(), false);
 
   await LoanManagementEntity.create({

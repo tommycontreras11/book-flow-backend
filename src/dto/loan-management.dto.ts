@@ -1,4 +1,6 @@
 import {
+  IsDate,
+  IsDateString,
   IsEnum,
   IsOptional,
   IsString,
@@ -7,9 +9,9 @@ import {
 import { LoanManagementEnum } from "./../database/entities/entity/loan-management.entity";
 
 export class CreateLoanManagementDTO {
-  @IsString()
+  @IsDateString()
   @IsOptional()
-  date_return: string;
+  date_return: Date;
 
   @IsString()
   @MaxLength(250)

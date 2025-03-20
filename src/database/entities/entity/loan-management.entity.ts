@@ -15,10 +15,10 @@ export class LoanManagementEntity extends BaseEntity {
     loan_number: string
 
     @Column()
-    date_loan: string
+    date_loan: Date
 
     @Column({ nullable: true })
-    date_return: string
+    date_return: Date
 
     @Column({ type: 'float', precision: 10, scale: 2 })
     amount_day: number
