@@ -5,11 +5,8 @@ import { UserEntity } from "./../../database/entities/entity/user.entity";
 import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 
 export async function getAllRequestService(
-  userLogged: UserEntity | EmployeeEntity | undefined,
   options: FindManyOptions<RequestEntity>
 ) {
-  if (!userLogged) return [];
-
   const requests = await RequestEntity.find(options).catch((e) => {
     console.error("RequestEntity.find: ", e);
     return null;
