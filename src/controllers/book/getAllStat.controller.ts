@@ -5,8 +5,15 @@ import { getFullDate } from "./../../utils/date.util";
 import { getAllBookService } from "../../services/book/getAll.service";
 import { statusCode } from "../../utils/status.util";
 import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { IQuickStats, IRecentActivities, ITopBorrowedBooks } from "./../../interfaces/book-stats.interface";
-import { BookQuickStatsEnum, BookRecentActivitiesEnum } from "./../../enums/book.enum";
+import {
+  IQuickStats,
+  IRecentActivities,
+  ITopBorrowedBooks,
+} from "./../../interfaces/book-stats.interface";
+import {
+  BookQuickStatsEnum,
+  BookRecentActivitiesEnum,
+} from "./../../enums/book.enum";
 
 export const getAllStatBookController = async (
   _req: Request,
@@ -14,16 +21,28 @@ export const getAllStatBookController = async (
 ) => {
   getAllBookService({
     relations: {
-      requests: { loanManagements: true, book: true },
+      requests: { user: true, loanManagements: true, book: true },
     },
+    order: {
+      requests: {
+        loanManagements: {
+          
+        }
+      }
+    }
   })
     .then(async (data) => {
       const totalBooks = data.length;
-      const borrowedBooks = data.filter((book) =>
-        book.requests.filter(
-          (request) => request.status === StatusRequestEnum.BORROWED
-        )
-      ).length;
+      let borrowedBooks = 0;
+
+      data.map((book) => {
+        book?.requests?.map((request) => {
+          if (request.status === StatusRequestEnum.BORROWED) {
+            borrowedBooks++;
+          }
+        })
+      })
+
       const availableBooks = totalBooks - borrowedBooks;
 
       const quickStats: IQuickStats[] = [
@@ -47,31 +66,39 @@ export const getAllStatBookController = async (
       const bookBorrowed = getLastedReturnedOrBorrowedBook(
         data,
         StatusRequestEnum.BORROWED
-      )
+      );
 
       const bookReturned = getLastedReturnedOrBorrowedBook(
         data,
         StatusRequestEnum.COMPLETED
-      )
+      );
 
-      const userRegister = await getLastedUserRegister()
+      const userRegister = await getLastedUserRegister();
 
       const recentActivities: IRecentActivities[] = [
         {
           title: bookBorrowed?.name ?? null,
-          date: getFullDate(bookBorrowed?.requests[0]?.loanManagements[0]?.createdAt, false) || null,
+          date:
+            getFullDate(
+              bookBorrowed?.requests[0]?.loanManagements[0]?.createdAt,
+              false
+            ) || null,
           type: BookRecentActivitiesEnum.BORROWED,
         },
         {
           title: bookReturned?.name ?? null,
-          date: getFullDate(bookReturned?.requests[0]?.loanManagements[0]?.date_return, false) || null,
+          date:
+            getFullDate(
+              bookReturned?.requests[0]?.loanManagements[0]?.date_return,
+              false
+            ) || null,
           type: BookRecentActivitiesEnum.RETURNED,
         },
         {
           title: userRegister?.name ?? null,
           date: getFullDate(userRegister?.createdAt, false) || null,
           type: BookRecentActivitiesEnum.REGISTERED,
-        }
+        },
       ];
 
       const books = {
@@ -99,10 +126,10 @@ const getFilteredBookByStatusAndDate = (
   const date = getFullDate();
 
   const booksFiltered = books?.filter((book) =>
-    book.requests.every(
+    book.requests.length > 0 && book.requests.every(
       (request) =>
         request.status === status &&
-        request.loanManagements.every(
+        request.loanManagements && request.loanManagements.every(
           (loanManagement) =>
             getFullDate(loanManagement?.createdAt ?? null, true) === date
         )
