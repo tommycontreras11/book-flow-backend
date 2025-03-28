@@ -17,7 +17,7 @@ export async function createAuthorService({
 
   if (foundAuthor)
     return Promise.reject({
-      message: "Author already exists",
+      message: "Author's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 

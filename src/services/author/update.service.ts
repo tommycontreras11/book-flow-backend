@@ -3,6 +3,7 @@ import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "../../database/entities/entity/author.entity";
 import { CountryEntity } from "./../../database/entities/entity/country.entity";
 import { LanguageEntity } from "./../../database/entities/entity/language.entity";
+import { Not } from "typeorm";
 
 export async function updateAuthorService(
   uuid: string,
@@ -20,16 +21,16 @@ export async function updateAuthorService(
     });
 
   if (name) {
-    const findAuthorByName = await AuthorEntity.findOneBy({
-      name,
+    const findAuthorByName = await AuthorEntity.findOne({
+      where: { name, uuid: Not(uuid) },
     }).catch((e) => {
-      console.error("AuthorEntity.findOneBy: ", e);
+      console.error("AuthorEntity.findOne: ", e);
       return null;
     });
 
-    if (findAuthorByName && findAuthorByName?.uuid !== uuid)
+    if (findAuthorByName)
       return Promise.reject({
-        message: "Author already exists",
+        message: "Author's name already exists",
         status: statusCode.BAD_REQUEST,
       });
   }
