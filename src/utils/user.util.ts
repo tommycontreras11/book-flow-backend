@@ -1,12 +1,13 @@
 import { EmployeeEntity } from "../database/entities/entity/employee.entity";
 import { UserEntity } from "../database/entities/entity/user.entity";
 
-export async function retrieveIfUserExists(
+export async function retrieveIfUserExists<T>(
+  entityClass: { new (): T },
   email?: string | null,
   identification?: string | null,
   uuid?: string | null
 ) {
-  const [foundUser, foundEmployee] = await Promise.all([
+  const entities = await Promise.all([
     UserEntity.findOneBy({
       ...(email && { email }),
       ...(identification && { identification }),
@@ -19,7 +20,7 @@ export async function retrieveIfUserExists(
     }),
   ]);
 
-return foundUser ?? foundEmployee
+  return entities.find((entity) => entity instanceof entityClass) || null;
 }
 
 // export async function retrieveUserByUsername(
