@@ -12,7 +12,7 @@ export async function createScienceService({
 
   if (science)
     return Promise.reject({
-      message: "Science already exists",
+      message: "Science's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 
