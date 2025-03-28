@@ -23,7 +23,7 @@ export async function updateBibliographyTypeService(
     const findBibliographyTypeByName = await BibliographyTypeEntity.findOneBy({
       name,
     }).catch((e) => {
-      console.error("BibliographyTypeEntity.findBy: ", e);
+      console.error("BibliographyTypeEntity.findOneBy: ", e);
       return null;
     });
 

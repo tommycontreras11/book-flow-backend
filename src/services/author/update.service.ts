@@ -23,7 +23,7 @@ export async function updateAuthorService(
     const findAuthorByName = await AuthorEntity.findOneBy({
       name,
     }).catch((e) => {
-      console.error("AuthorEntity.findBy: ", e);
+      console.error("AuthorEntity.findOneBy: ", e);
       return null;
     });
 

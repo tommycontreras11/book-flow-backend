@@ -17,6 +17,21 @@ export async function updateCountryService(
       status: statusCode.NOT_FOUND,
     });
 
+  if (name) {
+    const findCountryByName = await CountryEntity.findOneBy({
+      name,
+    }).catch((e) => {
+      console.error("CountryEntity.findOneBy: ", e);
+      return null;
+    });
+
+    if (findCountryByName && findCountryByName?.uuid !== uuid)
+      return Promise.reject({
+        message: "Country already exists",
+        status: statusCode.BAD_REQUEST,
+      });
+  }
+
   await CountryEntity.update(
     { uuid },
     {
