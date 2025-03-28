@@ -18,6 +18,23 @@ export async function updateAuthorService(
       message: "Author not found",
       status: statusCode.NOT_FOUND,
     });
+
+  if (name) {
+    const findAuthorByName = await AuthorEntity.findOneBy({
+      name,
+    }).catch((e) => {
+      console.error("AuthorEntity.findBy: ", e);
+      return null;
+    });
+
+    if (findAuthorByName && findAuthorByName?.uuid !== uuid) {
+      return Promise.reject({
+        message: "Author already exists",
+        status: statusCode.BAD_REQUEST,
+      });
+    }
+  }
+
   let country: CountryEntity | null = null;
   let language: LanguageEntity | null = null;
 
