@@ -14,7 +14,7 @@ export async function createPublisherService({
 
   if (foundPublisher)
     return Promise.reject({
-      message: "Publisher already exists",
+      message: "Publisher's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 
