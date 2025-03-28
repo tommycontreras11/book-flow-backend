@@ -8,7 +8,7 @@ import { In } from "typeorm";
 
 export const getAllRequestController = async (req: Request, res: Response) => {
   const { status } = req.query as { status: StatusRequestEnum };
-  const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid));
+  const foundUser = (await retrieveIfUserExists(UserEntity, null, null, req?.user?.uuid));
 
   const statusArray = [status].join(",").split(",") as StatusRequestEnum[];
 

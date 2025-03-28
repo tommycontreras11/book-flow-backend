@@ -32,15 +32,17 @@ export async function updateBookService(
       status: statusCode.NOT_FOUND,
     });
 
-  const foundBookByDescription = await BookEntity.findOne({
-    where: { name, uuid: Not(uuid) },
-  });
-
-  if (foundBookByDescription)
-    return Promise.reject({
-      message: "Book's name already exists",
-      status: statusCode.BAD_REQUEST,
+  if(name) {
+    const foundBookByName = await BookEntity.findOne({
+      where: { name, uuid: Not(uuid) },
     });
+  
+    if (foundBookByName)
+      return Promise.reject({
+        message: "Book's name already exists",
+        status: statusCode.BAD_REQUEST,
+      });
+  }
 
   let foundAuthors: AuthorEntity[] = [];
   if (authorUUIDs.length > 0) {

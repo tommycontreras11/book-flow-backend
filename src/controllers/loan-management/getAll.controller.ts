@@ -13,7 +13,7 @@ export const getAllLoanManagementController = async (req: Request, res: Response
     dateReturn?: Date;
   };
       
-    const foundUser = (await retrieveIfUserExists(null, null, req?.user?.uuid));
+    const foundUser = (await retrieveIfUserExists(UserEntity, null, null, req?.user?.uuid));
 
     const filters = {
       ...(foundUser instanceof UserEntity && {

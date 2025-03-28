@@ -31,7 +31,7 @@ export async function createBookService(
 
   if (foundBook)
     return Promise.reject({
-      message: "Book already exists",
+      message: "Book's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 
