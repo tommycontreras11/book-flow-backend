@@ -4,6 +4,7 @@ import { retrieveIfUserExists } from "../../utils/user.util";
 import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 import { CreateEmployeeDTO } from "./../../dto/employee.dto";
 import { getFullDate } from "./../../utils/date.util";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
 
 export async function createEmployeeService({
   email,
@@ -12,19 +13,25 @@ export async function createEmployeeService({
   entry_date,
   ...payload
 }: CreateEmployeeDTO) {
-  const foundEmployeeByUsername = (await retrieveIfUserExists(email));
-
-  if (foundEmployeeByUsername)
+  const foundEmployeeByEmail = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, email),
+    retrieveIfUserExists(UserEntity, email),
+  ]).then((users) => users.find((user) => user));
+  
+  if (foundEmployeeByEmail)
     return Promise.reject({
-      message: "Employee with this email already exists",
+      message: "Email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
-  const foundEmployeeByIdentification = (await retrieveIfUserExists("", identification));
+  const foundEmployeeByIdentification = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, "", identification),
+    retrieveIfUserExists(UserEntity, "", identification),
+  ]).then((users) => users.find((user) => user));
 
   if (foundEmployeeByIdentification)
     return Promise.reject({
-      message: "Employee with this identification already exists",
+      message: "Identification already exists",
       status: statusCode.BAD_REQUEST,
     });
 

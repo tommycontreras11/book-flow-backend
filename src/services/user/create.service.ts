@@ -4,6 +4,7 @@ import { statusCode } from "../../utils/status.util";
 import { retrieveIfUserExists } from "../../utils/user.util";
 import bcrypt from "bcrypt";
 import { generateRandomCode } from "./../../utils/common.util";
+import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 
 export async function createUserService({
   email,
@@ -11,19 +12,25 @@ export async function createUserService({
   password,
   ...payload
 }: CreateUserDTO) {
-  const foundUserByEmail = (await retrieveIfUserExists(email));
-
-  if (foundUserByEmail)
+  const foundEmployeeByEmail = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, email),
+    retrieveIfUserExists(UserEntity, email),
+  ]).then((users) => users.find((user) => user));
+  
+  if (foundEmployeeByEmail)
     return Promise.reject({
-      message: "User with this email already exists",
+      message: "Email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
-  const foundUserByIdentification = (await retrieveIfUserExists("", identification));
+  const foundEmployeeByIdentification = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, "", identification),
+    retrieveIfUserExists(UserEntity, "", identification),
+  ]).then((users) => users.find((user) => user));
 
-  if (foundUserByIdentification)
+  if (foundEmployeeByIdentification)
     return Promise.reject({
-      message: "User with this identification already exists",
+      message: "Identification already exists",
       status: statusCode.BAD_REQUEST,
     });
 

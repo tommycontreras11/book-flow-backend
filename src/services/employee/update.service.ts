@@ -3,10 +3,12 @@ import { statusCode } from "../../utils/status.util";
 import { retrieveIfUserExists } from "../../utils/user.util";
 import { EmployeeEntity } from "../../database/entities/entity/employee.entity";
 import { UpdateEmployeeDTO } from "../../dto/employee.dto";
+import { UserEntity } from "./../../database/entities/entity/user.entity";
+import { getFullDate } from "./../../utils/date.util";
 
 export async function updateEmployeeService(
   uuid: string,
-  { email, password, identification, ...payload }: UpdateEmployeeDTO
+  { email, password, identification, entry_date, ...payload }: UpdateEmployeeDTO
 ) {
   const employee = await EmployeeEntity.findOneBy({ uuid }).catch((e) => {
     console.error("EmployeeEntity.findOneBy: ", e);
@@ -19,38 +21,41 @@ export async function updateEmployeeService(
       status: statusCode.NOT_FOUND,
     });
 
-  const validateUserByUsername = await retrieveIfUserExists(
-    email,
-    null,
-    employee.uuid
-  );
+  const validateEmployeeByEmail = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, email, null, uuid),
+    retrieveIfUserExists(UserEntity, email, null, uuid),
+  ]).then((users) => users.find((user) => user));
 
-  if (validateUserByUsername && employee.uuid != validateUserByUsername?.uuid)
+  if (validateEmployeeByEmail && uuid != validateEmployeeByEmail?.uuid)
     return Promise.reject({
-      message: "User with this email already exists",
+      message: "Email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
-  const validateUserByIdentification = await retrieveIfUserExists(
-    null,
-    identification,
-    employee.uuid
-  );
+  const validateEmployeeByIdentification = await Promise.all([
+    retrieveIfUserExists(EmployeeEntity, null, identification, uuid),
+    retrieveIfUserExists(UserEntity, null, identification, uuid),
+  ]).then((users) => users.find((user) => user));
 
   if (
-    validateUserByIdentification &&
-    employee.uuid != validateUserByIdentification?.uuid
+    validateEmployeeByIdentification &&
+    uuid != validateEmployeeByIdentification?.uuid
   )
     return Promise.reject({
-      message: "User with this identification already exists",
+      message: "Employee's identification already exists",
       status: statusCode.BAD_REQUEST,
     });
-
-  const hashedPassword = await bcrypt.hash(password, 10);
 
   await EmployeeEntity.update(
     { uuid },
-    { ...payload, email, password: hashedPassword, identification }
+    {
+      ...payload,
+      ...(email && { email }),
+      ...(password && {
+        password: await bcrypt.hash(password, 10),
+        ...(entry_date && { entry_date: getFullDate(new Date(entry_date)) }),
+      }),
+    }
   ).catch((e) => {
     console.error("EmployeeEntity.update: ", e);
     return null;

@@ -1,3 +1,4 @@
+import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 import { UserEntity } from "../../database/entities/entity/user.entity";
 import { UpdateUserDTO } from "../../dto/user.dto";
 import { statusCode } from "../../utils/status.util";
@@ -19,30 +20,48 @@ export async function updateUserService(
       status: statusCode.NOT_FOUND,
     });
 
-  const validateUserByEmail = await retrieveIfUserExists(
-    email,
-    null,
-    user.uuid
-  );
+const validateEmployeeByEmail = await Promise.all([
+    retrieveIfUserExists(
+      EmployeeEntity,
+      email,
+      null,
+      uuid
+    ),
+    retrieveIfUserExists(
+      UserEntity,
+      email,
+      null,
+      uuid
+    ),
+  ]).then((users) => users.find((user) => user));
 
-  if (validateUserByEmail && user.uuid !== validateUserByEmail?.uuid)
+  if (validateEmployeeByEmail && uuid != validateEmployeeByEmail?.uuid)
     return Promise.reject({
-      message: "User with this email already exists",
+      message: "Email already exists",
       status: statusCode.BAD_REQUEST,
     });
 
-  const validateUserByIdentification = await retrieveIfUserExists(
-    null,
-    identification,
-    user.uuid
-  );
+  const validateEmployeeByIdentification = await Promise.all([
+    retrieveIfUserExists(
+      EmployeeEntity,
+      null,
+      identification,
+      uuid
+    ),
+    retrieveIfUserExists(
+      UserEntity,
+      null,
+      identification,
+      uuid
+    ),
+  ]).then((users) => users.find((user) => user));
 
   if (
-    validateUserByIdentification &&
-    user.uuid !== validateUserByIdentification?.uuid
+    validateEmployeeByIdentification &&
+    uuid != validateEmployeeByIdentification?.uuid
   )
     return Promise.reject({
-      message: "User with this identification already exists",
+      message: "Employee's identification already exists",
       status: statusCode.BAD_REQUEST,
     });
 
