@@ -10,7 +10,7 @@ export async function createLanguageService({ name }: CreateLanguageDTO) {
 
   if (foundLanguage)
     return Promise.reject({
-      message: "Language already exists",
+      message: "Language's name already exists",
       status: statusCode.BAD_REQUEST,
     });
   
