@@ -10,7 +10,7 @@ export async function createCountryService({ name }: CreateCountryDTO) {
 
   if (foundCountry)
     return Promise.reject({
-      message: "Country already exists",
+      message: "Country's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 

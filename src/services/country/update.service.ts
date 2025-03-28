@@ -1,3 +1,4 @@
+import { Not } from "typeorm";
 import { statusCode } from "../../utils/status.util";
 import { CountryEntity } from "./../../database/entities/entity/country.entity";
 import { UpdateCountryDTO } from "./../../dto/country.dto";
@@ -18,16 +19,16 @@ export async function updateCountryService(
     });
 
   if (name) {
-    const findCountryByName = await CountryEntity.findOneBy({
-      name,
+    const findCountryByName = await CountryEntity.findOne({
+      where: { name, uuid: Not(uuid) },
     }).catch((e) => {
-      console.error("CountryEntity.findOneBy: ", e);
+      console.error("CountryEntity.findOne: ", e);
       return null;
     });
 
-    if (findCountryByName && findCountryByName?.uuid !== uuid)
+    if (findCountryByName)
       return Promise.reject({
-        message: "Country already exists",
+        message: "Country's name already exists",
         status: statusCode.BAD_REQUEST,
       });
   }
