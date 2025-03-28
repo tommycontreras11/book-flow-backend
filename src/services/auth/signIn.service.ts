@@ -1,10 +1,10 @@
 import bcrypt from "bcrypt";
 import { SignInDTO } from "./../../dto/auth.dto";
 import { statusCode } from "./../../utils/status.util";
-import { retrieveUserByUsername } from "./../../utils/user.util";
+import { retrieveIfUserExists } from "./../../utils/user.util";
 
 export async function signInService({ email, password }: SignInDTO) {
-  const foundUserByEmail = await retrieveUserByUsername(email);
+  const foundUserByEmail = await retrieveIfUserExists(email);
 
   if (!foundUserByEmail)
     return Promise.reject({

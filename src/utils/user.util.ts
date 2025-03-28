@@ -19,30 +19,20 @@ export async function retrieveIfUserExists(
     }),
   ]);
 
-  const matchingEntity =
-  (foundUser?.uuid === uuid && foundUser) ||
-  (foundEmployee?.uuid === uuid && foundEmployee);
-
-return matchingEntity
-  ? {
-      user: true,
-      sameUser: true,
-      data: matchingEntity,
-    }
-  : null;
+return foundUser ?? foundEmployee
 }
 
-export async function retrieveUserByUsername(
-  email: string
-) {
-  const [foundUser, foundEmployee] = await Promise.all([
-    UserEntity.findOneBy({
-      ...(email && { email }),
-    }),
-    EmployeeEntity.findOneBy({
-      ...(email && { email }),
-    }),
-  ]);
+// export async function retrieveUserByUsername(
+//   email: string
+// ) {
+//   const [foundUser, foundEmployee] = await Promise.all([
+//     UserEntity.findOneBy({
+//       ...(email && { email }),
+//     }),
+//     EmployeeEntity.findOneBy({
+//       ...(email && { email }),
+//     }),
+//   ]);
 
-  return foundUser ?? foundEmployee;
-}
+//   return foundUser ?? foundEmployee;
+// }

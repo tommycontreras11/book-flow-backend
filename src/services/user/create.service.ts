@@ -11,7 +11,7 @@ export async function createUserService({
   password,
   ...payload
 }: CreateUserDTO) {
-  const foundUserByEmail = (await retrieveIfUserExists(email))?.user;
+  const foundUserByEmail = (await retrieveIfUserExists(email));
 
   if (foundUserByEmail)
     return Promise.reject({
@@ -19,8 +19,7 @@ export async function createUserService({
       status: statusCode.BAD_REQUEST,
     });
 
-  const foundUserByIdentification = (await retrieveIfUserExists("", identification))
-    ?.user;
+  const foundUserByIdentification = (await retrieveIfUserExists("", identification));
 
   if (foundUserByIdentification)
     return Promise.reject({

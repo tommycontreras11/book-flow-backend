@@ -25,7 +25,7 @@ export async function updateEmployeeService(
     employee.uuid
   );
 
-  if (validateUserByUsername?.user && !validateUserByUsername?.sameUser)
+  if (validateUserByUsername && employee.uuid != validateUserByUsername?.uuid)
     return Promise.reject({
       message: "User with this email already exists",
       status: statusCode.BAD_REQUEST,
@@ -38,8 +38,8 @@ export async function updateEmployeeService(
   );
 
   if (
-    validateUserByIdentification?.user &&
-    !validateUserByIdentification?.sameUser
+    validateUserByIdentification &&
+    employee.uuid != validateUserByIdentification?.uuid
   )
     return Promise.reject({
       message: "User with this identification already exists",

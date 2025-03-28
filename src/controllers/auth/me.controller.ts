@@ -8,10 +8,10 @@ export const meController = async (req: Request, res: Response) => {
   meService(req?.user?.uuid)
     .then((data) => {
         const user = {
-            uuid: data.uuid,
-            name: data.name,
-            email: data.email,
-            status: data.status,
+            uuid: data?.uuid,
+            name: data?.name,
+            email: data?.email,
+            status: data?.status,
             role: data instanceof UserEntity ? UserRoleEnum.USER : UserRoleEnum.EMPLOYEE,
         }
 

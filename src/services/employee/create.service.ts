@@ -12,7 +12,7 @@ export async function createEmployeeService({
   entry_date,
   ...payload
 }: CreateEmployeeDTO) {
-  const foundEmployeeByUsername = (await retrieveIfUserExists(email))?.user;
+  const foundEmployeeByUsername = (await retrieveIfUserExists(email));
 
   if (foundEmployeeByUsername)
     return Promise.reject({
@@ -20,8 +20,7 @@ export async function createEmployeeService({
       status: statusCode.BAD_REQUEST,
     });
 
-  const foundEmployeeByIdentification = (await retrieveIfUserExists("", identification))
-    ?.user;
+  const foundEmployeeByIdentification = (await retrieveIfUserExists("", identification));
 
   if (foundEmployeeByIdentification)
     return Promise.reject({
