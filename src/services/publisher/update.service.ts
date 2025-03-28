@@ -17,6 +17,21 @@ export async function updatePublisherService(
       status: statusCode.NOT_FOUND,
     });
 
+      if (name) {
+        const findPublisherByName = await PublisherEntity.findOneBy({
+          name,
+        }).catch((e) => {
+          console.error("PublisherEntity.findOneBy: ", e);
+          return null;
+        });
+    
+        if (findPublisherByName && findPublisherByName?.uuid !== uuid)
+          return Promise.reject({
+            message: "Publisher already exists",
+            status: statusCode.BAD_REQUEST,
+          });
+      }
+
   await PublisherEntity.update(
     { uuid },
     {
