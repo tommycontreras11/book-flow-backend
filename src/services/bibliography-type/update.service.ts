@@ -19,6 +19,21 @@ export async function updateBibliographyTypeService(
       status: statusCode.NOT_FOUND,
     });
 
+  if (name) {
+    const findBibliographyTypeByName = await BibliographyTypeEntity.findOneBy({
+      name,
+    }).catch((e) => {
+      console.error("BibliographyTypeEntity.findBy: ", e);
+      return null;
+    });
+
+    if (findBibliographyTypeByName && findBibliographyTypeByName?.uuid !== uuid)
+      return Promise.reject({
+        message: "Bibliography type already exists",
+        status: statusCode.BAD_REQUEST,
+      });
+  }
+
   await BibliographyTypeEntity.update(
     { uuid },
     {
@@ -30,5 +45,5 @@ export async function updateBibliographyTypeService(
     return null;
   });
 
-  return "Bibliography type created successfully";
+  return "Bibliography type updated successfully";
 }

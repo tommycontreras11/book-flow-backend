@@ -27,12 +27,11 @@ export async function updateAuthorService(
       return null;
     });
 
-    if (findAuthorByName && findAuthorByName?.uuid !== uuid) {
+    if (findAuthorByName && findAuthorByName?.uuid !== uuid)
       return Promise.reject({
         message: "Author already exists",
         status: statusCode.BAD_REQUEST,
       });
-    }
   }
 
   let country: CountryEntity | null = null;
