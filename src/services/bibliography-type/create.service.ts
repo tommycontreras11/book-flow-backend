@@ -14,7 +14,7 @@ export async function createBibliographyTypeService({
 
   if (foundBibliographyType)
     return Promise.reject({
-      message: "Bibliography type already exists",
+      message: "Bibliography type's name already exists",
       status: statusCode.BAD_REQUEST,
     });
 
