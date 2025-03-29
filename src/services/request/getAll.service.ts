@@ -1,8 +1,6 @@
 import { FindManyOptions } from "typeorm";
 import { RequestEntity } from "../../database/entities/entity/request.entity";
 import { statusCode } from "../../utils/status.util";
-import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 
 export async function getAllRequestService(
   options: FindManyOptions<RequestEntity>

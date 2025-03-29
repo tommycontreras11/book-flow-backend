@@ -10,11 +10,11 @@ export const getAllRequestController = async (req: Request, res: Response) => {
   const { status } = req.query as { status: StatusRequestEnum };
   const foundUser = (await retrieveIfUserExists(UserEntity, null, null, req?.user?.uuid));
 
-  const statusArray = [status].join(",").split(",") as StatusRequestEnum[];
+  const statusArray = status != undefined ? [status].join(",").split(",") as StatusRequestEnum[] : [];
 
 const filters = {
   ...(foundUser instanceof UserEntity && {
-    user: { id: foundUser.id } ,
+    user: { id: foundUser.id },
   }),
   ...(statusArray.length > 0 && { status: In(statusArray) }),
 };
