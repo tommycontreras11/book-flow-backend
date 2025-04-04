@@ -13,6 +13,6 @@ export interface IRecentActivities {
 }
 
 export interface ITopBorrowedBooks {
-  title: string;
+  title?: string | null;
   count: number;
 }

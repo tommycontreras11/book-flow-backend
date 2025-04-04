@@ -23,13 +23,6 @@ export const getAllStatBookController = async (
     relations: {
       requests: { user: true, loanManagements: true, book: true },
     },
-    order: {
-      requests: {
-        loanManagements: {
-          
-        }
-      }
-    }
   })
     .then(async (data) => {
       const totalBooks = data.length;
@@ -40,10 +33,8 @@ export const getAllStatBookController = async (
           if (request.status === StatusRequestEnum.BORROWED) {
             borrowedBooks++;
           }
-        })
-      })
-
-      const availableBooks = totalBooks - borrowedBooks;
+        });
+      });
 
       const quickStats: IQuickStats[] = [
         {
@@ -53,7 +44,7 @@ export const getAllStatBookController = async (
         },
         {
           title: "Available Books",
-          value: availableBooks,
+          value: totalBooks - borrowedBooks,
           type: BookQuickStatsEnum.AVAILABLE,
         },
         {
@@ -125,15 +116,18 @@ const getFilteredBookByStatusAndDate = (
 ) => {
   const date = getFullDate();
 
-  const booksFiltered = books?.filter((book) =>
-    book.requests.length > 0 && book.requests.every(
-      (request) =>
-        request.status === status &&
-        request.loanManagements && request.loanManagements.every(
-          (loanManagement) =>
-            getFullDate(loanManagement?.createdAt ?? null, true) === date
-        )
-    )
+  const booksFiltered = books?.filter(
+    (book) =>
+      book.requests.length > 0 &&
+      book.requests.every(
+        (request) =>
+          request.status === status &&
+          request.loanManagements &&
+          request.loanManagements.every(
+            (loanManagement) =>
+              getFullDate(loanManagement?.createdAt ?? null, true) === date
+          )
+      )
   );
 
   return booksFiltered;
@@ -155,6 +149,13 @@ const getLastedBorrowedBook = (
 
   const booksSaved: string[] = [];
   const data: ITopBorrowedBooks[] = [];
+
+  if (booksFiltered.length === 0) {
+    return [{
+      title: null,
+      count: 0
+    }];
+  }
 
   booksFiltered.map((book) => {
     const name = book.name;
