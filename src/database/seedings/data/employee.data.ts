@@ -4,8 +4,8 @@ import { EmployeeEntity, WorkShiftEnum } from "./../../../database/entities/enti
 
 const employees = [
     {
-        name: "Adonaiby Nuñez",
-        email: "adonaiby20@gmail.com",
+        name: "John Doe",
+        email: "john@gmail.com",
         password: bcrypt.hashSync('admin', 10),
         identification: "402-1565254-8",
         work_shift: WorkShiftEnum.MORNING,
