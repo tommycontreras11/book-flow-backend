@@ -74,6 +74,6 @@ router.use(
   bookRoutes
 );
 router.use("/requests", authMiddleware, requestRoutes);
-router.use("/loan-managements", authMiddleware, loanManagementsRoutes);
+router.use("/loans-management", authMiddleware, loanManagementsRoutes);
 
 export default router;
