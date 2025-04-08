@@ -10,13 +10,14 @@ export const getOneLoanManagementController = async (req: Request, res: Response
     relations: { request: { book: { authors: true }, user: true } },
   })
     .then((data) => {
-      const author = {
+      const loanManagement = {
         uuid: data.uuid,
         loan_number: data.loan_number,
         date_loan: data.date_loan,
         date_return: data.date_return,
         amount_day: data.amount_day,
         quantity_day: data.quantity_day,
+        comment: data.comment,
         request: {
           uuid: data.request.uuid,
           book: {
@@ -34,7 +35,7 @@ export const getOneLoanManagementController = async (req: Request, res: Response
         status: data.status,
       };
 
-      return res.status(statusCode.OK).json({ data: author });
+      return res.status(statusCode.OK).json({ data: loanManagement });
     })
     .catch((e) =>
       res

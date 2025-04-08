@@ -1,12 +1,8 @@
-import { LoanManagementEntity } from "../../database/entities/entity/loan-management.entity";
 import { FindManyOptions } from "typeorm";
+import { LoanManagementEntity } from "../../database/entities/entity/loan-management.entity";
 import { statusCode } from "../../utils/status.util";
-import { UserEntity } from "./../../database/entities/entity/user.entity";
-import { EmployeeEntity } from "./../../database/entities/entity/employee.entity";
 
-export async function getAllLoanManagementService(userLogged: UserEntity | EmployeeEntity | null, options: FindManyOptions<LoanManagementEntity>) {
-  if (!userLogged) return [];
-
+export async function getAllLoanManagementService(options: FindManyOptions<LoanManagementEntity>) {
   const loanManagements = await LoanManagementEntity.find(options).catch((e) => {
     console.error("LoanManagementEntity.find: ", e);
     return null;
