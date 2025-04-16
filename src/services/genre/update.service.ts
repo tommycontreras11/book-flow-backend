@@ -5,7 +5,7 @@ import { statusCode } from "./../../utils/status.util";
 
 export async function updateGenreService(
   uuid: string,
-  { name }: UpdateGenreDTO
+  { name, status }: UpdateGenreDTO
 ) {
   const foundGenre = await GenreEntity.findOne({
     where: { name, uuid: Not(uuid) },
@@ -20,7 +20,10 @@ export async function updateGenreService(
       status: statusCode.BAD_REQUEST,
     });
 
-  await GenreEntity.update({ uuid }, { ...(name && { name }) }).catch((e) => {
+  await GenreEntity.update(
+    { uuid },
+    { ...(name && { name }), ...(status && { status }) }
+  ).catch((e) => {
     console.error("GenreEntity.update: ", e);
     return null;
   });

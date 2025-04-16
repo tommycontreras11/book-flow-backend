@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { StatusEnum } from "./../database/entities/base/base.entity";
 
 export class CreateGenreDTO {
   @IsNotEmpty()
@@ -10,4 +11,8 @@ export class UpdateGenreDTO {
   @IsOptional()
   @IsString()
   name: string;
+
+  @IsOptional()
+  @IsEnum(StatusEnum)
+  status: keyof typeof StatusEnum;
 }
