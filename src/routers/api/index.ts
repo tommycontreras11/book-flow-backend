@@ -13,6 +13,7 @@ import scienceRoutes from "./science";
 import bookRoutes from "./book";
 import requestRoutes from "./request";
 import loanManagementsRoutes from "./loan-management";
+import genreRoutes from "./genre";
 import authRoutes from "./auth";
 
 const router = Router();
@@ -72,6 +73,11 @@ router.use(
   "/books",
   unless([{ path: "/", method: "GET" }], authMiddleware),
   bookRoutes
+);
+router.use(
+  "/genres",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  genreRoutes
 );
 router.use("/requests", authMiddleware, requestRoutes);
 router.use("/loans-management", authMiddleware, loanManagementsRoutes);
