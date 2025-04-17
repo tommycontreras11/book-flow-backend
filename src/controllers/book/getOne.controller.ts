@@ -13,6 +13,7 @@ export const getOneBookController = async (req: Request, res: Response) => {
       publisher: true,
       language: true,
       science: true,
+      genres: true,
       authors: true,
     },
   })
@@ -22,9 +23,11 @@ export const getOneBookController = async (req: Request, res: Response) => {
       const book = {
         uuid: data.uuid,
         name: data.name,
+        description: data.description,
         topographicalSignature: data.topographical_signature,
         isbn: data.isbn,
-        publicationYear: data.publication_year,
+        publishedDate: data.published_date,
+        pages: data.pages,
         bibliographyType: {
           uuid: data.bibliographyType.uuid,
           name: data.bibliographyType.name,
@@ -45,6 +48,12 @@ export const getOneBookController = async (req: Request, res: Response) => {
           return {
             uuid: author.uuid,
             name: author.name
+          }
+        }),
+        genres: data.genres.map((genre) => {
+          return {
+            uuid: genre.uuid,
+            name: genre.name
           }
         }),
         status: data.status,

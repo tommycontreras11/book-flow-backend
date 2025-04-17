@@ -18,6 +18,7 @@ export const getAllBookController = async (req: Request, res: Response) => {
       publisher: true,
       language: true,
       science: true,
+      genres: true,
       authors: true
     },
   })
@@ -29,9 +30,11 @@ export const getAllBookController = async (req: Request, res: Response) => {
           return {
             uuid: book.uuid,
             name: book.name,
+            description: book.description,
             topographicalSignature: book.topographical_signature,
             isbn: book.isbn,
-            publicationYear: book.publication_year,
+            publishedDate: book.published_date,
+            pages: book.pages,
             bibliographyType: {
               uuid: book.bibliographyType.uuid,
               name: book.bibliographyType.name,
@@ -52,6 +55,12 @@ export const getAllBookController = async (req: Request, res: Response) => {
               return {
                 uuid: author.uuid,
                 name: author.name
+              }
+            }),
+            genres: book.genres.map((genre) => {
+              return {
+                uuid: genre.uuid,
+                name: genre.name
               }
             }),
             requests: book?.requests.map((request) => ({

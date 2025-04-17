@@ -31,6 +31,9 @@ export class BookEntity extends BaseEntity {
   isbn: string;
 
   @Column()
+  published_date: Date
+
+  @Column()
   pages: number;
 
   @Column()
@@ -38,9 +41,6 @@ export class BookEntity extends BaseEntity {
 
   @Column()
   publisher_id: number;
-
-  @Column()
-  publication_year: number;
 
   @Column()
   language_id: number;
