@@ -24,7 +24,7 @@ export const getOneLoanManagementController = async (req: Request, res: Response
             uuid: data.request.book.uuid,
             name: data.request.book.name,
             language: data.request.book.language,
-            publication_year: data.request.book.publication_year,
+            publishedDate: data.request.book.published_date,
             authors: data.request.book.authors.map((author) => author.name),
           },
           user: {

@@ -66,7 +66,7 @@ export const getAllLoanManagementController = async (
                 uuid: loanManagement.request.book.uuid,
                 name: loanManagement.request.book.name,
                 language: loanManagement.request.book.language.name,
-                publication_year: loanManagement.request.book.publication_year,
+                publishedDate: loanManagement.request.book.published_date,
                 authors: loanManagement.request.book.authors.map(
                   (author) => author.name
                 ),

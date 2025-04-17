@@ -21,11 +21,11 @@ export class CreateLoanManagementDTO {
 export class UpdateLoanManagementDTO {
   @IsString()
   @IsOptional()
-  date_loan: string;
+  date_loan: Date;
 
   @IsString()
   @IsOptional()
-  date_return: string;
+  date_return: Date;
 
   @IsString()
   @MaxLength(250)

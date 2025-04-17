@@ -29,7 +29,7 @@ export async function updateLoanManagementService(
       ...(status && { status }),
       ...(date_loan &&
         date_return && {
-          quantity_day: getDaysBetweenDates(date_loan, date_return),
+          quantity_day: getDaysBetweenDates(date_loan.toLocaleDateString(), date_return.toLocaleDateString()),
         }),
     }
   ).catch((e) => {
