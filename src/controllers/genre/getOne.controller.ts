@@ -10,6 +10,7 @@ export const getOneGenreController = async (req: Request, res: Response) => {
       const genre = {
         uuid: data.uuid,
         name: data.name,
+        status: data.status,
       };
 
       return res.status(statusCode.OK).json({ data: genre });
