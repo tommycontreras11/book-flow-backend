@@ -5,9 +5,11 @@ import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { CreateBookDTO } from "../../dto/book.dto";
-import { recursiveCreateBookAuthor, uploadFile } from "../../utils/book.util";
+import { recursiveCreateBookAuthor, recursiveCreateBookGenre, uploadFile } from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "./../../database/entities/entity/author.entity";
+import { GenreEntity } from "./../../database/entities/entity/genre.entity";
+import { getFullDate } from "./../../utils/date.util";
 
 export async function createBookService(
   {
@@ -17,6 +19,7 @@ export async function createBookService(
     scienceUUID,
     name,
     authorUUIDs,
+    genreUUIDs,
     ...payload
   }: CreateBookDTO,
   file: Express.Multer.File | undefined
@@ -43,7 +46,19 @@ export async function createBookService(
 
   if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
     return Promise.reject({
-      message: "Bibliography Type not found",
+      message: "Author not found",
+      status: statusCode.NOT_FOUND,
+    });
+
+    const foundGenres = await GenreEntity.find({
+    where: {
+      uuid: In(genreUUIDs),
+    },
+  });
+
+  if (foundGenres?.length == 0 || foundGenres.length != genreUUIDs.length)
+    return Promise.reject({
+      message: "Genre not found",
       status: statusCode.NOT_FOUND,
     });
 
@@ -102,7 +117,7 @@ export async function createBookService(
   const book = await BookEntity.create({
     ...payload,
     topographical_signature: payload.topographicalSignature,
-    publication_year: payload.publicationYear,
+    published_date: getFullDate(payload.publishedDate),
     bibliography_type_id: bibliographyType.id,
     publisher_id: publisher.id,
     language_id: language.id,
@@ -113,6 +128,7 @@ export async function createBookService(
 
   book.file_name = await uploadFile(book, file);
   await recursiveCreateBookAuthor(book, [...foundAuthors]);
+  await recursiveCreateBookGenre(book, [...foundGenres]);
 
   return "Book created successfully";
 }

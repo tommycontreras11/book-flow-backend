@@ -8,6 +8,7 @@ import { getFullDate } from "./date.util";
 import { UserEntity } from "./../database/entities/entity/user.entity";
 import { StatusRequestEnum } from "./../database/entities/entity/request.entity";
 import { ITopBorrowedBooks } from "./../interfaces/book-stats.interface";
+import { GenreEntity } from "./../database/entities/entity/genre.entity";
 
 export const recursiveCreateBookAuthor = async (
   book: BookEntity,
@@ -25,6 +26,21 @@ export const recursiveCreateBookAuthor = async (
   });
   return recursiveCreateBookAuthor(book, authors);
 };
+
+export const recursiveCreateBookGenre = async (book: BookEntity, genres: GenreEntity[]): Promise<unknown> => {
+  const payload = genres.pop()
+
+  if(!payload) return 
+
+  book.genres = [...(book.genres || []), payload]
+
+  await book.save().catch((e) => {
+    console.error("BookEntity.create: ", e);
+    return null;
+  });
+
+  return recursiveCreateBookGenre(book, genres);
+}
 
 export async function uploadFile(
   book: BookEntity,

@@ -5,9 +5,15 @@ import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { UpdateBookDTO } from "../../dto/book.dto";
-import { deleteFile, recursiveCreateBookAuthor, uploadFile } from "../../utils/book.util";
+import {
+  deleteFile,
+  recursiveCreateBookAuthor,
+  recursiveCreateBookGenre,
+  uploadFile,
+} from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "./../../database/entities/entity/author.entity";
+import { GenreEntity } from "./../../database/entities/entity/genre.entity";
 
 export async function updateBookService(
   uuid: string,
@@ -17,12 +23,16 @@ export async function updateBookService(
     languageUUID,
     scienceUUID,
     authorUUIDs,
+    genreUUIDs,
     name,
+    description,
     isbn,
     topographicalSignature,
-    publicationYear,
-    status
-  }: UpdateBookDTO, file: Express.Multer.File | null
+    publishedDate,
+    pages,
+    status,
+  }: UpdateBookDTO,
+  file: Express.Multer.File | null
 ) {
   const foundBook = await BookEntity.findOneBy({ uuid });
 
@@ -32,11 +42,11 @@ export async function updateBookService(
       status: statusCode.NOT_FOUND,
     });
 
-  if(name) {
+  if (name) {
     const foundBookByName = await BookEntity.findOne({
       where: { name, uuid: Not(uuid) },
     });
-  
+
     if (foundBookByName)
       return Promise.reject({
         message: "Book's name already exists",
@@ -54,7 +64,22 @@ export async function updateBookService(
 
     if (foundAuthors?.length == 0 || foundAuthors.length != authorUUIDs.length)
       return Promise.reject({
-        message: "Bibliography Type not found",
+        message: "Authors not found",
+        status: statusCode.NOT_FOUND,
+      });
+  }
+
+  let foundGenres: GenreEntity[] = [];
+  if (authorUUIDs.length > 0) {
+    foundGenres = await GenreEntity.find({
+      where: {
+        uuid: In(authorUUIDs),
+      },
+    });
+
+    if (foundGenres?.length == 0 || foundGenres.length != genreUUIDs.length)
+      return Promise.reject({
+        message: "Genres not found",
         status: statusCode.NOT_FOUND,
       });
   }
@@ -134,21 +159,27 @@ export async function updateBookService(
   if (science) foundBook.science_id = science.id;
 
   foundBook.status = status ?? foundBook.status;
-  foundBook.publication_year = publicationYear ?? foundBook.publication_year;
+  foundBook.published_date = publishedDate ?? foundBook.published_date;
+  foundBook.description = description ?? foundBook.description;
+  foundBook.pages = pages ?? foundBook.pages;
   foundBook.isbn = isbn ?? foundBook.isbn;
-  foundBook.topographical_signature = topographicalSignature ?? foundBook.topographical_signature;
-  
+  foundBook.topographical_signature =
+    topographicalSignature ?? foundBook.topographical_signature;
+
   const bookUpdated = await foundBook.save().catch((e) => {
     console.error("BookEntity.updated: ", e);
     return null;
   });
 
-  if(file) {
+  if (file) {
     await deleteFile(foundBook.file_name);
-    foundBook.file_name = await uploadFile(foundBook, file)
-  };
+    foundBook.file_name = await uploadFile(foundBook, file);
+  }
 
-  if (bookUpdated) await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
+  if (bookUpdated) {
+    await recursiveCreateBookAuthor(foundBook, [...foundAuthors]);
+    await recursiveCreateBookGenre(foundBook, [...foundGenres]);
+  }
 
   return "Book updated successfully";
 }
