@@ -5,6 +5,7 @@ import { UserEntity } from "./../../database/entities/entity/user.entity";
 import { retrieveIfUserExists } from "./../../utils/user.util";
 import { Between } from "typeorm";
 import { ObjectStorage } from "./../../libs/object-storage";
+import { LoanManagementEnum } from "./../../database/entities/entity/loan-management.entity";
 
 export const getAllLoanManagementController = async (
   req: Request,
@@ -42,7 +43,7 @@ export const getAllLoanManagementController = async (
     where: filters,
     relations: {
       request: {
-        book: { authors: true, bibliographyType: true, language: true },
+        book: { authors: true, genres: true, bibliographyType: true, language: true },
         user: true,
       },
     },
@@ -52,6 +53,15 @@ export const getAllLoanManagementController = async (
 
       const loanManagements = await Promise.all(
         data.map(async (loanManagement) => {
+          const todayDate = new Date().getDate();
+          const daysPassed = todayDate - loanManagement.date_loan.getDate();
+          const dueDateProgress =
+            (daysPassed / loanManagement.quantity_day) * 100;
+
+          const isLoanManagementReturned =
+            data.find((l) => l.status === LoanManagementEnum.RETURNED)
+              ?.loan_number === loanManagement.loan_number;
+
           return {
             uuid: loanManagement.uuid,
             loan_number: loanManagement.loan_number,
@@ -60,15 +70,30 @@ export const getAllLoanManagementController = async (
             amount_day: loanManagement.amount_day,
             quantity_day: loanManagement.quantity_day,
             comment: loanManagement.comment,
+            due_date_progress: isLoanManagementReturned
+              ? 100
+              : dueDateProgress == 0
+              ? 1
+              : Math.round(dueDateProgress),
             request: {
               uuid: loanManagement.request.uuid,
+              status: loanManagement.request.status,
               book: {
                 uuid: loanManagement.request.book.uuid,
                 name: loanManagement.request.book.name,
                 language: loanManagement.request.book.language.name,
                 publishedDate: loanManagement.request.book.published_date,
                 authors: loanManagement.request.book.authors.map(
-                  (author) => author.name
+                  (author) => ({
+                    uuid: author.uuid,
+                    name: author.name,
+                  })
+                ),
+                genres: loanManagement.request.book.genres.map(
+                  (genre) => ({
+                    uuid: genre.uuid,
+                    name: genre.name,
+                  })
                 ),
                 url: await storage.getUrl(
                   loanManagement.request.book.file_name
