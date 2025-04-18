@@ -4,14 +4,23 @@ import { statusCode } from "../../utils/status.util";
 import { ObjectStorage } from "./../../libs/object-storage";
 
 export const getAllBookController = async (req: Request, res: Response) => {
-  const { science } = req.query as { science?: string };
+  const { search } = req.query as { search?: string };
 
-  const filters = {
-    ...(science && { where: { science: { name: science } } })
-  };
+  const filters = search ? 
+  [
+    {
+      name: search
+    },
+    {
+      science: { name: search }
+    },
+    {
+      language: { name: search }
+    }
+  ] : [];
 
   getAllBookService({
-    ...filters,
+    ...(filters.length > 0 && { where: filters }),
     relations: {
       requests: { user: true, book: true },
       bibliographyType: true,
