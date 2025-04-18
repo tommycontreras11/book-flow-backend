@@ -30,7 +30,7 @@ export const getAllRequestController = async (req: Request, res: Response) => {
 
   getAllRequestService({
     where: filters,
-    relations: { user: true, book: true },
+    relations: { user: true, book: { authors: true }},
   })
     .then(async (data) => {
       const storage = ObjectStorage.instance;
@@ -47,6 +47,13 @@ export const getAllRequestController = async (req: Request, res: Response) => {
               uuid: request.book.uuid,
               name: request.book.name,
               url: await storage.getUrl(request.book.file_name),
+              authors: request.book.authors.map((author) => {
+                return {
+                  uuid: author.uuid,
+                  name: author.name
+                }
+              }),
+              status: request.book.status
             },
             status: request.status,
           };
