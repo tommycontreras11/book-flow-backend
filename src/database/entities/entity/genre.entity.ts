@@ -4,7 +4,7 @@ import { BookEntity } from "./book.entity";
 
 @Entity({ name: "genres" })
 export class GenreEntity extends BaseEntity {
-  @Column()
+  @Column({ length: 100 })
   name: string;
 
   @Column({ type: "enum", enum: StatusEnum })
