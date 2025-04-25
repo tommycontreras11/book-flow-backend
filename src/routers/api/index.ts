@@ -71,7 +71,13 @@ router.use(
 );
 router.use(
   "/books",
-  unless([{ path: "/", method: "GET" }], authMiddleware),
+  unless(
+    [
+      { path: "/", method: "GET" },
+      { path: "/:uuid", method: "GET" },
+    ],
+    authMiddleware
+  ),
   bookRoutes
 );
 router.use(
