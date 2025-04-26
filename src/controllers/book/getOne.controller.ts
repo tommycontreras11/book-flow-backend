@@ -15,6 +15,9 @@ export const getOneBookController = async (req: Request, res: Response) => {
       science: true,
       genres: true,
       authors: true,
+      requests: {
+        user: true,
+      }
     },
   })
     .then(async (data) => {
@@ -56,6 +59,14 @@ export const getOneBookController = async (req: Request, res: Response) => {
             name: genre.name
           }
         }),
+        requests: data?.requests.map((request) => ({
+          uuid: request.uuid,
+          user: {
+            uuid: request.user.uuid,
+            name: request.user.name,
+          },
+          status: request.status
+        })),
         status: data.status,
         url: await storage.getUrl(data.file_name),
       };
