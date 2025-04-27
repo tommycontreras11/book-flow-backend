@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID, MaxLength } from "class-validator";
+import { IsEnum, IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
 import { StatusRequestEnum, StatusRequestType } from "./../database/entities/entity/request.entity";
 
 export class CreateRequestDTO {

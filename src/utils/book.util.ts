@@ -1,14 +1,10 @@
-import { ALLOWED_EXTENSION } from "./../constants";
 import { AuthorEntity } from "../database/entities/entity/author.entity";
 import { BookEntity } from "../database/entities/entity/book.entity";
-import { generateUniqueFileName, getExtensionByFileName } from "./dir.util";
-import { statusCode } from "./status.util";
-import { ObjectStorage } from "./../libs/object-storage";
-import { getFullDate } from "./date.util";
-import { UserEntity } from "./../database/entities/entity/user.entity";
-import { StatusRequestEnum } from "./../database/entities/entity/request.entity";
-import { ITopBorrowedBooks } from "./../interfaces/book-stats.interface";
 import { GenreEntity } from "./../database/entities/entity/genre.entity";
+import { StatusRequestEnum } from "./../database/entities/entity/request.entity";
+import { UserEntity } from "./../database/entities/entity/user.entity";
+import { ITopBorrowedBooks } from "./../interfaces/book-stats.interface";
+import { getFullDate } from "./date.util";
 
 export const recursiveCreateBookAuthor = async (
   book: BookEntity,
@@ -40,51 +36,6 @@ export const recursiveCreateBookGenre = async (book: BookEntity, genres: GenreEn
   });
 
   return recursiveCreateBookGenre(book, genres);
-}
-
-export async function uploadFile(
-  book: BookEntity,
-  file: Express.Multer.File
-): Promise<string> {
-  const extension = getExtensionByFileName(file.originalname);
-  if (!extension || !ALLOWED_EXTENSION.includes(extension)) {
-    return Promise.reject({
-      message:
-        "File extension not allowed. Valid extensions are: " +
-        ALLOWED_EXTENSION.join(", ") +
-        "",
-      status: statusCode.BAD_REQUEST,
-    });
-  }
-
-  const storage = ObjectStorage.instance;
-
-  const fileName = await generateUniqueFileName(extension);
-
-  const minio = await storage
-    .uploadDocument(fileName, file.buffer, file.size)
-    .catch(async (e) => {
-      console.error("createFileService -> storage.uploadDocument: ", e);
-      await book.remove();
-      return null;
-    });
-
-  if (!minio)
-    return Promise.reject({
-      message: "File not uploaded to minio",
-      status: statusCode.BAD_REQUEST,
-    });
-
-  return fileName;
-}
-
-export async function deleteFile(fileName: string) {
-  const storage = ObjectStorage.instance;
-
-  await storage.deleteDocument(fileName).catch(async (e) => {
-    console.error("deleFile -> storage.deleteDocument: ", e);
-    return null;
-  });
 }
 
 export const getFilteredBookByStatusAndDate = (
