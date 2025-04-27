@@ -15,6 +15,7 @@ import { PublisherEntity } from "./publisher.entity";
 import { RequestEntity } from "./request.entity";
 import { ScienceEntity } from "./science.entity";
 import { GenreEntity } from "./genre.entity";
+import { CommentEntity } from "./comment.entity";
 
 @Entity({ name: "books" })
 export class BookEntity extends BaseEntity {
@@ -103,4 +104,7 @@ export class BookEntity extends BaseEntity {
 
   @OneToMany(() => RequestEntity, (request) => request.book)
   requests: RequestEntity[];
+
+  @OneToMany(() => CommentEntity, (comment) => comment.book)
+  comments: CommentEntity[];    
 }
