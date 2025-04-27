@@ -15,6 +15,7 @@ import requestRoutes from "./request";
 import loanManagementsRoutes from "./loan-management";
 import genreRoutes from "./genre";
 import authRoutes from "./auth";
+import commentRoutes from "./comment";
 
 const router = Router();
 
@@ -87,5 +88,10 @@ router.use(
 );
 router.use("/requests", authMiddleware, requestRoutes);
 router.use("/loans-management", authMiddleware, loanManagementsRoutes);
+router.use(
+  "/comments",
+  unless([{ path: "/", method: "GET" }], authMiddleware),
+  commentRoutes
+);
 
 export default router;
