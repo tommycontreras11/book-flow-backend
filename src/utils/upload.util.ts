@@ -1,4 +1,9 @@
 import multer from "multer";
+import { statusCode } from "./status.util";
+import { ObjectStorage } from "./../libs/object-storage";
+import { generateUniqueFileName, getExtensionByFileName } from "./dir.util";
+import { BaseEntity } from "typeorm";
+import { ALLOWED_EXTENSION } from "./../constants";
 
 export const EXTENSION_MIME_TYPE: Record<string, string> = Object.freeze({
     "png": "image/png",
@@ -24,3 +29,48 @@ export const upload = multer({
     storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 },
 });
+
+export async function uploadFile<T extends BaseEntity>(
+  entity: T,
+  file: Express.Multer.File
+): Promise<string> {
+  const extension = getExtensionByFileName(file.originalname);
+  if (!extension || !ALLOWED_EXTENSION.includes(extension)) {
+    return Promise.reject({
+      message:
+        "File extension not allowed. Valid extensions are: " +
+        ALLOWED_EXTENSION.join(", ") +
+        "",
+      status: statusCode.BAD_REQUEST,
+    });
+  }
+
+  const storage = ObjectStorage.instance;
+
+  const fileName = await generateUniqueFileName(extension);
+
+  const minio = await storage
+    .uploadDocument(fileName, file.buffer, file.size)
+    .catch(async (e) => {
+      console.error("createFileService -> storage.uploadDocument: ", e);
+      await entity.remove();
+      return null;
+    });
+
+  if (!minio)
+    return Promise.reject({
+      message: "File not uploaded to minio",
+      status: statusCode.BAD_REQUEST,
+    });
+
+  return fileName;
+}
+
+export async function deleteFile(fileName: string) {
+  const storage = ObjectStorage.instance;
+
+  await storage.deleteDocument(fileName).catch(async (e) => {
+    console.error("deleFile -> storage.deleteDocument: ", e);
+    return null;
+  });
+}
