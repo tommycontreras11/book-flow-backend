@@ -5,11 +5,12 @@ import { LanguageEntity } from "../../database/entities/entity/language.entity";
 import { PublisherEntity } from "../../database/entities/entity/publisher.entity";
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { CreateBookDTO } from "../../dto/book.dto";
-import { recursiveCreateBookAuthor, recursiveCreateBookGenre, uploadFile } from "../../utils/book.util";
+import { recursiveCreateBookAuthor, recursiveCreateBookGenre } from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "./../../database/entities/entity/author.entity";
 import { GenreEntity } from "./../../database/entities/entity/genre.entity";
 import { getFullDate } from "./../../utils/date.util";
+import { uploadFile } from "./../../utils/upload.util";
 
 export async function createBookService(
   {
@@ -114,7 +115,7 @@ export async function createBookService(
       status: statusCode.NOT_FOUND,
     });
 
-  const book = await BookEntity.create({
+  const book = BookEntity.create({
     ...payload,
     topographical_signature: payload.topographicalSignature,
     published_date: getFullDate(payload.publishedDate),
@@ -126,7 +127,7 @@ export async function createBookService(
     status: "ACTIVE",
   });
 
-  book.file_name = await uploadFile(book, file);
+  book.file_name = await uploadFile<BookEntity>(book, file);
   await recursiveCreateBookAuthor(book, [...foundAuthors]);
   await recursiveCreateBookGenre(book, [...foundGenres]);
 

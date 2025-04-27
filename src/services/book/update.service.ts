@@ -6,14 +6,13 @@ import { PublisherEntity } from "../../database/entities/entity/publisher.entity
 import { ScienceEntity } from "../../database/entities/entity/science.entity";
 import { UpdateBookDTO } from "../../dto/book.dto";
 import {
-  deleteFile,
   recursiveCreateBookAuthor,
   recursiveCreateBookGenre,
-  uploadFile,
 } from "../../utils/book.util";
 import { statusCode } from "../../utils/status.util";
 import { AuthorEntity } from "./../../database/entities/entity/author.entity";
 import { GenreEntity } from "./../../database/entities/entity/genre.entity";
+import { deleteFile, uploadFile } from "./../../utils/upload.util";
 
 export async function updateBookService(
   uuid: string,
@@ -32,7 +31,7 @@ export async function updateBookService(
     pages,
     status,
   }: UpdateBookDTO,
-  file: Express.Multer.File | null
+  file: Express.Multer.File | undefined
 ) {
   const foundBook = await BookEntity.findOneBy({ uuid });
 
@@ -173,7 +172,7 @@ export async function updateBookService(
 
   if (file) {
     await deleteFile(foundBook.file_name);
-    foundBook.file_name = await uploadFile(foundBook, file);
+    foundBook.file_name = await uploadFile<BookEntity>(foundBook, file);
   }
 
   if (bookUpdated) {
