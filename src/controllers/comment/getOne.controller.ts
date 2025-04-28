@@ -36,6 +36,7 @@ export const getOneCommentController = async (req: Request, res: Response) => {
             url: await storage.getUrl(data?.parent?.file_name),
           }),
         },
+        createdAt: data.createdAt,
         ...(data?.file_name && {
           url: await storage.getUrl(data.file_name),
         }),
