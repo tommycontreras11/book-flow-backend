@@ -55,7 +55,7 @@ export async function createCommentService(
     content,
     book_id: foundBook.id,
     user_id: foundUser.id,
-    ...(parentComment && { parent_comment_id: parentComment.id }),
+    ...(parentComment && { parent: parentComment }),
   });
 
   if (file) {

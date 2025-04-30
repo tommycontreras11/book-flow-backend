@@ -67,8 +67,8 @@ export async function updateCommentService(
 
   foundComment.book_id = foundBook?.id ?? foundComment.book_id;
   foundComment.user_id = foundUser?.id ?? foundComment.user_id;
-  foundComment.parent_comment_id =
-    parentComment?.id ?? foundComment?.parent_comment_id ?? null;
+  foundComment.parent =
+    parentComment ?? foundComment ?? null;
   foundComment.content = content ?? foundComment.content;
 
   if (file) {
