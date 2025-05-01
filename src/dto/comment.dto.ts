@@ -1,7 +1,12 @@
-import { IsNotEmpty, IsOptional, IsString, IsUUID } from "class-validator";
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  ValidateIf,
+} from "class-validator";
 
 export class CreateCommentDTO {
-  @IsUUID("4")
   @IsString()
   @IsNotEmpty()
   content: string;
@@ -16,14 +21,12 @@ export class CreateCommentDTO {
   @IsNotEmpty()
   userUUID: string;
 
+  @ValidateIf((_, value) => !!value)
   @IsUUID("4")
-  @IsString()
-  @IsOptional()
   parentCommentUUID?: string | null;
 }
 
 export class UpdateCommentDTO {
-  @IsUUID("4")
   @IsString()
   @IsOptional()
   content: string;
@@ -38,8 +41,7 @@ export class UpdateCommentDTO {
   @IsOptional()
   userUUID: string;
 
+  @ValidateIf((_, value) => !!value)
   @IsUUID("4")
-  @IsString()
-  @IsOptional()
   parentCommentUUID?: string | null;
 }
