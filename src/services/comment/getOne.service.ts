@@ -1,20 +1,25 @@
 import { FindOneOptions } from "typeorm";
 import { CommentEntity } from "../../database/entities/entity/comment.entity";
 import { statusCode } from "../../utils/status.util";
+import connection from "./../../database/connection";
+import { formatComment } from "./getAll.service";
 
 export async function getOneCommentService(
   option: FindOneOptions<CommentEntity>
 ) {
-  const comment = await CommentEntity.findOne(option).catch((e) => {
-    console.error("CommentEntity.findOne: ", e);
-    return null;
-  });
+  const comment = connection.getTreeRepository(CommentEntity);
 
-  if (!comment)
+  const topLevelComments = await comment.findOne(option);
+
+  if (!topLevelComments)
     return Promise.reject({
       message: "Comments not found",
       status: statusCode.NOT_FOUND,
     });
 
-  return comment;
+  const commentsTree = await comment.findDescendantsTree(topLevelComments, {
+    relations: ["user", "book"],
+  });
+
+  return formatComment(commentsTree);
 }
