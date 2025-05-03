@@ -1,7 +1,8 @@
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, TreeRepository } from "typeorm";
 import connection from "./../../database/connection";
 import { CommentEntity } from "./../../database/entities/entity/comment.entity";
 import { statusCode } from "./../../utils/status.util";
+import { ObjectStorage } from "./../../libs/object-storage";
 
 export async function getAllCommentService(
   options?: FindManyOptions<CommentEntity>
@@ -24,15 +25,17 @@ export async function getAllCommentService(
     )
   );
 
-  return commentsTree.map(formatComment);
+  return await Promise.all(commentsTree.map(formatComment));
 }
+  export const formatComment = async (comment: CommentEntity): Promise<any> => {
+  const storage = ObjectStorage.instance;
 
-export const formatComment = (comment: CommentEntity): any => {
+  const repository = connection.getTreeRepository(CommentEntity);
+
   return {
     uuid: comment.uuid,
     content: comment.content,
-    // ...(comment.file_name && { url: await storage.getUrl(comment.file_name) }),
-    ...(comment.file_name && { url: comment.file_name }),
+    ...(comment.file_name && { url: await storage.getUrl(comment.file_name) }),
     status: comment.status,
     createdAt: comment.createdAt,
     user: {
@@ -43,6 +46,7 @@ export const formatComment = (comment: CommentEntity): any => {
       uuid: comment.book.uuid,
       name: comment.book.name,
     },
-    replies: comment.replies?.map(formatComment) || [],
+    totalComments: await repository.countDescendants(comment),
+    replies: await Promise.all(comment.replies?.map(formatComment) || []),
   };
 };
