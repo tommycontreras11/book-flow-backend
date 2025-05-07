@@ -21,5 +21,5 @@ export async function getOneCommentService(
     relations: ["user", "book"],
   });
 
-  return await formatComment(tree);
+  return await formatComment(tree, comment);
 }

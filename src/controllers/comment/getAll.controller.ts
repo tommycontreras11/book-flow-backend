@@ -3,12 +3,17 @@ import { IsNull } from "typeorm";
 import { getAllCommentService } from "./../../services/comment/getAll.service";
 import { statusCode } from "./../../utils/status.util";
 
-export const getAllCommentController = async (_req: Request, res: Response) => {
+export const getAllCommentController = async (req: Request, res: Response) => {
+  const { bookUUID } = req.query as { bookUUID?: string };
+
   getAllCommentService({
-    where: { parent: IsNull() },
+    where: { 
+      parent: IsNull(), 
+      ...(bookUUID && { book: { uuid: bookUUID } }) 
+    },
     relations: {
       user: true,
-      book: true
+      book: true,
     },
   })
     .then(async (data) => {
