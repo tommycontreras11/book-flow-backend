@@ -7,15 +7,8 @@ import { CommentInteractionEntity } from "database/entities/entity/comment-inter
 export async function createCommentInteractionService({
   userUUID,
   commentUUID,
-  dislike,
-  like,
+  type
 }: CreateCommentInteractionDTO) {
-  if (like == null && dislike == null)
-    return Promise.reject({
-      message: "Like or Dislike is required",
-      status: statusCode.BAD_REQUEST,
-    });
-
   const foundUser = await UserEntity.findOneBy({ uuid: userUUID }).catch(
     (e) => {
       console.error("UserEntity.findOneBy: ", e);
@@ -42,17 +35,40 @@ export async function createCommentInteractionService({
       status: statusCode.BAD_REQUEST,
     });
 
-  await CommentInteractionEntity.create({
+  const foundCommentInteraction = await CommentInteractionEntity.findOneBy({
     user_id: foundUser.id,
     comment_id: foundComment.id,
-    like,
-    dislike,
-  })
-    .save()
-    .catch((e) => {
-      console.error("CommentInteractionEntity.create: ", e);
+  }).catch((e) => {
+    console.error("CommentInteractionEntity.findOneBy: ", e);
+    return null;
+  });
+
+  let message = "";
+
+  if (foundCommentInteraction) {
+    foundCommentInteraction.type = type;
+
+    await foundCommentInteraction.save().catch((e) => {
+      console.error("CommentInteractionEntity.save: ", e);
       return null;
     });
 
-  return "Comment interaction created successfully";
+    message = "Comment interaction updated successfully";
+
+  } else {
+    await CommentInteractionEntity.create({
+        user_id: foundUser.id,
+        comment_id: foundComment.id,
+        type
+      })
+        .save()
+        .catch((e) => {
+          console.error("CommentInteractionEntity.create: ", e);
+          return null;
+        });
+
+    message = "Comment interaction created successfully";
+  }
+
+  return message;
 }
