@@ -2,11 +2,14 @@ import { Request, Response } from "express";
 import { getOneCommentService } from "../../services/comment/getOne.service";
 import { statusCode } from "../../utils/status.util";
 
-export const getOneCommentController = async (req: Request, res: Response) => {
+export const getOneCommentByBookController = async (
+  req: Request,
+  res: Response
+) => {
   const { uuid } = req.params;
 
   getOneCommentService({
-    where: { uuid },
+    where: { book: { uuid } },
     relations: {
       user: true,
       book: true,

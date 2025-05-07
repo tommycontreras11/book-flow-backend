@@ -9,17 +9,17 @@ export async function getOneCommentService(
 ) {
   const comment = connection.getTreeRepository(CommentEntity);
 
-  const topLevelComments = await comment.findOne(option);
+  const foundComment = await comment.findOne(option);
 
-  if (!topLevelComments)
+  if (!foundComment)
     return Promise.reject({
-      message: "Comments not found",
+      message: "Comment not found",
       status: statusCode.NOT_FOUND,
     });
 
-  const commentsTree = await comment.findDescendantsTree(topLevelComments, {
+  const tree = await comment.findDescendantsTree(foundComment, {
     relations: ["user", "book"],
   });
 
-  return formatComment(commentsTree);
+  return await formatComment(tree);
 }
