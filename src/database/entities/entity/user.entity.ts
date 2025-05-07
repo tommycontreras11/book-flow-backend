@@ -2,6 +2,7 @@ import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity";
 import { RequestEntity } from "./request.entity";
 import { CommentEntity } from "./comment.entity";
+import { CommentInteractionEntity } from "./comment-interaction.entity";
 
 export enum PersonTypeEnum {
   NATURAL = "NATURAL",
@@ -38,4 +39,7 @@ export class UserEntity extends BaseEntity {
 
   @OneToMany(() => CommentEntity, (comment) => comment.user)
   comments: CommentEntity[];
+
+  @OneToMany(() => CommentInteractionEntity, (interaction) => interaction.user)
+  interactions: CommentInteractionEntity[];
 }

@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   Tree,
   TreeChildren,
   TreeParent,
@@ -10,6 +11,7 @@ import {
 import { BaseEntity, StatusEnum, StatusType } from "../base/base.entity";
 import { BookEntity } from "./book.entity";
 import { UserEntity } from "./user.entity";
+import { CommentInteractionEntity } from "./comment-interaction.entity";
 
 @Tree("closure-table")
 @Entity({ name: "comments" })
@@ -42,4 +44,7 @@ export class CommentEntity extends BaseEntity {
 
   @TreeChildren()
   replies: CommentEntity[];
+
+  @OneToMany(() => CommentInteractionEntity, (interaction) => interaction.comment)
+  interactions: CommentInteractionEntity[];
 }
